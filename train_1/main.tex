@@ -1,0 +1,633 @@
+\documentclass[withoutpreface,bwprint]{cumcmthesis}
+
+\title{大型展销会临时工招聘与排班优化}
+\tihao{【待填写题号】}
+\baominghao{【待填写报名号】}
+\schoolname{【待填写学校名称】}
+\membera{【待填写队员一】}
+\memberb{【待填写队员二】}
+\memberc{【待填写队员三】}
+\supervisor{【待填写指导教师】}
+\yearinput{2026}
+\monthinput{【待填写】}
+\dayinput{【待填写】}
+
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\ind}{\mathbf{1}}
+
+% 显式待补充标记：正式定稿时逐项删除或替换为正文。
+\newcommand{\pending}[1]{%
+  \par\medskip
+  \noindent\fbox{%
+    \parbox{0.94\linewidth}{\textbf{【待补充】}#1}%
+  }%
+  \par\medskip
+}
+
+% 保留原图文件名、尺寸、题注和版面位置。
+% 原图未上传时仅显示占位框；将同名图片放入 figures/ 后自动恢复。
+\newcommand{\originalfigure}[2][]{%
+  \IfFileExists{figures/#2}{\includegraphics[#1]{figures/#2}}{%
+  \IfFileExists{figures/#2.png}{\includegraphics[#1]{figures/#2.png}}{%
+  \IfFileExists{figures/#2.pdf}{\includegraphics[#1]{figures/#2.pdf}}{%
+  \IfFileExists{figures/#2.jpg}{\includegraphics[#1]{figures/#2.jpg}}{%
+    \fbox{\parbox[c][4.2cm][c]{0.88\linewidth}{\centering
+      \textbf{原图暂未提供}\par
+      请将 \texttt{\detokenize{#2}} 放入 \texttt{figures/}\par
+      图片内容、尺寸与题注暂不调整。}}
+  }}}}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+针对为期10天、包含10个工作小组和11个营业小时的大型展销会临时工招聘与排班问题，本文在不改变题目三种工作模式的前提下，设计“宏观班型优化--微观员工指派”的双层求解框架。宏观层预先枚举合法匿名班型，以混合整数线性规划确定每天各小组使用各类班型的人数；微观层先用CP-SAT确定每名员工的工作与休息状态，再将宏观班型确定性映射到具体员工。该分解避免直接对“员工--日期--小组--班型”进行高维联合枚举，同时保留最优性和可执行性。
+
+\textbf{对于问题一}，在各小组人员固定的条件下，枚举三种工作模式对应的合法班型，并对每个“日期—小组”建立逐小时集合覆盖整数规划，求得日内最低工作人数。根据单日峰值需求与十天总工作人日约束，确定十个小组的最少人员规模分别为 39，39，43，41，44，39，42，42，43，45，共需招聘 \textbf{417人}。进一步利用最大流安排员工休息日，并将每日在岗员工与班次一一对应，从而实现每人工作8天、休息2天的可执行排班。
+
+\textbf{对于问题二}，将十个固定人员池合并为统一人员池，汇总得到逐日最低工作人数总和为3247。综合最高单日需求和每名员工必须工作8天的约束，确定最少招聘人数为 \textbf{406人}，较问题一减少11人。由于406名员工必须提供 $406 \times 8 = 3248$ 个工作人日，实际排班需在逐日覆盖下界基础上增加1个整除冗余人日，模型将其安排在第7天。随后采用最大流构造员工工作—休息矩阵，并完成员工与具体班次的确定性映射，使每名员工均恰好工作8天、休息2天，且所有日期、小组和时段的人员需求均得到满足。
+
+\textbf{对于问题三}，本文不把求解器返回的“不可行”当作终点，而是给出公共盲区定理。营业窗口长度为11小时，两个4小时工作段之间至少休息2小时，因此全部合法班型只有三种，且共同无法覆盖13:00--14:00；附件在该时段十天合计需求为1500人次，故原问题具有与招聘人数无关的结构性不可行性。对此比较三类规则修复：将休息缩短至1小时需要437名全职员工；采用非对称4+3班型需495人，同时允许3+4班型可降至439人；主推的混合用工方案保留全职员工“4小时工作+至少2小时休息+4小时工作”，只以4小时兼职班修补午间盲区。采用“先最小化兼职人次、再最小化全职人数”的字典序目标，得到兼职理论下界\textbf{1500人次}和全职最优规模\textbf{325人}。按同小时工资折算，等效成本为418.75名全职员工，付费工时浪费率为34.02\%，在满足严格休息制度的可行方案中同时改善成本与人效。
+
+模型由SCIP求得整数最优解，并以CP-SAT、逐小时覆盖复核、员工级人日对账、工资权重敏感性和多方案二维评价进行验证。结果说明，排班规则的结构性分析比盲目增加人数更重要，而有限、定向的兼职柔性可以打破严格全职制度造成的可行性与成本锁死。
+
+\pending{待补充：摘要末尾尚需用 1--2 句话独立凝练“公共盲区定理、宏观--微观双层排班与字典序混合用工”等创新点。}
+
+\keywords{人员排班；混合整数规划；CP-SAT；结构性不可行；混合用工；字典序优化}
+\end{abstract}
+
+\section{问题重述}
+
+\subsection{问题背景}
+
+某部门举办为期10天的大型展销会。全部工作被划分为10个小组，每个小组每天在08:00--19:00持续提供服务。附件给出每一天、每一小时、每一小组所需的临时工人数，共形成$10\times 11\times 10=1100$个需求单元。数据检查表明需求均为正整数，最小值为1，最大值为30，全部需求合计为17682人时。
+
+每名全职临时工在会期内休息2天、工作8天；每个工作日完成两个连续4小时的工作段。题目的困难并不只是覆盖高峰需求，还在于招聘人数是跨日共享的库存，而班次是随日期、小组和小时变化的流量。如果一开始就为每名员工、每一天、每个小组和每种时间组合设置变量，模型会同时承担“需要多少人”和“每个人是谁”两类任务，维度迅速膨胀，且难以解释不可行性的结构来源。
+
+\subsection{问题提出}
+
+本文依次处理三种递进模式：
+
+\begin{enumerate}[label=\textbf{问题\arabic*:},leftmargin=5em]
+  \item 每名员工在10天内固定服务同一小组，求各组固定人员池及全场最少招聘人数；
+  \item 员工同一天只能服务一个小组，但可在不同日期更换小组，求统一人员池最优规模及员工级排班；
+  \item 员工同一天可服务至多两个小组，每段连续工作4小时且两段间至少休息2小时，判断可行性并提出合理修复方案。
+\end{enumerate}
+
+问题一、二原题只规定每天由两个连续4小时段构成，并\textbf{未规定两段之间的最小间隔}，故允许后一段紧接前一段。问题三才新增至少2小时休息约束。若在问题一、二中额外加入1小时休息，模型口径将改变，417人与406人的结论也不再成立。因此本文严格区分“原题基线”与“问题三规则修复”。
+
+\subsection{总体解决思路}
+
+经典人员排班通常将需求覆盖与班型选择表达为集合覆盖或整数规划；休息窗口的灵活设置会显著改变变量规模和人员利用率\cite{bechtold1990,aykin1996}。结合本题规模，本文采用与“先生成班次、再分配员工”一致的两阶段思想\cite{googleworkforce}，框架如图\ref{fig:framework}所示。
+
+\begin{figure}[H]
+  \centering
+  \originalfigure[width=0.96\textwidth]{fig_two_layer_framework.png}
+  \caption{宏观排班与微观指派的双层求解框架}
+  \label{fig:framework}
+\end{figure}
+
+宏观层只处理匿名人数，回答“某日某组需要多少个某类班次”；微观层在招聘人数已经固定后，回答“这些班次分别由哪名员工完成”。该方法不是实际执行列生成算法，而是借鉴其“用可行模式压缩原始变量”的思想：本题时间窗口较短，可以完整枚举所有合法班型，无需在求解过程中动态定价。
+
+\section{模型假设}
+
+为使模型边界清楚，作如下假设：
+
+\begin{enumerate}[label=\textbf{A\arabic*:},leftmargin=4em]
+  \item 附件需求为每小时最低在岗人数，所有小组、日期和小时的需求必须刚性满足，不允许缺岗；
+  \item 同一班型在一个小时内贡献1单位覆盖，员工不存在迟到、早退或工作效率差异；
+  \item 问题一、二中两个4小时段允许相邻，因为原题未规定最小休息；问题三严格执行至少2小时休息；
+  \item 每名全职员工十天内恰好工作8天、休息2天，同一天至多接受一个完整班型；
+  \item 问题三混合方案中的兼职以“4小时班人次”计量，兼职班必须覆盖13:00--14:00，防止其演化为替代全部全职的无限柔性人员池；
+  \item 成本比较采用同小时工资口径：一名全职员工会期内提供$8\times8=64$个付费小时，一个兼职班提供4个付费小时，暂不计招聘固定成本和工资溢价；
+  \item 求解器返回OPTIMAL时认为已取得全局整数最优；所有论文数字均由相同附件重新计算并通过哈希校验。
+\end{enumerate}
+
+假设A5尤其重要。若兼职可以覆盖任意时段且没有规模约束，成本模型可能用大量兼职替代全职，从而偏离“只修补午间盲区”的管理意图。本文使用字典序目标先限制兼职，再优化全职，正是为了把政策含义写进数学模型。
+
+\section{符号说明}
+
+本文将08:00--09:00记为小时索引$h=0$，依次至18:00--19:00的$h=10$。主要符号见表\ref{tab:symbols}。
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.15}
+
+\begin{tabularx}{\textwidth}{
+  >{\centering\arraybackslash}p{2.3cm}
+  >{\centering\arraybackslash}X
+  >{\centering\arraybackslash}p{2cm}
+}
+\toprule
+符号 & 含义 & 取值或单位\\
+\midrule
+
+$D$ & 日期集合 & $|D|=10$\\
+$H$ & 小时索引集合 & $|H|=11$\\
+$G$ & 小组集合 & $|G|=10$\\
+
+$q_{dhg}$ & 第 $d$ 天小时 $h$ 小组 $g$ 的最低需求 & 人\\
+$S_r$ & 两段 4 小时工作之间至少间隔 $r$ 小时的合法班型集合 & 班型\\
+$c_{hs}$ & 班型 $s$ 是否覆盖小时 $h$ & $0$ 或 $1$\\
+$W_g,W$ & 问题一组 $g$ 固定编制、问题二统一编制 & 人\\
+$x_{dgs}$ & 第 $d$ 天小组 $g$ 采用班型 $s$ 的人数 & 非负整数\\
+$R_{dg},R_d$ & 问题一组别休息人数、问题二全场休息人数 & 人\\
+$y_{id}$ & 员工 $i$ 在第 $d$ 天是否工作 & $0$ 或 $1$\\
+$z_{dsgk}$ & 问题三第 $d$ 天班型 $s$ 前段服务 $g$、后段服务 $k$ 的人数 & 非负整数\\
+$p_{dtg}$ & 第 $d$ 天小组 $g$ 使用起点 $t$ 的 4 小时兼职人数 & 非负整数\\
+$P,W^F$ & 十天兼职班总人次、全职招聘人数 & 人次、人\\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\pending{待核对：正式定稿前应统一“人、人数、人次、人时、等效全职人数”等单位，并检查所有符号是否在首次出现处定义。}
+
+\section{问题分析}
+
+\subsection{问题一分析：十个相互隔离的人力岛}
+
+问题一中，员工一经归属某组，十天内不得跨组。因此小组$g$在低需求日剩余的人手不能支援其他组的高需求日。模型可按小组分解：每组单独确定固定编制、每天休息人数和各班型人数，最后求和。需求覆盖是小时尺度约束，休息规则是十天尺度约束，二者通过每日人员守恒连接。该结构的管理含义是“组织边界造成容量损失”，最优结果可作为后续柔性用工的基线。
+
+图\ref{fig:demand}展示十个小组合计需求。第7、8天整体需求明显较高，而同一天内不同时段也存在峰谷错位。仅看总人时下界会忽略班型连续性和休息日分配，因此不能直接用$\lceil17682/64\rceil=277$人作为可执行答案。
+
+\begin{figure}[H]
+  \centering
+  \originalfigure[width=0.90\textwidth]{fig_demand_heatmap.png}
+  \caption{十个小组合计的逐日逐小时需求热力图}
+  \label{fig:demand}
+\end{figure}
+
+\subsection{问题二分析：统一人员池与可分解性}
+
+问题二取消跨日固定归属，员工池从$(W_1,\ldots,W_{10})$合并为$W$。这种柔性可以吸收不同小组在不同日期的需求峰谷，但同一天仍不能跨组，故每个匿名班次必须完整地属于一个小组。
+
+仅求出每天各班型人数还不等于得到可执行排班。宏观变量不含员工编号，式中“总工作人日等于$8W$”只能保证总量，无法单独排除某人工作10天、另一人工作6天的情况。为此微观层引入员工--日期二元状态，先满足每人做8休2和每日工作总量，再将匿名班次逐一映射。OR-Tools的员工排班示例同样以布尔变量表达员工、日期和班次的组合，并用CP-SAT处理硬约束\cite{googlecpsat}。
+
+\subsection{问题三分析：先判断结构，再谈招聘人数}
+
+问题三增加“两个4小时段之间至少休息2小时”。表面上只是把班型间隔加长，实质上会改变可行域的拓扑结构：若所有合法班型在某一需求为正的小时都取覆盖值0，那么增加任意数量员工都无济于事。优化中的不可行性应通过冲突结构解释，而不能只报告求解器状态\cite{chinneck2008}。
+
+因此问题三分两步：第一步解析枚举严格规则下的合法班型，证明13:00--14:00是公共盲区；第二步在承认原题无解后比较三种制度修复。三种修复均保持本文主线，但代表不同管理选择：缩短休息牺牲员工舒适度；缩短工作段产生带薪闲置；混合用工保留全职待遇，以定向兼职吸收盲区需求。
+
+\section{统一建模准备}
+
+\subsection{合法班型的统一表示}
+
+设班型$s=(u_s,v_s)$，其中$u_s,v_s\in\{0,1,\ldots,7\}$分别表示前、后4小时段的开始索引。若最小间隔为$r$，则
+\begin{equation}
+S_r=\left\{(u,v):0\le u\le7,\quad u+4+r\le v\le7\right\}.
+\label{eq:shiftset}
+\end{equation}
+班型对小时的覆盖参数定义为
+\begin{equation}
+c_{hs}=\ind\{u_s\le h<u_s+4\}+\ind\{v_s\le h<v_s+4\}.
+\label{eq:cover}
+\end{equation}
+由于两个工作段不重叠，式\eqref{eq:cover}只取0或1。问题一、二采用$S_0$，共有10种班型；问题三严格规则采用$S_2$，只剩3种班型。先枚举班型再优化数量，可以将连续时间安排转化为稀疏覆盖矩阵，这是本文宏观降维的基础。
+
+\section{问题一模型的建立与求解}
+
+\subsection{固定小组人员池模型}
+
+\subsubsection{目标函数}
+
+员工十天固定属于某一小组，因此以各组固定编制之和为目标：
+\begin{equation}
+\min Z_1=\sum_{g\in G}W_g.
+\label{eq:q1obj}
+\end{equation}
+
+\subsubsection{需求覆盖约束}
+
+对任意$d\in D,h\in H,g\in G$，所有覆盖小时$h$的班型人数之和不得低于需求：
+\begin{equation}
+\sum_{s\in S_0}c_{hs}x_{dgs}\ge q_{dhg}.
+\label{eq:q1cover}
+\end{equation}
+式\eqref{eq:q1cover}允许适度冗余，但禁止任何缺岗。
+
+\subsubsection{人员与休息人日守恒}
+
+每天组$g$的固定人员池被划分为工作和休息两部分：
+\begin{equation}
+\left(\sum_{s\in S_0}x_{dgs}\right)+R_{dg}=W_g,
+\qquad \forall d,g.
+\label{eq:q1balance}
+\end{equation}
+每名员工十天休息2天，因此
+\begin{equation}
+\sum_{d\in D}R_{dg}=2W_g,
+\qquad \forall g.
+\label{eq:q1rest}
+\end{equation}
+将式\eqref{eq:q1balance}对日期求和并代入式\eqref{eq:q1rest}，得到推论
+\begin{equation}
+\sum_{d\in D}\sum_{s\in S_0}x_{dgs}=8W_g.
+\label{eq:q1workdays}
+\end{equation}
+式\eqref{eq:q1workdays}不是额外约束，而是组内总工作人日守恒。它描述匿名总量，不直接声称每名具体员工都工作8天；个人层面的规则由后续员工级重建落实。
+
+\subsubsection{算法与结果}
+
+本文使用SCIP求解上述混合整数规划。SCIP能够处理整数变量固定后转化为线性规划的约束整数问题\cite{scipdoc}。具体步骤如下：
+
+\begin{enumerate}[label=\textbf{Step \arabic*:},leftmargin=6em]
+  \item 从附件读取需求并构造$10\times11\times10$张量；
+  \item 枚举$S_0$的10种班型并生成覆盖矩阵$(c_{hs})$；
+  \item 对各组建立式\eqref{eq:q1cover}--\eqref{eq:q1rest}，统一最小化式\eqref{eq:q1obj}；
+  \item 求解至整数最优，并逐小时重算覆盖余量；
+  \item 输出固定人员池、班型数量与运行记录。
+\end{enumerate}
+
+表\ref{tab:q1result}和图\ref{fig:q1pools}给出结果。总招聘人数为417人，第10组人员池最大，为45人；第1、2、6组最小，均为39人。组间差异并不只由总需求决定，还受到峰值出现时刻与可用班型形状影响。
+
+\begin{table}[H]
+\centering
+\caption{问题一各小组固定人员池最优规模}
+\label{tab:q1result}
+\begin{tabular}{c*{10}{c}}
+\toprule
+小组 & 1&2&3&4&5&6&7&8&9&10\\
+\midrule
+$W_g$/人 &39&39&43&41&44&39&42&42&43&45\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \originalfigure[width=0.84\textwidth]{fig_q1_group_pools.png}
+  \caption{问题一各小组最优固定人员池}
+  \label{fig:q1pools}
+\end{figure}
+
+十个小组分别拥有完整编制意味着低谷时的闲置不能跨组转移，这就是417人的“人力孤岛成本”。该结果为问题二衡量跨天柔性价值提供了严格基线。
+
+\section{问题二模型的建立与求解}
+
+\subsection{跨天共享与员工级重建}
+
+\subsubsection{宏观统一人员池模型}
+
+设$W$为统一招聘人数，$R_d$为第$d$天休息人数。目标为
+\begin{equation}
+\min Z_2=W.
+\label{eq:q2obj}
+\end{equation}
+逐小时覆盖仍使用式\eqref{eq:q1cover}。区别在于每天全部小组共同占用同一人员池：
+\begin{equation}
+\left(\sum_{g\in G}\sum_{s\in S_0}x_{dgs}\right)+R_d=W,
+\qquad \forall d.
+\label{eq:q2balance}
+\end{equation}
+十天总休息人日满足
+\begin{equation}
+\sum_{d\in D}R_d=2W.
+\label{eq:q2rest}
+\end{equation}
+由式\eqref{eq:q2balance}和式\eqref{eq:q2rest}可推出
+\begin{equation}
+\sum_{d\in D}\sum_{g\in G}\sum_{s\in S_0}x_{dgs}=8W.
+\label{eq:q2workdays}
+\end{equation}
+式\eqref{eq:q2workdays}是一笔“总账”：$10W$个员工--日期名额减去$2W$个休息人日，剩余$8W$个工作人日。它不取代个人排班约束。
+
+\subsubsection{微观阶段一：工作--休息状态的CP-SAT模型}
+
+宏观层得到$W=406$及每日工作人数
+\begin{equation}
+A_d=\sum_{g\in G}\sum_{s\in S_0}x_{dgs}.
+\end{equation}
+设$y_{id}=1$表示员工$i$在第$d$天工作，否则休息。微观状态模型仅保留两个状态：
+\begin{align}
+\sum_{d\in D}y_{id}&=8, &&\forall i=1,\ldots,W,\label{eq:micro8}\\
+\sum_{i=1}^{W}y_{id}&=A_d, &&\forall d\in D.\label{eq:microdaily}
+\end{align}
+式\eqref{eq:micro8}直接保证每名员工做8休2；式\eqref{eq:microdaily}使微观层与宏观配额对接。该阶段不再区分组别和班型，将原本的高维组合压缩为$406\times10$个布尔变量。
+
+\subsubsection{微观阶段二：班次贪心映射}
+
+对每一天，将宏观解$x_{dgs}$展开为匿名班次槽位列表
+\begin{equation}
+\mathcal L_d=\underbrace{\{(g,s),\ldots,(g,s)\}}_{x_{dgs}\text{个}},
+\qquad |\mathcal L_d|=A_d.
+\end{equation}
+再把当天$y_{id}=1$的员工与$\mathcal L_d$一一配对。因为两侧数量均为$A_d$，每名工作员工恰好获得一个完整班型；班型自身已经固定在一个小组中，所以“同一天只能服务同一小组”自动满足。为保证可复现，本文使用按员工编号和历史累计工作次数排序的确定性贪心，而非不可复现的随机分配。
+
+整个双层算法为：
+
+\begin{enumerate}[label=\textbf{Step \arabic*:},leftmargin=6em]
+  \item 求解宏观MILP，得到$W$和$x_{dgs}$；
+  \item 计算每天工作配额$A_d$，建立式\eqref{eq:micro8}--\eqref{eq:microdaily}；
+  \item 用CP-SAT得到每名员工的WORK/REST状态；
+  \item 展开匿名班次槽位并逐日贪心映射；
+  \item 对每名员工、每天、每组和每小时重新校验。
+\end{enumerate}
+
+\subsubsection{结果与可执行性检验}
+
+问题二最优招聘人数为406人，每日工作人数见表\ref{tab:q2daily}。其总和为3248，恰等于$406\times8$。
+
+\begin{table}[H]
+\centering
+\caption{问题二统一人员池的每日工作人数}
+\label{tab:q2daily}
+\begin{tabular}{c*{10}{c}}
+\toprule
+日期 &1&2&3&4&5&6&7&8&9&10\\
+\midrule
+工作人数 &214&349&314&333&349&331&364&350&325&319\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+图\ref{fig:q1q2}显示，共享人员池比固定小组少11人，降幅为$11/417=2.64\%$。这一节约来自跨天换组，而不是削减需求或改变每天8小时规则。
+
+\begin{figure}[H]
+  \centering
+  \originalfigure[width=0.72\textwidth]{fig_q1_q2_comparison.png}
+  \caption{问题一与问题二最少招聘人数比较}
+  \label{fig:q1q2}
+\end{figure}
+
+员工级重建共输出4060条员工--日期记录，其中3248条为WORK、812条为REST。校验结果为：406名员工全部工作8天、休息2天；各日工作人数与宏观解完全一致；所有1100个需求单元的覆盖余量均不为负，最小余量为0。表\ref{tab:rostersample}给出前两名员工的部分排班，完整表作为支撑材料提供。
+
+\begin{table}[H]
+\centering
+\caption{问题二员工级排班样例}
+\label{tab:rostersample}
+\begin{tabular}{cccccc}
+\toprule
+员工 & 日期 & 状态 & 小组 & 第一工作段 & 第二工作段\\
+\midrule
+1&1&工作&1&08:00--12:00&12:00--16:00\\
+1&2&工作&6&08:00--12:00&12:00--16:00\\
+1&3&工作&7&08:00--12:00&15:00--19:00\\
+1&9&休息&--&--&--\\
+1&10&休息&--&--&--\\
+2&1&工作&1&08:00--12:00&12:00--16:00\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+由此，聚合模型不是“带人名下标的巨型ILP”的近似替代，而是一个经微观层证明可执行的精确降维方案。
+
+\pending{待补充支撑材料：406 名员工的完整十天排班表、每日班型明细和逐小时覆盖对账文件。正文暂保留样例表与汇总结论。}
+
+\section{问题三模型的建立与求解}
+
+\subsection{结构性死锁与规则修复}
+
+\subsubsection{公共盲区定理}
+
+设营业开始、结束时刻为$O,C$，窗口长度$L=C-O$；两段工作长度均为$b$，最小休息为$r$。第一段为了给第二段留出$b+r$小时，最晚结束于$C-b-r$；第二段最早开始于$O+b+r$。若
+\begin{equation}
+2(b+r)>L,
+\label{eq:blindcondition}
+\end{equation}
+则两者之间存在所有合法班型均无法覆盖的公共盲区，其长度为
+\begin{equation}
+B=2(b+r)-L.
+\label{eq:blindlength}
+\end{equation}
+
+本题$O=8,C=19,L=11,b=4,r=2$，故$B=1$小时。严格合法班型只有：
+\begin{equation}
+\begin{aligned}
+&(08{:}00{-}12{:}00,\ 14{:}00{-}18{:}00),\\
+&(08{:}00{-}12{:}00,\ 15{:}00{-}19{:}00),\\
+&(09{:}00{-}13{:}00,\ 15{:}00{-}19{:}00).
+\end{aligned}
+\end{equation}
+如图\ref{fig:blind}所示，三种班型在13:00--14:00的覆盖均为0。
+
+\begin{figure}[H]
+  \centering
+  \originalfigure[width=0.94\textwidth]{fig_strict_blind_zone.png}
+  \caption{严格休息规则下全部合法班型及公共盲区}
+  \label{fig:blind}
+\end{figure}
+
+附件在该小时每天十组总需求依次为85、98、146、149、152、159、188、206、150、167人，十天合计1500人次。设$z_{dsgk}$为前段服务组$g$、后段服务组$k$的全职人数，则盲区覆盖约束左端恒为0，而右端$q_{d,5,g}\ge1$，产生$0\ge q_{d,5,g}$的矛盾。因此严格问题三不是“当前人数不够”，而是\textbf{任意有限招聘人数均不可行}。
+
+\subsubsection{修复方案一：将最小休息缩短为1小时}
+
+把班型集合由$S_2$放宽为$S_1$，合法班型从3种增至6种，13:00--14:00不再是共同盲区。跨组覆盖约束写为
+\begin{equation}
+\sum_{s\in S_1}\left[
+\ind\{u_s\le h<u_s+4\}\sum_{k\in G}z_{dsgk}
++\ind\{v_s\le h<v_s+4\}\sum_{j\in G}z_{dsjg}
+\right]\ge q_{dhg}.
+\label{eq:q3crosscover}
+\end{equation}
+保持全职做8休2，整数最优为437人。该方案数学上最直接，但相较无最小间隔对照的400人增加37人，而且把至少2小时休息压缩为1小时，员工疲劳代价没有被显式计入人数目标。
+
+\subsubsection{修复方案二：允许非对称工作段}
+
+进一步定义非对称班型$s=(u,L_1,v,L_2)$，满足
+\begin{equation}
+L_1,L_2\le4,\qquad v\ge u+L_1+2,qquad v+L_2\le11.
+\label{eq:asymshift}
+\end{equation}
+为避免过度缩短，数值比较仅允许一个工作段由4小时缩为3小时，形成4+3和3+4两类；2小时工作段作为可扩展边界保留，不在主结果中启用。采用字典序目标：先最小化非4+4班型的员工人日，再固定该最小值并最小化招聘人数。只允许4+3时需495人；同时允许3+4时降至439人。两种方案均需1500个修复员工人日，恰对应盲区需求下界，但员工实际工作7小时却按全天编制计费，造成带薪闲置。
+
+\subsubsection{修复方案三：严格全职与午间兼职的混合用工}
+
+主推方案保留全职员工的$S_2$严格班型，引入覆盖13:00--14:00的4小时兼职班。允许兼职起点$t\in T=\{10,11,12,13\}$，设$a^P_{ht}$表示该兼职班是否覆盖小时$h$，$p_{dtg}$为其人数。联合覆盖为
+\begin{equation}
+\sum_{s\in S_2}\left[
+\ind\{u_s\le h<u_s+4\}\sum_{k}z_{dsgk}
++\ind\{v_s\le h<v_s+4\}\sum_{j}z_{dsjg}
+\right]
++\sum_{t\in T}a^P_{ht}p_{dtg}\ge q_{dhg}.
+\label{eq:mixedcover}
+\end{equation}
+全职人员池满足
+\begin{align}
+\sum_{s,g,k}z_{dsgk}+R_d&=W^F, &&\forall d,\label{eq:mixedday}\\
+\sum_dR_d&=2W^F.\label{eq:mixedrest}
+\end{align}
+定义十天兼职班总人次
+\begin{equation}
+P=\sum_{d\in D}\sum_{t\in T}\sum_{g\in G}p_{dtg}.
+\end{equation}
+由于严格全职在13:00--14:00的覆盖为0，每个兼职班在该小时至多贡献1人，故
+\begin{equation}
+P\ge\sum_{d\in D}\sum_{g\in G}q_{d,5,g}=1500.
+\label{eq:partlower}
+\end{equation}
+
+为准确表达“兼职只修补缺口，而非替代全部全职”，采用字典序目标：
+\begin{equation}
+\text{第一层：}\min P;\qquad
+\text{第二层：在 }P=P^*\text{ 下 }\min W^F.
+\label{eq:lexico}
+\end{equation}
+第一层得到$P^*=1500$，达到式\eqref{eq:partlower}的理论下界；第二层得到$W^F=325$。这证明325不是预设参数，而是“最小兼职规模”政策下的全局最优全职编制。每日全职与兼职配置见图\ref{fig:mixedday}。
+
+\begin{figure}[H]
+  \centering
+  \originalfigure[width=0.92\textwidth]{fig_mixed_daily.png}
+  \caption{混合用工方案的每日全职在岗人数与兼职班人次}
+  \label{fig:mixedday}
+\end{figure}
+
+需要说明，325是\textbf{全职招聘人数}，1500是\textbf{十天累计兼职班人次}，二者不能直接相加为1825名唯一人员。若兼职可跨日重复上岗，则唯一兼职人数取决于后续合同设计；仅按单日峰值，至少需要容纳第8天的206个兼职班。
+
+\subsubsection{三类修复的二维评价}
+
+在同小时工资口径下，一名全职会期成本折算为64小时，一个兼职班折算为4小时，混合方案等效全职成本为
+\begin{equation}
+C_{\mathrm{eq}}=W^F+\frac{P}{16}=325+\frac{1500}{16}=418.75.
+\label{eq:eqcost}
+\end{equation}
+定义付费工时浪费率
+\begin{equation}
+\eta=\frac{H_{\mathrm{paid}}-17682}{H_{\mathrm{paid}}}.
+\label{eq:waste}
+\end{equation}
+各方案比较见表\ref{tab:repair}和图\ref{fig:repairmatrix}。非对称班型按全天工资计费，因此缩短的工作小时也视为付费闲置。
+
+\begin{table}[H]
+\centering
+\caption{问题三规则修复方案比较}
+\label{tab:repair}
+\begin{tabularx}{\textwidth}{L>{\centering\arraybackslash}p{2.3cm}>{\centering\arraybackslash}p{2.3cm}>{\centering\arraybackslash}p{2.2cm}L}
+\toprule
+方案 & 招聘或等效成本 & 付费工时 & 浪费率 & 规则代价\\
+\midrule
+休息缩短为1小时 & 437人 & 27968 & 36.78\% & 疲劳风险增加\\
+仅允许4+3 & 495人 & 31680 & 44.19\% & 大量带薪早退\\
+允许4+3与3+4 & 439人 & 28096 & 37.07\% & 带薪早退\\
+全职+午间兼职 & 418.75等效人 & 26800 & 34.02\% & 需管理兼职池\\
+无最小间隔（对照） & 400人 & 25600 & 30.93\% & 不满足严格休息\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \originalfigure[width=0.86\textwidth]{fig_repair_cost_waste.png}
+  \caption{规则修复方案的成本--浪费率二维评价}
+  \label{fig:repairmatrix}
+\end{figure}
+
+混合方案位于严格可行方案中的左下区域：相较437人的休息1小时方案，等效成本下降18.25人，浪费率下降2.76个百分点；相较439人的双向非对称方案，等效成本下降20.25人，且不缩短全职员工的每日实际工作要求。无最小间隔对照虽然数值最低，但违反问题三的休息制度，不能作为正式答案。
+
+\section{模型检验与灵敏度分析}
+
+\pending{待补充：求解器版本、运行环境、硬件配置、每个模型的运行时间及完整求解日志。当前临时稿仅给出求解状态和结果复核。}
+
+\subsection{输入、最优状态与覆盖复核}
+
+数据预检确认附件包含110条有效日期--小时记录、1100个正需求单元，输入文件SHA-256固定为\texttt{9c65acae...98d44}。问题一、问题二、休息1小时修复、无最小间隔对照、非对称班型与混合用工均由SCIP返回OPTIMAL；严格问题三同时由解析盲区与整数模型判为不可行。所有输出在运行后记录脚本、输入和图表哈希，以防正文数字与代码结果脱节。
+
+对于宏观解，重新计算每个$d,h,g$的覆盖余量
+\begin{equation}
+e_{dhg}=\text{实际覆盖}_{dhg}-q_{dhg}.
+\end{equation}
+全部$e_{dhg}\ge0$。问题二员工级排班的最小余量为0，说明存在恰好贴住需求的单元，但没有缺岗。
+
+\subsection{宏观--微观一致性检验}
+
+问题二包含三层对账：第一，宏观每日工作人数之和为3248，等于$8\times406$；第二，CP-SAT生成的每名员工行和均为8、休息数均为2；第三，贪心映射后每一天的实际班次数与$x_{dgs}$逐项相等。上述对账排除了“总人日正确但个人工作天数错误”和“状态正确但班次覆盖错误”两类常见漏洞。
+
+\subsection{休息口径敏感性}
+
+为检验417和406对语义的依赖，在问题一、二中额外强加至少1小时休息并重新求解，人数分别上升至524和484。这一结果不作为题目答案，只说明最小休息口径会显著收缩班型集合。正式模型因此遵循原题：问题一、二使用$S_0$，问题三使用$S_2$，休息1小时仅作为问题三修复方案。
+
+\subsection{兼职工资权重敏感性}
+
+若不采用“先控制兼职规模”的字典序政策，而直接最小化$16W^F+\lambda P$，全职与兼职会随$\lambda$发生替代。图\ref{fig:wagesens}显示，当兼职成本权重从1增加到16时，全职最优规模由283升至321，兼职班人次由1864降至1504。该结果说明325并非所有工资结构下的成本最优点，而是\textbf{最少兼职优先}政策下的最优点；论文将政策条件与数值结论绑定，避免脱离管理偏好宣称唯一最优。
+
+\begin{figure}[H]
+  \centering
+  \originalfigure[width=0.86\textwidth]{fig_wage_sensitivity.png}
+  \caption{兼职工资权重变化下的全职--兼职替代关系}
+  \label{fig:wagesens}
+\end{figure}
+
+\section{模型评价与推广}
+
+\subsection{模型优点}
+
+\textbf{第一，结构解释强。} 对问题三给出公共盲区定理，证明无解与招聘人数无关，优于只报告求解器不可行。\textbf{第二，计算与执行分层。} 宏观MILP专注最少人数，微观CP-SAT专注个人规则，既降低维度又保留员工级可执行性。\textbf{第三，管理含义清楚。} 417到406量化跨天共享价值；437、495、439与混合方案揭示不同制度修复的成本。\textbf{第四，结果可审计。} 题目数据、脚本、结果、图表和完整员工表均可通过运行记录追溯，而不是由文字推测数字。
+
+\subsection{模型不足}
+
+本文把小时需求视为确定值，未考虑客流预测误差与临时缺勤；员工能力同质，未区分技能等级、培训成本和组别偏好；兼职以人次计量，尚未决定同一兼职员工可连续承担多少天；等效成本采用同小时工资，未加入最低班次补贴、招聘固定成本、夜班溢价与管理成本。贪心映射保证硬约束，但未进一步优化连续晚班、跨组频率和员工偏好。
+
+\subsection{改进方向}
+
+可在现有双层框架上扩展：一是在宏观层加入多情景需求和预算不确定集，形成稳健招聘模型；二是在微观层固定最少人数后，引入晚班均衡、连续工作天数和换组次数的字典序目标；三是为兼职建立跨日身份变量，将1500人次转化为唯一兼职人数和合同组合；四是对不同小组建立技能兼容矩阵，以最少交叉培训边获得接近统一人员池的节约。
+
+\subsection{推广应用}
+
+本文方法适用于会展、景区、呼叫中心、零售门店、医院辅助岗位和大型活动安保等“需求按小时变化、人员跨日共享、班型受休息规则限制”的场景。员工排班研究表明，现实系统还需同时兼顾服务水平、劳动协议、偏好和公平性\cite{ernst2004}。双层框架允许宏观层更换成本和需求模型，微观层增加个人约束，而不必重写整个模型。
+
+\section{结论}
+
+本文围绕展销会三种工作模式建立了一条统一主线：先枚举合法班型并求匿名班次数量，再把匿名解落实到具体员工。问题一的固定小组人员池需417人；问题二借助跨天共享降至406人，并成功构造每人做8休2的完整员工级排班。问题三在严格4小时工作、至少2小时休息、再工作4小时的规则下存在13:00--14:00公共盲区，因此原问题结构性无解。
+
+在规则修复中，休息缩短为1小时需437人，非对称班型分别需495或439人。主推混合用工方案保持全职待遇，以午间4小时兼职班填补盲区；字典序优化首先把兼职压到理论下界1500人次，再将全职编制压到325人，等效成本为418.75名全职、浪费率为34.02\%。这一结果表明，面对严格劳动规则造成的不可行性，最有效的策略不是无差别增加全职，而是识别结构性缺口并引入边界明确的局部柔性。
+
+\begin{thebibliography}{99}
+\bibitem{ernst2004} Ernst A T, Jiang H, Krishnamoorthy M, Sier D. Staff scheduling and rostering: A review of applications, methods and models[J]. European Journal of Operational Research, 2004, 153(1): 3--27. DOI: \href{https://doi.org/10.1016/S0377-2217(03)00095-X}{10.1016/S0377-2217(03)00095-X}.
+\bibitem{bechtold1990} Bechtold S E, Jacobs L W. Implicit modeling of flexible break assignments in optimal shift scheduling[J]. Management Science, 1990, 36(11): 1339--1351. DOI: \href{https://doi.org/10.1287/mnsc.36.11.1339}{10.1287/mnsc.36.11.1339}.
+\bibitem{aykin1996} Aykin T. Optimal shift scheduling with multiple break windows[J]. Management Science, 1996, 42(4): 591--602. DOI: \href{https://doi.org/10.1287/mnsc.42.4.591}{10.1287/mnsc.42.4.591}.
+\bibitem{chinneck2008} Chinneck J W. Feasibility and Infeasibility in Optimization: Algorithms and Computational Methods[M]. New York: Springer, 2008. DOI: \href{https://doi.org/10.1007/978-0-387-74932-7}{10.1007/978-0-387-74932-7}.
+\bibitem{googlecpsat} Google. Employee Scheduling with CP-SAT[EB/OL]. \url{https://developers.google.com/optimization/scheduling/employee_scheduling}, accessed 2026-07-23.
+\bibitem{googleworkforce} Google. Workforce Scheduling: Shift Generation and Shift Scheduling[EB/OL]. \url{https://developers.google.com/optimization/service/scheduling/workforce_scheduling}, accessed 2026-07-23.
+\bibitem{scipdoc} SCIP Optimization Suite. What Types of Optimization Problems Does SCIP Solve?[EB/OL]. \url{https://scipopt.org/doc/html/WHATPROBLEMS.php}, accessed 2026-07-23.
+\end{thebibliography}
+
+\appendix
+\section{支撑材料与可复现说明}
+
+\pending{当前仅完成论文正文迁移。原始附件、完整程序、结果 JSON/CSV、求解日志和原始图片尚未随本次临时稿提供，正式提交前必须补齐。}
+
+\subsection{主要文件}
+
+\begin{longtable}{p{0.35\textwidth}p{0.56\textwidth}}
+\toprule
+文件 & 用途\\
+\midrule
+\endfirsthead
+\toprule
+文件 & 用途\\
+\midrule
+\endhead
+\path{solve_core_and_roster.py} & 【待补充】问题一、问题二、严格问题三、休息修复及员工级重建\\
+\path{solve_asymmetric_repair.py} & 【待补充】4+3与3+4非对称班型字典序优化\\
+\path{solve_mixed_workforce.py} & 【待补充】严格全职与午间兼职的联合模型、325人结论与工资敏感性\\
+\path{run_modeling.py} & 【待补充】统一运行全部模型与绘图\\
+\path{q2_employee_schedule.csv} & 【待补充】406名员工十天完整排班，共4060条记录\\
+\path{core_model_results.json} & 【待补充】417、406、437、400与员工级校验结果\\
+\path{mixed_workforce_results.json} & 【待补充】325名全职、1500兼职人次及敏感性结果\\
+\bottomrule
+\end{longtable}
+
+\subsection{公共盲区证明的边界}
+
+定理要求两段工作长度相同且最小间隔固定。当$2(b+r)\le L$时，式\eqref{eq:blindlength}不产生正盲区，但这只说明不存在由窗口长度必然造成的公共空档，不自动保证给定需求一定可覆盖。若不同员工允许不同段长，需重新取所有合法班型覆盖集合的交集。
+
+\subsection{结果复现实验顺序}
+
+\begin{enumerate}[label=\textbf{Step \arabic*:},leftmargin=6em]
+  \item 保持原始附件只读，确认文件哈希；
+  \item 运行统一入口生成核心、非对称和混合用工结果；
+  \item 检查求解状态均为OPTIMAL或解析不可行；
+  \item 校验406名员工工作日、休息日和逐小时覆盖；
+  \item 由结果JSON重新绘图并生成方案比较表；
+  \item 编译论文并逐页检查公式、图表和引用。
+\end{enumerate}
+
+
+
+\end{document}
