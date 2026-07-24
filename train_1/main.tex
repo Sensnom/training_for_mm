@@ -199,15 +199,15 @@ $P,W^F$
 
 \subsection{问题一分析}
 
-问题一要求在临时工固定归组的条件下，确定各小组的最少招聘人数，并制定满足逐小时需求和“做8休2”规则的排班方案。由于员工在整个会期内不能跨组调配，10个工作小组分别形成独立的人员池，因此可将原问题分解为10个相互独立的排班子问题。
+问题一要求在临时工\textbf{固定归组}的条件下，确定各小组的最少招聘人数，并制定满足逐小时需求和“做8休2”规则的排班方案。由于员工在整个会期内不能跨组调配，10个工作小组分别形成独立的人员池，因此可将原问题分解为\textbf{10个相互独立的排班子问题}。
 
-首先，根据每名员工每天完成两个连续4小时工作段的规定，枚举营业时间内的全部合法班型，并建立各班型对11个小时的覆盖关系。对每个日期和工作小组分别建立日内整数覆盖模型，在满足各小时最低需求的条件下，求得当日所需的最少工作人数。利用合法班型覆盖分时需求是班次排班问题中的经典建模方法
+首先，根据每名员工每天完成两个连续4小时工作段的规定，枚举营业时间内的全部\textbf{合法班型}，并建立各班型对11个小时的覆盖关系。对每个日期和工作小组分别建立\textbf{日内整数覆盖模型}，在满足各小时最低需求的条件下，求得当日所需的最少工作人数。利用合法班型覆盖分时需求是班次排班问题中的经典建模方法
 \cite{dantzig1954comment,alfares2004tour}。
 
-随后，在各组十天日内排班结果的基础上，同时考虑单日工作人数峰值和十天总工作人日，确定各小组固定人员池的最小规模。该阶段解决匿名人员总量问题，但所得总工作人日不能直接保证每名员工均恰好工作8天、休息2天。
+随后，在各组十天日内排班结果的基础上，同时考虑\textbf{单日工作人数峰值和十天总工作人日}，确定各小组\textbf{固定人员池的最小规模}。该阶段解决匿名人员总量问题，但所得总工作人日不能直接保证每名员工均恰好工作8天、休息2天。
 
-因此，进一步对每个小组建立员工与日期之间的最大流网络，将每名员工的两个休息日分配到两个不同日期，并使每天的休息人数与日内排班结果一致
-\cite{ford1956maximal}。在最大流达到全部休息人日后，再将每日在岗员工与对应的匿名班次槽位逐一映射，从而形成员工级排班方案。最后，利用完整混合整数规划对各组最少招聘人数进行独立复核。
+因此，进一步对每个小组建立员工与日期之间的\textbf{最大流网络}，将每名员工的两个休息日分配到两个不同日期，并使每天的休息人数与日内排班结果一致
+\cite{ford1956maximal}。在最大流达到全部休息人日后，再将每日在岗员工与对应的匿名班次槽位逐一映射，从而形成\textbf{员工级排班方案}。最后，利用完整混合整数规划对各组最少招聘人数进行独立复核。
 
 \subsection{问题二分析}
 
@@ -229,9 +229,9 @@ $P,W^F$
 
 \subsection{合法班型的构造}
 
-问题一和问题二均规定，每名临时工在一个工作日内完成两个连续4小时的工作段。为将连续时间安排转化为整数优化问题，首先对营业时间进行离散化。将08:00--09:00记为小时索引$h=0$，依次至18:00--19:00的$h=10$。
+问题一和问题二均规定，每名临时工在一个工作日内完成两个连续4小时的工作段。为便于描述，将08:00--09:00记为小时索引$h=0$，依次至18:00--19:00的$h=10$，从而将每日营业时间划分为11个连续时段。
 
-设班型$s=(u_s,v_s)$，其中$u_s$和$v_s$分别表示前、后两个4小时工作段的开始索引。由于问题一未规定两个工作段之间的最短休息时间，两个工作段可以首尾相接，但不能重叠。因此合法班型集合为
+设班型$s=(u_s,v_s)$，其中$u_s$和$v_s$分别表示前、后两个工作段的开始索引。问题一和问题二未规定两个工作段之间的最短休息时间，因此两个工作段可以首尾相接，但不能发生重叠。合法班型集合为
 \begin{equation}
 S_0=
 \left\{
@@ -239,15 +239,15 @@ S_0=
 0\leq u\leq3,\quad
 u+4\leq v\leq7
 \right\}.
-\label{eq:q1-shift-set}
+\label{eq:q12-shift-set}
 \end{equation}
 
-由式\eqref{eq:q1-shift-set}共得到10种合法班型，具体见表\ref{tab:q1-shifts}。
+由式\eqref{eq:q12-shift-set}共得到10种合法班型，具体见表\ref{tab:q12-shifts}。
 
 \begin{table}[H]
 \centering
 \caption{问题一和问题二的合法班型}
-\label{tab:q1-shifts}
+\label{tab:q12-shifts}
 \begin{tabular}{cccccc}
 \toprule
 班型 & 第一工作段 & 第二工作段
@@ -278,55 +278,48 @@ c_{hs}
 \ind\{u_s\leq h<u_s+4\}
 +
 \ind\{v_s\leq h<v_s+4\}.
-\label{eq:q1-shift-cover}
+\label{eq:q12-shift-cover}
 \end{equation}
 
-由于两个工作段互不重叠，$c_{hs}$仅取0或1。根据式
-\eqref{eq:q1-shift-cover}可构造大小为$11\times10$的班型覆盖矩阵，为后续逐小时需求覆盖模型提供输入。
+由于两个工作段互不重叠，$c_{hs}$仅取0或1。由此可构造大小为$11\times10$的班型覆盖矩阵，并将逐小时需求覆盖问题转化为整数规划问题。
 
 \subsection{日内最低用工模型}
 
-对于给定的日期$d$和小组$g$，设$x_{dgs}$为采用班型$s$的临时工人数。每名当天工作的员工只能执行一个完整班型，因此当天工作人数为
-\[
-\sum_{s\in S_0}x_{dgs}.
-\]
-
-为求得该日期、该小组满足逐小时需求所需的最少工作人数，建立如下整数规划模型：
+对于给定的日期$d$和小组$g$，以$x_s$表示当天采用班型$s$的临时工人数。为求得满足该小组11个时段需求所需的最少工作人数，建立日内整数覆盖模型：
 \begin{equation}
 \begin{aligned}
 m_{dg}=\min\quad
-&\sum_{s\in S_0}x_{dgs}\\
+&\sum_{s\in S_0}x_s\\
 \mathrm{s.t.}\quad
-&\sum_{s\in S_0}c_{hs}x_{dgs}
+&\sum_{s\in S_0}c_{hs}x_s
 \geq q_{dhg},
-&& h\in H,\\
-&x_{dgs}\in\mathbb{Z}_{\geq0},
-&& s\in S_0.
+&&h\in H,\\
+&x_s\in\mathbb{Z}_{\geq0},
+&&s\in S_0.
 \end{aligned}
-\label{eq:q1-daily-model}
+\label{eq:q1-daily-cover}
 \end{equation}
 
-式\eqref{eq:q1-daily-model}的目标是最小化当天实际工作的临时工人数；第一组约束保证每个小时的班型覆盖人数均不低于附件给出的最低需求。
+目标函数表示第$d$天小组$g$的工作人数，需求覆盖约束保证每个时段的在岗人数均不低于附件给出的最低需求。分别对10个日期和10个小组求解式\eqref{eq:q1-daily-cover}，可得到100个日内最低工作人数$m_{dg}$及其对应的最优班型组合。
 
-分别对10个日期和10个小组求解该模型，可得到100个日内最低工作人数$m_{dg}$。每个子问题仅包含10个非负整数变量和11个需求覆盖约束，因此可独立、快速求解。
+每个子问题仅包含10个非负整数变量和11个需求覆盖约束，因此可以相互独立地求解。本文通过PySCIPOpt调用SCIP完成整数规划求解
+\cite{achterberg2009scip}。
 
-\subsection{固定招聘规模的确定}
+\subsection{固定人员规模的确定}
 
-问题一中，员工在整个会期内固定服务于同一小组。对于小组$g$，其固定招聘人数至少满足以下两个条件。
-
-首先，人员池规模不能低于该组任一日期的工作人数，因此
+问题一规定员工在整个会期内固定服务于同一小组。对于第$g$组，固定人员规模首先不能低于任一日期的最低工作人数，即
 \begin{equation}
 W_g\geq\max_{d\in D}m_{dg}.
 \label{eq:q1-peak-bound}
 \end{equation}
 
-其次，每名员工在10天内恰好工作8天，因此$W_g$名员工最多提供$8W_g$个工作人日。为覆盖该组十天的最低工作人日需求，必须满足
+另一方面，每名员工在10天内恰好工作8天，因此$W_g$名员工共能提供$8W_g$个工作人日。为覆盖该组十天的日内最低工作人日，必须满足
 \begin{equation}
 8W_g\geq\sum_{d\in D}m_{dg}.
-\label{eq:q1-total-bound}
+\label{eq:q1-workday-bound}
 \end{equation}
 
-综合式\eqref{eq:q1-peak-bound}和式\eqref{eq:q1-total-bound}，得到小组$g$固定招聘人数的下界
+综合式\eqref{eq:q1-peak-bound}和式\eqref{eq:q1-workday-bound}，得到第$g$组固定招聘人数：
 \begin{equation}
 W_g^*
 =
@@ -337,46 +330,54 @@ W_g^*
 \frac{\displaystyle\sum_{d\in D}m_{dg}}{8}
 \right\rceil
 \right\}.
-\label{eq:q1-group-size}
+\label{eq:q1-staff}
 \end{equation}
 
-下面说明式\eqref{eq:q1-group-size}给出的下界可以达到。设小组$g$第$d$天的实际工作人数为$A_{dg}$，则只需满足
+由于每名员工必须恰好工作8天，第$g$组最终需要安排的工作人日为$8W_g^*$。日内独立最优结果与该数值之间的差额为
 \begin{equation}
-m_{dg}\leq A_{dg}\leq W_g^*,
-\qquad d\in D,
-\label{eq:q1-actual-daily-bound}
-\end{equation}
-以及
-\begin{equation}
-\sum_{d\in D}A_{dg}=8W_g^*.
-\label{eq:q1-actual-total}
-\end{equation}
-
-需要增加的工作人日为
-\[
+E_g
+=
 8W_g^*-\sum_{d\in D}m_{dg}.
-\]
-而各日期尚可增加的工作人数总容量为
+\label{eq:q1-extra-workdays}
+\end{equation}
+
+设第$g$组第$d$天的实际工作人数为$A_{dg}$，则需要满足
+\begin{align}
+m_{dg}\leq A_{dg}&\leq W_g^*,
+&&d\in D,\label{eq:q1-actual-bound}\\
+\sum_{d\in D}A_{dg}&=8W_g^*.
+\label{eq:q1-actual-total}
+\end{align}
+
+各日期可以容纳的补充工作人日总数为
 \begin{equation}
 \sum_{d\in D}\left(W_g^*-m_{dg}\right)
 =
 10W_g^*-\sum_{d\in D}m_{dg},
 \end{equation}
-显然有
+且有
 \[
 10W_g^*-\sum_{d\in D}m_{dg}
 \geq
-8W_g^*-\sum_{d\in D}m_{dg}.
+8W_g^*-\sum_{d\in D}m_{dg}=E_g.
 \]
+因此，所需补充工作人日一定能够在不超过每日固定编制的条件下完成分配，式\eqref{eq:q1-staff}给出的招聘规模可以达到。
 
-因此，可以在不超过每日固定人员池规模的前提下，将所需的补充工作人日分配至各日期，使式
-\eqref{eq:q1-actual-daily-bound}和式\eqref{eq:q1-actual-total}同时成立。对于增加的工作员工，只需将其加入任一合法班型，原有逐小时覆盖约束仍然成立。由此说明，式\eqref{eq:q1-group-size}不仅是招聘人数下界，也是可达到的最优规模。
+本文按照日内最低人数由大到小的顺序分配补充工作人日；当最低人数相同时，优先选择日期编号较小的日期。确定$A_{dg}$后，重新求解
+\begin{align}
+\sum_{s\in S_0}c_{hs}x_{dgs}
+&\geq q_{dhg},
+&&h\in H,\label{eq:q1-final-cover}\\
+\sum_{s\in S_0}x_{dgs}
+&=A_{dg},\label{eq:q1-final-count}\\
+x_{dgs}&\in\mathbb{Z}_{\geq0},
+&&s\in S_0,
+\end{align}
+并按班型编号进行确定性择优，得到最终的匿名班型配额。
 
 \subsection{休息日期的最大流分配}
 
-日内模型只确定每天需要多少名员工工作，尚未说明具体员工在哪两天休息。为保证每名员工均恰好工作8天、休息2天，对每个小组分别建立休息日期最大流网络。
-
-小组$g$第$d$天的休息人数为
+上述模型确定了各组每天的工作人数和班型配额，但尚未说明每名员工在哪两天休息。第$g$组第$d$天的休息人数为
 \begin{equation}
 R_{dg}=W_g^*-A_{dg}.
 \label{eq:q1-rest-number}
@@ -392,66 +393,83 @@ R_{dg}=W_g^*-A_{dg}.
 \label{eq:q1-rest-total}
 \end{equation}
 
-最大流网络由源点、员工节点、日期节点和汇点组成，其连接方式如下：
+为将休息人日分配到具体员工，对每个小组分别建立“源点--员工节点--日期节点--汇点”的最大流网络。其边容量设置为
+\begin{equation}
+\begin{aligned}
+\operatorname{cap}(o,e_i)&=2,\\
+\operatorname{cap}(e_i,d)&=1,\\
+\operatorname{cap}(d,t)&=R_{dg},
+\end{aligned}
+\label{eq:q1-flow-capacity}
+\end{equation}
+其中$o$和$t$分别表示源点和汇点，$e_i$表示组内员工节点。
 
-\begin{enumerate}[label=\textbf{(\arabic*)},leftmargin=4em]
-  \item 源点与小组$g$的每名员工相连，边容量为2；
-  \item 每名员工与10个日期节点相连，边容量为1；
-  \item 日期$d$与汇点相连，边容量为$R_{dg}$。
-\end{enumerate}
+源点到员工节点的容量2表示每名员工需要安排两个休息日；员工到日期节点的容量1保证同一员工在同一天至多休息一次；日期节点到汇点的容量$R_{dg}$保证第$d$天恰有$R_{dg}$名员工休息。
 
-其中，源点到员工节点的容量2表示每名员工需要安排两个休息日；员工节点到日期节点的容量1保证同一员工在同一日期至多休息一次；日期节点到汇点的容量$R_{dg}$保证第$d$天恰有$R_{dg}$名员工休息。
-
-若该网络的最大流达到
+若最大流达到
 \begin{equation}
 F_g=2W_g^*,
-\label{eq:q1-max-flow}
+\label{eq:q1-full-flow}
 \end{equation}
-则源点到所有员工节点的边均被饱和，每名员工恰好得到两个不同的休息日；同时，所有日期节点到汇点的边均被饱和，每天的休息人数与宏观方案完全一致。
-
-由于网络容量均为整数，根据最大流的整数性，所得流量可以直接转化为员工--日期之间的0--1休息关系。每名员工未被分配为休息日的其余8天即为工作日。
+则每名员工均获得两个不同的休息日，且各日期的休息人数与匿名排班方案完全一致。由于网络中全部容量均为整数，根据最大流的整数性，员工与日期之间的流量可直接转化为0--1休息状态。其余8天即为该员工的工作日。
 
 \subsection{员工--班次确定性映射}
 
-完成休息日期分配后，还需将每天的在岗员工落实到具体班型。对于日期$d$和小组$g$，记当天在岗员工集合为
+最大流确定工作日期后，记第$d$天第$g$组的在岗员工集合为
 \[
 \mathcal E_{dg},
 \qquad
 |\mathcal E_{dg}|=A_{dg}.
 \]
 
-将当天各班型人数展开为匿名班次槽位集合
+将当天的匿名班型配额展开为班次槽位集合
 \begin{equation}
 \mathcal L_{dg}
 =
 \bigcup_{s\in S_0}
 \underbrace{\{s,s,\ldots,s\}}_{x_{dgs}\text{个}},
-\label{eq:q1-shift-slots}
+\label{eq:q1-slot-set}
 \end{equation}
-则有
+则
 \[
 |\mathcal L_{dg}|
 =
 \sum_{s\in S_0}x_{dgs}
 =
-A_{dg}.
+A_{dg}
+=
+|\mathcal E_{dg}|.
 \]
 
-因此，$\mathcal E_{dg}$与$\mathcal L_{dg}$中的元素数量相等，可以进行一一映射。本文按照员工编号和班型编号的固定顺序完成配对，使映射过程具有确定性和可复现性。
+因此，可以将当天在岗员工与匿名班次槽位进行一一对应。本文按照员工编号和班型编号的固定顺序完成映射，不使用随机分配，从而保证相同输入始终产生相同的员工级排班结果。
 
-由于问题一中的员工已经固定归属于小组$g$，且每名在岗员工每天只获得一个完整班型，因此映射后自然满足以下条件：
+映射完成后，每名员工在十天内始终属于同一小组，每个工作日恰好执行一个完整班型，并恰好工作8天、休息2天。
 
-\begin{enumerate}[label=\textbf{(\arabic*)},leftmargin=4em]
-  \item 每名员工十天内恰好工作8天、休息2天；
-  \item 每名员工工作日内恰好执行一个完整班型；
-  \item 每名员工十天内始终服务于同一工作小组；
-  \item 各日期、各小时和各小组的最低人员需求均得到满足。
-\end{enumerate}
+\subsection{模型求解结果}
 
-\subsection{模型求解与结果分析}
+由100个日内整数覆盖模型得到各组单日峰值与十天工作人日需求，再根据式\eqref{eq:q1-staff}计算固定人员规模，结果见表\ref{tab:q1-result}。
 
-利用SCIP分别求解100个日内整数覆盖模型
-\cite{achterberg2009scip}，再根据式\eqref{eq:q1-group-size}计算各小组的固定人员池规模，得到
+\begin{table}[H]
+\centering
+\caption{问题一各小组固定人员规模及最大流结果}
+\label{tab:q1-result}
+\begin{tabular}{c*{10}{c}}
+\toprule
+小组 & 1&2&3&4&5&6&7&8&9&10\\
+\midrule
+单日峰值
+&39&39&41&41&40&38&42&41&40&45\\
+工作人日下界
+&38&38&43&41&44&39&41&42&43&42\\
+最优固定编制
+&39&39&43&41&44&39&42&42&43&45\\
+最大流
+&78&78&86&82&88&78&84&84&86&90\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+由表\ref{tab:q1-result}可知，第1、2、7、10组的固定编制由单日峰值决定，第3、5、6、8、9组主要由十天工作人日需求决定，第4组的两项下界相同。十个小组的最优固定编制为
 \begin{equation}
 \left(
 W_1^*,W_2^*,\ldots,W_{10}^*
@@ -471,141 +489,276 @@ N_1
 \label{eq:q1-final-result}
 \end{equation}
 
-各小组的固定招聘人数及对应的休息日最大流值见表
-\ref{tab:q1-result}。
+十个小组计算得到的最大流分别为
+\[
+(78,78,86,82,88,78,84,84,86,90),
+\]
+均达到对应的$2W_g^*$，说明十个小组均能按照给定的每日工作人数，为每名员工安排两个不同的休息日。
+
+表\ref{tab:q1-roster-sample}给出第1组前两名员工的完整十天排班样例，其中$s_j$表示执行班型$j$，“休”表示当天休息。
 
 \begin{table}[H]
 \centering
-\caption{问题一各小组固定人员池规模}
-\label{tab:q1-result}
-\begin{tabular}{c*{10}{c}}
+\caption{问题一员工级排班样例}
+\label{tab:q1-roster-sample}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{cccccc}
 \toprule
-小组 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+日期 & 第1天 & 第2天 & 第3天 & 第4天 & 第5天\\
 \midrule
-固定招聘人数
-&39&39&43&41&44&39&42&42&43&45\\
-
-休息日最大流
-&78&78&86&82&88&78&84&84&86&90\\
+员工1 & $s_1$ & 休 & $s_1$ & $s_1$ & $s_1$\\
+员工2 & 休 & 休 & $s_1$ & $s_1$ & $s_1$\\
+\midrule
+日期 & 第6天 & 第7天 & 第8天 & 第9天 & 第10天\\
+\midrule
+员工1 & $s_1$ & $s_1$ & $s_1$ & 休 & $s_1$\\
+员工2 & $s_2$ & $s_1$ & $s_1$ & $s_1$ & $s_1$\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-第10组所需固定人员最多，为45人；第1、2、6组所需人员最少，均为39人。各组人员规模不仅与十天总需求有关，还同时受到单日需求峰值及需求在各小时之间分布位置的影响。
+完整排班共包含4170条员工--日期记录，其中3336条为工作记录、834条为休息记录。逐人校验表明，417名员工均恰好工作8天、休息2天，并在十天内固定服务于同一小组；重新计算全部1100个日期--小时--小组需求单元后，缺岗单元数为0，最小覆盖余量为0。完整员工级排班见支撑文件
+\texttt{q1\_employee\_schedule.csv}。
 
-问题一要求员工固定归组，因此某一小组在需求较低日期形成的剩余人员不能用于支援其他小组。十个独立人员池的最优规模之和为417人，该结果可作为问题二评价跨日人员共享效果的比较基准。采用包含全部日期和班型变量的完整混合整数规划进行复核，所得最优招聘人数同样为417人。
+作为独立最优性复核，进一步建立包含全部日期、小组和班型变量的完整聚合混合整数规划，SCIP所得最优目标值仍为417，相对最优间隙为0。
 
 \section{问题二模型的建立与求解}
 
-\subsection{跨天共享与员工级重建}
+\subsection{统一人员池规模的确定}
 
-\subsubsection{宏观统一人员池模型}
+问题二允许员工在不同日期服务于不同小组，因此十个固定人员池可以合并为统一人员池。由于员工在同一天内仍只能服务于一个小组，各日期、各小组的日内覆盖模型与问题一相同。
 
-设$W$为统一招聘人数，$R_d$为第$d$天休息人数。目标为
+根据式\eqref{eq:q1-daily-cover}得到的日内最低人数，定义第$d$天全场最低工作人数为
 \begin{equation}
-\min Z_2=W.
-\label{eq:q2obj}
+M_d=\sum_{g\in G}m_{dg}.
+\label{eq:q2-daily-lower}
 \end{equation}
-逐小时覆盖仍使用式\eqref{eq:q1cover}。区别在于每天全部小组共同占用同一人员池：
+
+统一招聘人数一方面不能低于任一日期的全场最低工作人数，另一方面必须能够提供十天所需的全部工作人日。因此
 \begin{equation}
-\left(\sum_{g\in G}\sum_{s\in S_0}x_{dgs}\right)+R_d=W,
-\qquad \forall d.
-\label{eq:q2balance}
+W^*
+=
+\max
+\left\{
+\max_{d\in D}M_d,
+\left\lceil
+\frac{\displaystyle\sum_{d\in D}M_d}{8}
+\right\rceil
+\right\}.
+\label{eq:q2-staff}
 \end{equation}
-十天总休息人日满足
+
+计算得到逐日最低工作人数为
 \begin{equation}
-\sum_{d\in D}R_d=2W.
-\label{eq:q2rest}
+(M_1,M_2,\ldots,M_{10})
+=
+(214,349,314,333,349,331,363,350,325,319).
+\label{eq:q2-lower-vector}
 \end{equation}
-由式\eqref{eq:q2balance}和式\eqref{eq:q2rest}可推出
+
+其中最高单日需求为363人，十天逐日最低工作人日总和为
 \begin{equation}
-\sum_{d\in D}\sum_{g\in G}\sum_{s\in S_0}x_{dgs}=8W.
-\label{eq:q2workdays}
+\sum_{d\in D}M_d=3247.
+\label{eq:q2-lower-total}
 \end{equation}
-式\eqref{eq:q2workdays}是一笔“总账”：$10W$个员工--日期名额减去$2W$个休息人日，剩余$8W$个工作人日。它不取代个人排班约束。
 
-\subsubsection{微观阶段一：工作--休息状态的CP-SAT模型}
-
-宏观层得到$W=406$及每日工作人数
+由式\eqref{eq:q2-staff}可得
 \begin{equation}
-A_d=\sum_{g\in G}\sum_{s\in S_0}x_{dgs}.
+W^*
+=
+\max
+\left\{
+363,
+\left\lceil\frac{3247}{8}\right\rceil
+\right\}
+=
+406.
+\label{eq:q2-staff-result}
 \end{equation}
-设$y_{id}=1$表示员工$i$在第$d$天工作，否则休息。微观状态模型仅保留两个状态：
-\begin{align}
-\sum_{d\in D}y_{id}&=8, &&\forall i=1,\ldots,W,\label{eq:micro8}\\
-\sum_{i=1}^{W}y_{id}&=A_d, &&\forall d\in D.\label{eq:microdaily}
-\end{align}
-式\eqref{eq:micro8}直接保证每名员工做8休2；式\eqref{eq:microdaily}使微观层与宏观配额对接。该阶段不再区分组别和班型，将原本的高维组合压缩为$406\times10$个布尔变量。
 
-\subsubsection{微观阶段二：班次贪心映射}
+因此，问题二的最少招聘人数为406人。
 
-对每一天，将宏观解$x_{dgs}$展开为匿名班次槽位列表
+\subsection{整除冗余工作人日的分配}
+
+406名员工每人必须工作8天，因此统一人员池实际需要安排的工作人日为
 \begin{equation}
-\mathcal L_d=\underbrace{\{(g,s),\ldots,(g,s)\}}_{x_{dgs}\text{个}},
-\qquad |\mathcal L_d|=A_d.
+8W^*=406\times8=3248.
+\label{eq:q2-required-workdays}
 \end{equation}
-再把当天$y_{id}=1$的员工与$\mathcal L_d$一一配对。因为两侧数量均为$A_d$，每名工作员工恰好获得一个完整班型；班型自身已经固定在一个小组中，所以“同一天只能服务同一小组”自动满足。为保证可复现，本文使用按员工编号和历史累计工作次数排序的确定性贪心，而非不可复现的随机分配。
 
-整个双层算法为：
+逐日独立覆盖下界为3247人日，与实际必须安排的工作人日之间相差
+\begin{equation}
+\Delta
+=
+8W^*-\sum_{d\in D}M_d
+=
+1.
+\label{eq:q2-redundancy}
+\end{equation}
 
-\begin{enumerate}[label=\textbf{Step \arabic*:},leftmargin=6em]
-  \item 求解宏观MILP，得到$W$和$x_{dgs}$；
-  \item 计算每天工作配额$A_d$，建立式\eqref{eq:micro8}--\eqref{eq:microdaily}；
-  \item 用CP-SAT得到每名员工的WORK/REST状态；
-  \item 展开匿名班次槽位并逐日贪心映射；
-  \item 对每名员工、每天、每组和每小时重新校验。
-\end{enumerate}
+这1个工作人日并非由需求覆盖产生，而是由“每名员工恰好工作8天”的整除条件产生。本文将冗余工作人日优先安排在最低工作人数最大的日期；当多个日期相同时，优先选择日期编号较小者。因此，将第7天的工作人数由363人增加至364人，得到最终每日工作人数
+\begin{equation}
+(A_1,A_2,\ldots,A_{10})
+=
+(214,349,314,333,349,331,364,350,325,319).
+\label{eq:q2-actual-vector}
+\end{equation}
 
-\subsubsection{结果与可执行性检验}
+此时
+\[
+\sum_{d\in D}A_d=3248=8W^*.
+\]
 
-问题二最优招聘人数为406人，每日工作人数见表\ref{tab:q2daily}。其总和为3248，恰等于$406\times8$。
+在各日期内部，将需要增加的工作人日分配至相应小组，并在固定该小组实际工作人数后，重新求解式\eqref{eq:q1-final-cover}和式\eqref{eq:q1-final-count}，得到各日期、各小组的最终匿名班型配额$x_{dgs}$。
+
+\subsection{员工休息日期的最大流分配}
+
+第$d$天的休息人数为
+\begin{equation}
+R_d=W^*-A_d.
+\label{eq:q2-rest-number}
+\end{equation}
+
+由式\eqref{eq:q2-actual-vector}可得
+\begin{equation}
+\sum_{d\in D}R_d
+=
+10W^*-\sum_{d\in D}A_d
+=
+2W^*
+=
+812.
+\label{eq:q2-rest-total}
+\end{equation}
+
+建立统一人员池的员工--日期最大流网络。源点到每名员工节点的容量为2，每名员工到每个日期节点的容量为1，第$d$个日期节点到汇点的容量为$R_d$。该网络与问题一中的组内网络结构相同，但员工节点由某一小组的固定员工扩展为全部406名员工。
+
+实际计算得到最大流
+\begin{equation}
+F=812=2W^*,
+\label{eq:q2-full-flow}
+\end{equation}
+网络达到满流。因此，每名员工均能够分配两个不同的休息日，各日期的在岗人数也与式\eqref{eq:q2-actual-vector}完全一致。
+
+\subsection{员工--小组--班次确定性映射}
+
+对于第$d$天，将全部小组的匿名班型配额展开为
+\begin{equation}
+\mathcal L_d
+=
+\bigcup_{g\in G}
+\bigcup_{s\in S_0}
+\underbrace{\{(g,s),(g,s),\ldots,(g,s)\}}
+_{x_{dgs}\text{个}}.
+\label{eq:q2-slot-set}
+\end{equation}
+
+由班型配额可知
+\begin{equation}
+|\mathcal L_d|
+=
+\sum_{g\in G}\sum_{s\in S_0}x_{dgs}
+=
+A_d.
+\label{eq:q2-slot-count}
+\end{equation}
+
+最大流确定的第$d$天在岗员工数同样为$A_d$，因此可以将当天在岗员工与$\mathcal L_d$中的匿名槽位进行一一映射。本文按照员工编号、小组编号和班型编号的固定顺序完成配对。
+
+每个匿名槽位只包含一个小组和一个完整班型，因此每名员工在同一天内只会被分配至一个小组，并执行两个属于同一小组的4小时工作段。不同日期之间则允许被分配至不同小组，从而满足问题二的人员调配规则。
+
+\subsection{模型求解结果}
+
+问题二逐日最低工作人数与实际工作人数见表\ref{tab:q2-daily-result}。
 
 \begin{table}[H]
 \centering
-\caption{问题二统一人员池的每日工作人数}
-\label{tab:q2daily}
+\caption{问题二逐日最低工作人数与实际工作人数}
+\label{tab:q2-daily-result}
 \begin{tabular}{c*{10}{c}}
 \toprule
 日期 &1&2&3&4&5&6&7&8&9&10\\
 \midrule
-工作人数 &214&349&314&333&349&331&364&350&325&319\\
+逐日最低人数
+&214&349&314&333&349&331&363&350&325&319\\
+实际工作人数
+&214&349&314&333&349&331&364&350&325&319\\
+冗余工作人日
+&0&0&0&0&0&0&1&0&0&0\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-图\ref{fig:q1q2}显示，共享人员池比固定小组少11人，降幅为$11/417=2.64\%$。这一节约来自跨天换组，而不是削减需求或改变每天8小时规则。
+表\ref{tab:q2-daily-result}表明，除第7天增加1名工作员工外，其余日期的实际工作人数均等于逐日覆盖下界。该冗余仅用于满足总工作人日的整除要求，不改变最少招聘人数。
 
-\begin{figure}[H]
-  \centering
-  \originalfigure[width=0.72\textwidth]{fig_q1_q2_comparison.png}
-  \caption{问题一与问题二最少招聘人数比较}
-  \label{fig:q1q2}
-\end{figure}
-
-员工级重建共输出4060条员工--日期记录，其中3248条为WORK、812条为REST。校验结果为：406名员工全部工作8天、休息2天；各日工作人数与宏观解完全一致；所有1100个需求单元的覆盖余量均不为负，最小余量为0。表\ref{tab:rostersample}给出前两名员工的部分排班，完整表作为支撑材料提供。
+表\ref{tab:q2-roster-sample}给出员工56的十天排班样例。“$g/s_j$”表示当天服务于第$g$组并执行班型$j$。
 
 \begin{table}[H]
 \centering
 \caption{问题二员工级排班样例}
-\label{tab:rostersample}
+\label{tab:q2-roster-sample}
+\setlength{\tabcolsep}{5pt}
 \begin{tabular}{cccccc}
 \toprule
-员工 & 日期 & 状态 & 小组 & 第一工作段 & 第二工作段\\
+日期 & 第1天 & 第2天 & 第3天 & 第4天 & 第5天\\
 \midrule
-1&1&工作&1&08:00--12:00&12:00--16:00\\
-1&2&工作&6&08:00--12:00&12:00--16:00\\
-1&3&工作&7&08:00--12:00&15:00--19:00\\
-1&9&休息&--&--&--\\
-1&10&休息&--&--&--\\
-2&1&工作&1&08:00--12:00&12:00--16:00\\
+员工56
+&休&休&$2/s_{10}$&$2/s_4$&$2/s_6$\\
+\midrule
+日期 & 第6天 & 第7天 & 第8天 & 第9天 & 第10天\\
+\midrule
+员工56
+&$2/s_{10}$&$2/s_4$&$3/s_1$&$2/s_{10}$&$1/s_4$\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-由此，聚合模型不是“带人名下标的巨型ILP”的近似替代，而是一个经微观层证明可执行的精确降维方案。
+员工56在第1、2天休息，其余8天工作，并分别在第1、2、3组之间进行跨日调配。该样例表明，统一人员池能够在保持员工每天只服务一个小组的条件下，实现不同日期之间的人员共享。
 
-\pending{待补充支撑材料：406 名员工的完整十天排班表、每日班型明细和逐小时覆盖对账文件。正文暂保留样例表与汇总结论。}
+完整员工级排班共包含4060条员工--日期记录，其中3248条为工作记录、812条为休息记录。校验结果表明：
 
+\begin{enumerate}[label=\textbf{(\arabic*)},leftmargin=4em]
+  \item 406名员工均恰好工作8天、休息2天；
+  \item 每名员工在一个工作日内只服务于一个小组；
+  \item 各日期实际工作人数与式\eqref{eq:q2-actual-vector}完全一致；
+  \item 各日期、各小组的实际班型人数与匿名班型配额逐项一致；
+  \item 1100个需求单元均不存在人员缺口，最小覆盖余量为0。
+\end{enumerate}
+
+完整排班见支撑文件
+\texttt{q2\_employee\_schedule.csv}。
+
+\subsection{独立复核}
+
+为检验解析招聘规模与最大流构造结果，本文分别采用完整聚合混合整数规划和CP-SAT进行独立复核。
+
+完整聚合模型直接以招聘人数为目标，同时包含全部日期、小组、班型覆盖及工作人日守恒约束。SCIP求得问题一和问题二的最优目标值分别为417和406，相对最优间隙均为0，与分解算法所得结果完全一致。
+
+进一步设$y_{id}=1$表示员工$i$在第$d$天工作，否则为0，并建立
+\begin{align}
+\sum_{d\in D}y_{id}&=8,
+&&\forall i,\label{eq:cpsat-employee}\\
+\sum_i y_{id}&=A_d,
+&&\forall d.\label{eq:cpsat-day}
+\end{align}
+
+采用CP-SAT对上述工作--休息矩阵进行独立可行性检验
+\cite{googlecpsat}。问题一的十个固定人员池均得到可行解，问题二同样得到可行解，且逐日工作人数与最大流主构造完全一致。因此，解析招聘规模、最大流休息日分配和员工级班次映射之间保持一致。
+
+\subsection{两种人员组织方式的比较}
+
+问题一和问题二的最少招聘人数分别为417人和406人。允许员工在不同日期之间更换服务小组后，招聘人数减少
+\begin{equation}
+N_1-N_2=417-406=11,
+\end{equation}
+相对降幅为
+\begin{equation}
+\frac{417-406}{417}\times100\%
+=
+2.64\%.
+\end{equation}
+
+两种方案均未改变逐小时需求和每名员工每天工作8小时、十天内做8休2的规定。招聘人数的减少来自不同小组需求峰值在日期上的错位：固定归组时，各小组必须分别按照自身峰值和工作人日需求配置人员；合并为统一人员池后，员工可以在不同日期流向需求较高的小组，从而降低固定人员池中的闲置。
 \section{问题三模型的建立与求解}
 
 \subsection{结构性死锁与规则修复}
