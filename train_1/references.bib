@@ -1,6 +1,10 @@
-% References for Questions 1--2 only
-% Topic: shift scheduling, tour scheduling, days-off scheduling,
-% workforce flexibility, maximum-flow construction, and SCIP.
+% References for the workforce scheduling paper
+% Verified against publisher or official documentation pages on 2026-07-24.
+% Recommended citation backend: biblatex + biber.
+
+% ============================================================
+% Personnel scheduling reviews
+% ============================================================
 
 @article{ernst2004,
   author  = {Ernst, Andreas T. and Jiang, Houyuan and Krishnamoorthy, Mohan and Sier, David},
@@ -14,7 +18,7 @@
 }
 
 @article{vandenbergh2013personnel,
-  author  = {Van den Bergh, Jeroen and Beli{\"e}n, Jorne and De Bruecker, Philippe and Demeulemeester, Erik and De Boeck, Liesje},
+  author  = {Van den Bergh, Jorne and Beli{\"e}n, Jeroen and De Bruecker, Philippe and Demeulemeester, Erik and De Boeck, Liesje},
   title   = {Personnel Scheduling: A Literature Review},
   journal = {European Journal of Operational Research},
   year    = {2013},
@@ -23,6 +27,10 @@
   pages   = {367--385},
   doi     = {10.1016/j.ejor.2012.11.029}
 }
+
+% ============================================================
+% Shift scheduling, tour scheduling, and days-off scheduling
+% ============================================================
 
 @article{dantzig1954comment,
   author  = {Dantzig, George B.},
@@ -68,8 +76,12 @@
   doi     = {10.1002/nav.21561}
 }
 
+% ============================================================
+% Workforce flexibility and cross-training
+% ============================================================
+
 @article{taskiran2017cross,
-  author  = {Taskiran, Gamze Kilincli and Zhang, Xinhui},
+  author  = {{Kilincli Taskiran}, Gamze and Zhang, Xinhui},
   title   = {Mathematical Models and Solution Approach for Cross-Training Staff Scheduling at Call Centers},
   journal = {Computers \& Operations Research},
   year    = {2017},
@@ -89,8 +101,12 @@
   doi     = {10.1287/mnsc.1030.0166}
 }
 
+% ============================================================
+% Maximum flow and feasibility analysis
+% ============================================================
+
 @article{ford1956maximal,
-  author  = {Ford, Lester R., Jr. and Fulkerson, Delbert R.},
+  author  = {Ford, Jr., Lester R. and Fulkerson, Delbert R.},
   title   = {Maximal Flow Through a Network},
   journal = {Canadian Journal of Mathematics},
   year    = {1956},
@@ -99,16 +115,20 @@
   doi     = {10.4153/CJM-1956-045-5}
 }
 
-@article{achterberg2009scip,
-  author  = {Achterberg, Tobias},
-  title   = {{SCIP}: Solving Constraint Integer Programs},
-  journal = {Mathematical Programming Computation},
-  year    = {2009},
-  volume  = {1},
-  number  = {1},
-  pages   = {1--41},
-  doi     = {10.1007/s12532-008-0001-1}
+@book{chinneck2008,
+  author    = {Chinneck, John W.},
+  title     = {Feasibility and Infeasibility in Optimization: Algorithms and Computational Methods},
+  publisher = {Springer},
+  location  = {New York},
+  year      = {2008},
+  series    = {International Series in Operations Research \& Management Science},
+  doi       = {10.1007/978-0-387-74932-7},
+  isbn      = {978-0-387-74932-7}
 }
+
+% ============================================================
+% Break scheduling
+% ============================================================
 
 @article{bechtold1990,
   author  = {Bechtold, Stephen E. and Jacobs, Larry W.},
@@ -132,32 +152,38 @@
   doi     = {10.1287/mnsc.42.4.591}
 }
 
-@book{chinneck2008,
-  author    = {Chinneck, John W.},
-  title     = {Feasibility and Infeasibility in Optimization: Algorithms and Computational Methods},
-  publisher = {Springer},
-  address   = {New York},
-  year      = {2008},
-  doi       = {10.1007/978-0-387-74932-7}
+% ============================================================
+% Solvers and official documentation
+% ============================================================
+
+@article{achterberg2009scip,
+  author  = {Achterberg, Tobias},
+  title   = {{SCIP}: Solving Constraint Integer Programs},
+  journal = {Mathematical Programming Computation},
+  year    = {2009},
+  volume  = {1},
+  number  = {1},
+  pages   = {1--41},
+  doi     = {10.1007/s12532-008-0001-1}
 }
 
 @online{googlecpsat,
-  author  = {{Google}},
+  author  = {{Google OR-Tools}},
   title   = {Employee Scheduling with {CP-SAT}},
   url     = {https://developers.google.com/optimization/scheduling/employee_scheduling},
-  urldate = {2026-07-23}
+  urldate = {2026-07-24}
 }
 
 @online{googleworkforce,
-  author  = {{Google}},
-  title   = {Workforce Scheduling: Shift Generation and Shift Scheduling},
+  author  = {{Google Operations Research API}},
+  title   = {Workforce Scheduling},
   url     = {https://developers.google.com/optimization/service/scheduling/workforce_scheduling},
-  urldate = {2026-07-23}
+  urldate = {2026-07-24}
 }
 
 @online{scipdoc,
   author  = {{SCIP Optimization Suite}},
   title   = {What Types of Optimization Problems Does {SCIP} Solve?},
   url     = {https://scipopt.org/doc/html/WHATPROBLEMS.php},
-  urldate = {2026-07-23}
+  urldate = {2026-07-24}
 }
