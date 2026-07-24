@@ -28,6 +28,7 @@
 \RequirePackage{listings}
 \RequirePackage{xcolor}
 \RequirePackage{url}
+\RequirePackage{gbt7714}
 \RequirePackage{hyperref}
 \RequirePackage{cleveref}
 \RequirePackage{setspace}
@@ -51,11 +52,12 @@
   {\setsansfont{Arial}}
   {\setsansfont{Liberation Sans}}
 \IfFontExistsTF{Noto Serif CJK SC}
-  {\setCJKmainfont{Noto Serif CJK SC}[AutoFakeBold=2]}
-  {\setCJKmainfont{AR PL UMing CN}[AutoFakeBold=2]}
+  {\setCJKmainfont{Noto Serif CJK SC}[AutoFakeBold=3.5]}
+  {\setCJKmainfont{AR PL UMing CN}[AutoFakeBold=3.5]}
 \IfFontExistsTF{Noto Sans CJK SC}
-  {\setCJKsansfont{Noto Sans CJK SC}[AutoFakeBold=2]}
-  {\setCJKsansfont{AR PL KaitiM GB}[AutoFakeBold=2]}
+  {\setCJKsansfont{Noto Sans CJK SC}[AutoFakeBold=3.5]}
+  {\setCJKsansfont{AR PL KaitiM GB}[AutoFakeBold=3.5]}
+
 
 \graphicspath{{figures/}{figure/}{images/}{pictures/}}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
