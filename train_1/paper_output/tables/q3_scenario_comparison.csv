@@ -1,0 +1,9 @@
+scenario,description,minimum_break_hours,allow_cross_group,mixed_workforce,objective_policy,status,fulltime_staff,parttime_staff,total_staff,total_parttime_shifts,total_paid_hours,fulltime_workdays,cross_group_employee_days,cross_group_rate,demand_cell_count,deficit_count,minimum_slack,maximum_slack,primary_objective,primary_value,primary_best_bound,primary_relative_gap,solver_name,solver_version
+S0,严格2小时休息，允许同日跨组,2,True,False,staff,INFEASIBLE,,,,,,,,0.0,,,,,,,,,PySCIPOpt/SCIP,10.0.2
+S1,严格2小时休息，禁止同日跨组,2,False,False,staff,INFEASIBLE,,,,,,,,0.0,,,,,,,,,PySCIPOpt/SCIP,10.0.2
+S2,1小时休息，允许同日跨组,1,True,False,staff,OPTIMAL,437,0,437,0,27968,3496,436,0.12471395881006865,1100,0,0,56,fulltime_staff,437,437.0,0.0,PySCIPOpt/SCIP,10.0.2
+S3,1小时休息，禁止同日跨组,1,False,False,staff,OPTIMAL,484,0,484,0,30976,3872,0,0.0,1100,0,0,56,fulltime_staff,484,484.0,0.0,PySCIPOpt/SCIP,10.0.2
+S4,严格全职与兼职混合，允许同日跨组，总人数最优,2,True,True,headcount,OPTIMAL,279,206,485,1942,25624,2232,262,0.11738351254480286,1100,0,0,47,total_staff,485,485.0,0.0,PySCIPOpt/SCIP,10.0.2
+S5,严格全职与兼职混合，禁止同日跨组，总人数最优,2,False,True,headcount,OPTIMAL,308,206,514,1899,27308,2464,0,0.0,1100,0,0,50,total_staff,514,514.0,0.0,PySCIPOpt/SCIP,10.0.2
+S6,严格全职与兼职混合，允许同日跨组，兼职班次最少优先,2,True,True,parttime_first,OPTIMAL,325,206,531,1500,26800,2600,256,0.09846153846153846,1100,0,0,54,total_parttime_shifts,1500,1500.0,0.0,PySCIPOpt/SCIP,10.0.2
+S7,严格全职与兼职混合，禁止同日跨组，兼职班次最少优先,2,False,True,parttime_first,OPTIMAL,357,206,563,1500,28848,2856,0,0.0,1100,0,0,54,total_parttime_shifts,1500,1500.0,0.0,PySCIPOpt/SCIP,10.0.2

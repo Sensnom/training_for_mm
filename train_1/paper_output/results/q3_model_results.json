@@ -1,0 +1,462 @@
+{
+  "analytic_strict_infeasibility": {
+    "all_patterns_zero_at_blind_hour": true,
+    "blind_hour_end": "14:00",
+    "blind_hour_start": "13:00",
+    "daily_blind_hour_demand": [
+      85,
+      98,
+      146,
+      149,
+      152,
+      159,
+      188,
+      206,
+      150,
+      167
+    ],
+    "positive_demand_in_all_groups_and_days": true,
+    "status": "PROVED_INFEASIBLE",
+    "total_blind_hour_demand": 1500
+  },
+  "comparisons": {
+    "gap_one_cross_group": {
+      "allowed_cross_group_employee_days": 436,
+      "allowed_cross_group_rate": 0.12471395881006865,
+      "allowed_scenario": "S2",
+      "allowed_total_staff": 437,
+      "forbidden_scenario": "S3",
+      "forbidden_total_staff": 484,
+      "fulltime_staff_saving": 47,
+      "label": "1小时休息方案",
+      "total_staff_reduction_rate": 0.09710743801652892,
+      "total_staff_saving": 47
+    },
+    "headcount_cross_group": {
+      "allowed_cross_group_employee_days": 262,
+      "allowed_cross_group_rate": 0.11738351254480286,
+      "allowed_scenario": "S4",
+      "allowed_total_staff": 485,
+      "forbidden_scenario": "S5",
+      "forbidden_total_staff": 514,
+      "fulltime_staff_saving": 29,
+      "label": "总人数最优混合方案",
+      "total_staff_reduction_rate": 0.05642023346303502,
+      "total_staff_saving": 29
+    },
+    "headcount_vs_policy": {
+      "headcount_optimal_parttime_shifts": 1942,
+      "headcount_optimal_scenario": "S4",
+      "headcount_optimal_total_staff": 485,
+      "parttime_first_parttime_shifts": 1500,
+      "parttime_first_scenario": "S6",
+      "parttime_first_total_staff": 531,
+      "reduction_rate_from_policy": 0.08662900188323917,
+      "staff_difference": 46
+    },
+    "parttime_first_cross_group": {
+      "allowed_cross_group_employee_days": 256,
+      "allowed_cross_group_rate": 0.09846153846153846,
+      "allowed_scenario": "S6",
+      "allowed_total_staff": 531,
+      "forbidden_scenario": "S7",
+      "forbidden_total_staff": 563,
+      "fulltime_staff_saving": 32,
+      "label": "兼职班次最少优先方案",
+      "total_staff_reduction_rate": 0.056838365896980464,
+      "total_staff_saving": 32
+    }
+  },
+  "environment": {
+    "actual_solver": "PySCIPOpt/SCIP",
+    "actual_solver_version": "10.0.2",
+    "data_sha256": "1eae47338d7b1e586e902aec7591d01c1218cd52f1781a27f071c1cfe92e1acf",
+    "numpy_version": "2.3.5",
+    "pandas_version": "2.2.3",
+    "python_version": "3.12.13",
+    "requested_solver": "SCIP",
+    "solver_fallback_used": false
+  },
+  "policy_interpretation": {
+    "headcount_global_optimum_proved": true,
+    "headcount_global_optimum_scenario": "S4",
+    "parttime_first_scenario": "S6",
+    "parttime_shift_lower_bound": 1500
+  },
+  "scenarios": [
+    {
+      "allow_cross_group": true,
+      "best_bound": null,
+      "coverage_audit": {
+        "status": "NOT_APPLICABLE_INFEASIBLE"
+      },
+      "cross_group_employee_days": null,
+      "description": "严格2小时休息，允许同日跨组",
+      "fulltime_staff": null,
+      "fulltime_workdays": null,
+      "lexicographic_stages": [],
+      "minimum_break_hours": 2,
+      "mixed_workforce": false,
+      "objective_policy": "staff",
+      "parttime_staff": null,
+      "relative_gap": null,
+      "scenario": "S0",
+      "solver_name": "PySCIPOpt/SCIP",
+      "solver_version": "10.0.2",
+      "status": "INFEASIBLE",
+      "total_paid_hours": null,
+      "total_parttime_shifts": null,
+      "total_staff": null
+    },
+    {
+      "allow_cross_group": false,
+      "best_bound": null,
+      "coverage_audit": {
+        "status": "NOT_APPLICABLE_INFEASIBLE"
+      },
+      "cross_group_employee_days": null,
+      "description": "严格2小时休息，禁止同日跨组",
+      "fulltime_staff": null,
+      "fulltime_workdays": null,
+      "lexicographic_stages": [],
+      "minimum_break_hours": 2,
+      "mixed_workforce": false,
+      "objective_policy": "staff",
+      "parttime_staff": null,
+      "relative_gap": null,
+      "scenario": "S1",
+      "solver_name": "PySCIPOpt/SCIP",
+      "solver_version": "10.0.2",
+      "status": "INFEASIBLE",
+      "total_paid_hours": null,
+      "total_parttime_shifts": null,
+      "total_staff": null
+    },
+    {
+      "allow_cross_group": true,
+      "best_bound": 436.0,
+      "coverage_audit": {
+        "deficit_count": 0,
+        "demand_cell_count": 1100,
+        "maximum_slack": 56,
+        "minimum_slack": 0,
+        "status": "PASS",
+        "total_slack": 10286
+      },
+      "cross_group_employee_days": 436,
+      "description": "1小时休息，允许同日跨组",
+      "fulltime_staff": 437,
+      "fulltime_workdays": 3496,
+      "lexicographic_stages": [
+        {
+          "best_bound": 437.0,
+          "objective": "fulltime_staff",
+          "relative_gap": 0.0,
+          "stage": 1,
+          "status": "OPTIMAL",
+          "value": 437
+        },
+        {
+          "best_bound": 436.0,
+          "objective": "cross_group_employee_days",
+          "relative_gap": 0.0,
+          "stage": 2,
+          "status": "OPTIMAL",
+          "value": 436
+        }
+      ],
+      "minimum_break_hours": 1,
+      "mixed_workforce": false,
+      "objective_policy": "staff",
+      "parttime_staff": 0,
+      "relative_gap": 0.0,
+      "scenario": "S2",
+      "solver_name": "PySCIPOpt/SCIP",
+      "solver_version": "10.0.2",
+      "status": "OPTIMAL",
+      "total_paid_hours": 27968,
+      "total_parttime_shifts": 0,
+      "total_staff": 437
+    },
+    {
+      "allow_cross_group": false,
+      "best_bound": 0.0,
+      "coverage_audit": {
+        "deficit_count": 0,
+        "demand_cell_count": 1100,
+        "maximum_slack": 56,
+        "minimum_slack": 0,
+        "status": "PASS",
+        "total_slack": 13294
+      },
+      "cross_group_employee_days": 0,
+      "description": "1小时休息，禁止同日跨组",
+      "fulltime_staff": 484,
+      "fulltime_workdays": 3872,
+      "lexicographic_stages": [
+        {
+          "best_bound": 484.0,
+          "objective": "fulltime_staff",
+          "relative_gap": 0.0,
+          "stage": 1,
+          "status": "OPTIMAL",
+          "value": 484
+        },
+        {
+          "best_bound": 0.0,
+          "objective": "cross_group_employee_days",
+          "relative_gap": 0.0,
+          "stage": 2,
+          "status": "OPTIMAL",
+          "value": 0
+        }
+      ],
+      "minimum_break_hours": 1,
+      "mixed_workforce": false,
+      "objective_policy": "staff",
+      "parttime_staff": 0,
+      "relative_gap": 0.0,
+      "scenario": "S3",
+      "solver_name": "PySCIPOpt/SCIP",
+      "solver_version": "10.0.2",
+      "status": "OPTIMAL",
+      "total_paid_hours": 30976,
+      "total_parttime_shifts": 0,
+      "total_staff": 484
+    },
+    {
+      "allow_cross_group": true,
+      "best_bound": 262.0,
+      "coverage_audit": {
+        "deficit_count": 0,
+        "demand_cell_count": 1100,
+        "maximum_slack": 47,
+        "minimum_slack": 0,
+        "status": "PASS",
+        "total_slack": 7942
+      },
+      "cross_group_employee_days": 262,
+      "description": "严格全职与兼职混合，允许同日跨组，总人数最优",
+      "fulltime_staff": 279,
+      "fulltime_workdays": 2232,
+      "lexicographic_stages": [
+        {
+          "best_bound": 485.0,
+          "objective": "total_staff",
+          "relative_gap": 0.0,
+          "stage": 1,
+          "status": "OPTIMAL",
+          "value": 485
+        },
+        {
+          "best_bound": 25624.0,
+          "objective": "total_paid_hours",
+          "relative_gap": 0.0,
+          "stage": 2,
+          "status": "OPTIMAL",
+          "value": 25624
+        },
+        {
+          "best_bound": 262.0,
+          "objective": "cross_group_employee_days",
+          "relative_gap": 0.0,
+          "stage": 3,
+          "status": "OPTIMAL",
+          "value": 262
+        }
+      ],
+      "minimum_break_hours": 2,
+      "mixed_workforce": true,
+      "objective_policy": "headcount",
+      "parttime_staff": 206,
+      "relative_gap": 0.0,
+      "scenario": "S4",
+      "solver_name": "PySCIPOpt/SCIP",
+      "solver_version": "10.0.2",
+      "status": "OPTIMAL",
+      "total_paid_hours": 25624,
+      "total_parttime_shifts": 1942,
+      "total_staff": 485
+    },
+    {
+      "allow_cross_group": false,
+      "best_bound": 0.0,
+      "coverage_audit": {
+        "deficit_count": 0,
+        "demand_cell_count": 1100,
+        "maximum_slack": 50,
+        "minimum_slack": 0,
+        "status": "PASS",
+        "total_slack": 9626
+      },
+      "cross_group_employee_days": 0,
+      "description": "严格全职与兼职混合，禁止同日跨组，总人数最优",
+      "fulltime_staff": 308,
+      "fulltime_workdays": 2464,
+      "lexicographic_stages": [
+        {
+          "best_bound": 514.0,
+          "objective": "total_staff",
+          "relative_gap": 0.0,
+          "stage": 1,
+          "status": "OPTIMAL",
+          "value": 514
+        },
+        {
+          "best_bound": 27308.0,
+          "objective": "total_paid_hours",
+          "relative_gap": 0.0,
+          "stage": 2,
+          "status": "OPTIMAL",
+          "value": 27308
+        },
+        {
+          "best_bound": 0.0,
+          "objective": "cross_group_employee_days",
+          "relative_gap": 0.0,
+          "stage": 3,
+          "status": "OPTIMAL",
+          "value": 0
+        }
+      ],
+      "minimum_break_hours": 2,
+      "mixed_workforce": true,
+      "objective_policy": "headcount",
+      "parttime_staff": 206,
+      "relative_gap": 0.0,
+      "scenario": "S5",
+      "solver_name": "PySCIPOpt/SCIP",
+      "solver_version": "10.0.2",
+      "status": "OPTIMAL",
+      "total_paid_hours": 27308,
+      "total_parttime_shifts": 1899,
+      "total_staff": 514
+    },
+    {
+      "allow_cross_group": true,
+      "best_bound": 256.0,
+      "coverage_audit": {
+        "deficit_count": 0,
+        "demand_cell_count": 1100,
+        "maximum_slack": 54,
+        "minimum_slack": 0,
+        "status": "PASS",
+        "total_slack": 9118
+      },
+      "cross_group_employee_days": 256,
+      "description": "严格全职与兼职混合，允许同日跨组，兼职班次最少优先",
+      "fulltime_staff": 325,
+      "fulltime_workdays": 2600,
+      "lexicographic_stages": [
+        {
+          "best_bound": 1500.0,
+          "objective": "total_parttime_shifts",
+          "relative_gap": 0.0,
+          "stage": 1,
+          "status": "OPTIMAL",
+          "value": 1500
+        },
+        {
+          "best_bound": 325.0,
+          "objective": "fulltime_staff",
+          "relative_gap": 0.0,
+          "stage": 2,
+          "status": "OPTIMAL",
+          "value": 325
+        },
+        {
+          "best_bound": 206.0,
+          "objective": "parttime_staff",
+          "relative_gap": 0.0,
+          "stage": 3,
+          "status": "OPTIMAL",
+          "value": 206
+        },
+        {
+          "best_bound": 256.0,
+          "objective": "cross_group_employee_days",
+          "relative_gap": 0.0,
+          "stage": 4,
+          "status": "OPTIMAL",
+          "value": 256
+        }
+      ],
+      "minimum_break_hours": 2,
+      "mixed_workforce": true,
+      "objective_policy": "parttime_first",
+      "parttime_staff": 206,
+      "relative_gap": 0.0,
+      "scenario": "S6",
+      "solver_name": "PySCIPOpt/SCIP",
+      "solver_version": "10.0.2",
+      "status": "OPTIMAL",
+      "total_paid_hours": 26800,
+      "total_parttime_shifts": 1500,
+      "total_staff": 531
+    },
+    {
+      "allow_cross_group": false,
+      "best_bound": 0.0,
+      "coverage_audit": {
+        "deficit_count": 0,
+        "demand_cell_count": 1100,
+        "maximum_slack": 54,
+        "minimum_slack": 0,
+        "status": "PASS",
+        "total_slack": 11166
+      },
+      "cross_group_employee_days": 0,
+      "description": "严格全职与兼职混合，禁止同日跨组，兼职班次最少优先",
+      "fulltime_staff": 357,
+      "fulltime_workdays": 2856,
+      "lexicographic_stages": [
+        {
+          "best_bound": 1500.0,
+          "objective": "total_parttime_shifts",
+          "relative_gap": 0.0,
+          "stage": 1,
+          "status": "OPTIMAL",
+          "value": 1500
+        },
+        {
+          "best_bound": 357.0,
+          "objective": "fulltime_staff",
+          "relative_gap": 0.0,
+          "stage": 2,
+          "status": "OPTIMAL",
+          "value": 357
+        },
+        {
+          "best_bound": 206.0,
+          "objective": "parttime_staff",
+          "relative_gap": 0.0,
+          "stage": 3,
+          "status": "OPTIMAL",
+          "value": 206
+        },
+        {
+          "best_bound": 0.0,
+          "objective": "cross_group_employee_days",
+          "relative_gap": 0.0,
+          "stage": 4,
+          "status": "OPTIMAL",
+          "value": 0
+        }
+      ],
+      "minimum_break_hours": 2,
+      "mixed_workforce": true,
+      "objective_policy": "parttime_first",
+      "parttime_staff": 206,
+      "relative_gap": 0.0,
+      "scenario": "S7",
+      "solver_name": "PySCIPOpt/SCIP",
+      "solver_version": "10.0.2",
+      "status": "OPTIMAL",
+      "total_paid_hours": 28848,
+      "total_parttime_shifts": 1500,
+      "total_staff": 563
+    }
+  ],
+  "selected_scenario": "S4",
+  "selected_scenario_reason": "首要目标为最小化全职与兼职总招聘人数"
+}
