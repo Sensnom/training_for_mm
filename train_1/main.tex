@@ -1,6 +1,6 @@
 \documentclass[withoutpreface,bwprint]{cumcmthesis}
 
-\title{大型展销会临时工招聘与排班优化}
+\title{基于整数规划与最大流的大型展销会临时工招聘与排班优化}
 \tihao{【待填写题号】}
 \baominghao{【待填写报名号】}
 \schoolname{【待填写学校名称】}
@@ -47,19 +47,21 @@
 
 \begin{abstract}
 
-针对为期10天、包含10个工作小组和11个营业时段的大型展销会临时工招聘与排班问题，本文从日内需求覆盖、跨日人员配置和员工级排班三个层面建立优化模型。首先枚举不同工作制度下的合法班型，通过整数规划确定各日期、各小组的班型配置。随后结合单日人员容量和会期总工作人日约束求得最少招聘规模，并利用最大流分配员工休息日期。最后将具体员工与班次槽位进行对应，形成可直接执行的排班方案。对于严格工作规则下出现的不可行情形，进一步分析其时间结构，并建立全职与兼职相结合的用工模型。
+本文研究大型展销会临时工招聘与排班问题。在满足逐小时用工需求、员工工作时长和休息规则的条件下，分别考虑员工固定服务小组、跨日期共享以及全职—兼职混合用工三种情形，建立由合法班型枚举、整数覆盖优化、最大流分配和员工级排班构造组成的递进式模型。
 
-\textbf{对于问题一}，在员工整个会期固定服务于同一小组的条件下，枚举10种合法班型，对100个日期与小组组合分别建立逐小时整数覆盖模型。综合各组的单日工作人数峰值和累计工作人日约束，得到十个小组的最少人员规模分别为39，39，43，41，44，39，42，42，43，45，共需招聘\textbf{417人}。利用最大流为每名员工安排两个不同的休息日，并完成员工与班次槽位的对应。全部员工均恰好工作8天、休息2天，1100个需求单元均不存在人员缺口。
+\textbf{对于问题一}，员工在整个展销会期间固定服务于同一小组。首先枚举满足“每日工作两个4小时工作段”要求的合法班型，建立逐日逐组整数覆盖模型，确定各组每日最少在岗人数；再结合单日用工峰值和全周期工作人日约束确定招聘规模，并利用最大流分配员工休息日期。求得十个小组的最少招聘人数依次为39、39、43、41、44、39、42、42、43和45人，共需招聘\textbf{417人}。所得排班满足每人工作8天、休息2天和固定服务同一小组的要求，各时段均无人员缺口。
 
-\textbf{对于问题二}，将十个固定人员池合并为统一人员池，使员工可以在不同日期服务于不同小组。十天逐日最低工作人数之和为3247，而406名员工需要提供3248个工作人日，因此在第7天增加1个工作人日。由此得到最少招聘人数为\textbf{406人}，比问题一减少11人，降幅为2.64\%。最大流和班次槽位映射结果表明，406名员工均满足工作8天、休息2天的规定，全部逐小时需求均得到满足。
+\textbf{对于问题二}，允许员工在不同日期服务于不同小组。本文将各小组的独立人员池合并为统一人员池，建立跨日期、跨小组的整体人员配置模型，并通过最大流和班次映射生成具体排班。求得最少招聘人数为\textbf{406人}，较问题一减少11人，降幅为2.64\%。这表明跨日期共享能够利用不同小组需求峰值的错位，降低分别配置人员造成的冗余。
 
-\textbf{对于问题三}，首先分析两个4小时工作段之间至少休息2小时所产生的时间覆盖限制。严格规则下仅有3种合法全职班型，且均无法覆盖13:00至14:00。该时段十天累计需求为1500人次，因此仅依靠严格全职员工时，无论招聘人数多少均无法形成可行排班。允许员工在同一天内服务两个小组只能改善小组之间的人员分配，不能消除这一公共盲区。为恢复可行性，本文引入连续工作4小时的兼职班，并建立以总招聘人数、总付费工时和跨组员工人日为顺序的字典序优化模型。求得最少招聘人数为\textbf{485人}，其中全职员工279人、兼职员工206人，共安排1942个兼职班次。若禁止员工同日跨组，则需要514人。因此，同日跨组调配减少29人，降幅为5.64\%。最优方案包含262个跨组员工人日，跨组率为11.74\%。
+\textbf{对于问题三}，进一步允许员工同日服务两个小组，并允许招聘连续工作4小时的兼职人员。班型分析表明，两个4小时工作段之间至少休息2小时会使全部全职班型在13:00至14:00形成公共覆盖盲区，仅增加全职员工无法满足该时段需求。为此引入兼职班型，建立依次最小化总招聘人数、总付费工时和跨组员工人日的字典序混合整数规划模型。最优方案共招聘\textbf{485人}，其中全职279人、兼职206人，共安排1942个兼职班次。若禁止员工同日跨组，则需招聘514人；允许跨组后减少29人，降幅为5.64\%。
 
-日内覆盖模型、全周期人员配置模型和问题三混合用工模型均采用SCIP求解。问题一至问题三的全职员工休息日期通过最大流构造，员工与班次槽位采用确定性方法对应，并使用CP-SAT进行独立可行性复核。员工级排班反算结果与宏观整数规划结果完全一致，所有可行方案的1100个需求单元均无人员缺口。研究表明，跨日人员共享和同日跨组调配能够有效降低招聘规模，而对合法班型时间覆盖范围的分析可以及时识别单纯增加人员无法解决的结构性不可行问题。
+三个问题的最优目标值均与最优下界一致，最大流、员工级排班反算和逐小时覆盖检验结果相互吻合，所有需求单元均无人员缺口。本文通过班型覆盖分析识别结构性不可行，并将整数规划、最大流与员工级确定性映射相结合，使最优招聘规模能够转化为满足劳动规则的可执行排班方案。
 
-\keywords{人员排班；混合整数规划；最大流；结构性不可行；资源池共享；混合用工}
+\keywords{人员排班；整数覆盖；混合整数规划；最大流；混合用工}
 
 \end{abstract}
+
+\clearpage
 
 \section{问题重述}
 
@@ -1753,47 +1755,78 @@ e_{dhg}=\widehat{q}_{dhg}-q_{dhg},
 \bibliographystyle{gbt7714-numerical}
 \bibliography{references}
 
+\clearpage
 \appendix
-\section{支撑材料与可复现说明}
+\section{主要程序与支撑材料}
 
-\pending{当前仅完成论文正文迁移。原始附件、完整程序、结果 JSON/CSV、求解日志和原始图片尚未随本次临时稿提供，正式提交前必须补齐。}
+\begingroup
+\small
+\setlength{\parskip}{0.25em}
+\setlength{\parindent}{2em}
 
-\subsection{主要文件}
+\subsection{问题一}
 
-\begin{longtable}{p{0.35\textwidth}p{0.56\textwidth}}
-\toprule
-文件 & 用途\\
-\midrule
-\endfirsthead
-\toprule
-文件 & 用途\\
-\midrule
-\endhead
-\path{solve_core_and_roster.py} & 【待补充】问题一、问题二、严格问题三、休息修复及员工级重建\\
-\path{solve_asymmetric_repair.py} & 【待补充】4+3与3+4非对称班型字典序优化\\
-\path{solve_mixed_workforce.py} & 【待补充】严格全职与午间兼职的联合模型、325人结论与工资敏感性\\
-\path{run_modeling.py} & 【待补充】统一运行全部模型与绘图\\
-\path{q2_employee_schedule.csv} & 【待补充】406名员工十天完整排班，共4060条记录\\
-\path{core_model_results.json} & 【待补充】417、406、437、400与员工级校验结果\\
-\path{mixed_workforce_results.json} & 【待补充】325名全职、1500兼职人次及敏感性结果\\
-\bottomrule
-\end{longtable}
+问题一采用合法班型枚举、分组整数覆盖和最大流方法确定招聘及排班方案。
 
-\subsection{公共盲区证明的边界}
+\noindent
+\textbf{主要程序：}
+\path{code/solve_core_and_roster.py}。
 
-定理要求两段工作长度相同且最小间隔固定。当$2(b+r)\le L$时，式\eqref{eq:blindlength}不产生正盲区，但这只说明不存在由窗口长度必然造成的公共空档，不自动保证给定需求一定可覆盖。若不同员工允许不同段长，需重新取所有合法班型覆盖集合的交集。
+\noindent
+\textbf{计算结果：}
+\path{paper_output/results/q1_model_results.json}、
+\path{paper_output/tables/q1_daily_shift_plan.csv}、
+\path{paper_output/tables/q1_employee_schedule.csv}、
+\path{paper_output/tables/q1_maxflow_summary.csv}。
 
-\subsection{结果复现实验顺序}
+\subsection{问题二}
 
-\begin{enumerate}[label=\textbf{Step \arabic*:},leftmargin=6em]
-  \item 保持原始附件只读，确认文件哈希；
-  \item 运行统一入口生成核心、非对称和混合用工结果；
-  \item 检查求解状态均为OPTIMAL或解析不可行；
-  \item 校验406名员工工作日、休息日和逐小时覆盖；
-  \item 由结果JSON重新绘图并生成方案比较表；
-  \item 编译论文并逐页检查公式、图表和引用。
-\end{enumerate}
+问题二采用统一人员池整数覆盖和最大流方法实现人员在不同日期、小组之间的调配。
 
+\noindent
+\textbf{主要程序：}
+\path{code/solve_core_and_roster.py}。
 
+\noindent
+\textbf{计算结果：}
+\path{paper_output/results/q2_model_results.json}、
+\path{paper_output/tables/q2_daily_shift_plan.csv}、
+\path{paper_output/tables/q2_employee_schedule.csv}、
+\path{paper_output/tables/q2_maxflow_summary.csv}。
+
+\subsection{问题三}
+
+问题三采用全职—兼职混合整数规划、字典序优化和员工级确定性映射生成最终排班方案。
+
+\noindent
+\textbf{主要程序：}
+\path{code/run_q3_modeling.py}、
+\path{code/q3_models.py}、
+\path{code/q3_roster.py}、
+\path{code/q3_verification.py}。
+
+\noindent
+\textbf{计算结果：}
+\path{paper_output/results/q3_model_results.json}、
+\path{paper_output/tables/q3_fulltime_employee_schedule.csv}、
+\path{paper_output/tables/q3_parttime_employee_schedule.csv}。
+
+\subsection{模型检验}
+
+模型最优性、员工规则、宏观—微观一致性和逐小时覆盖结果由统一验证程序核验。
+
+\noindent
+\textbf{验证程序：}
+\path{code/verify_final_solutions.py}。
+
+\noindent
+\textbf{验证结果：}
+\path{paper_output/final_verification_summary.json}、
+\path{paper_output/solver_optimality_summary.csv}、
+\path{paper_output/employee_rule_audit.csv}、
+\path{paper_output/coverage_audit_summary.csv}、
+\path{paper_output/rule_sensitivity_summary.csv}。
+
+\endgroup
 
 \end{document}
