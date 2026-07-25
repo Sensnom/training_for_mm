@@ -1,0 +1,2 @@
+﻿staff,required_flow,computed_max_flow,is_full_flow,runtime_seconds,algorithm
+406,812,812,True,0.002284339999278018,Deterministic Dinic integer maximum flow

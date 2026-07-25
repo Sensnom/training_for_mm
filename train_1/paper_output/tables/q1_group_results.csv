@@ -1,0 +1,11 @@
+﻿group,peak_daily_minimum,total_daily_minimum,workday_lower_bound,optimal_staff,total_required_workdays,extra_workdays_needed
+1,39,298,38,39,312,14
+2,39,301,38,39,312,11
+3,41,341,43,43,344,3
+4,41,324,41,41,328,4
+5,40,346,44,44,352,6
+6,38,308,39,39,312,4
+7,42,322,41,42,336,14
+8,41,335,42,42,336,1
+9,40,338,43,43,344,6
+10,45,334,42,45,360,26

@@ -1,0 +1,11 @@
+﻿group,staff,required_flow,computed_max_flow,is_full_flow,runtime_seconds,algorithm
+1,39,78,78,True,0.00021043299966549966,Deterministic Dinic integer maximum flow
+2,39,78,78,True,0.0001984350001293933,Deterministic Dinic integer maximum flow
+3,43,86,86,True,0.0001714350000838749,Deterministic Dinic integer maximum flow
+4,41,82,82,True,0.0002076500004477566,Deterministic Dinic integer maximum flow
+5,44,88,88,True,0.00022949199956201483,Deterministic Dinic integer maximum flow
+6,39,78,78,True,0.00018099900080414955,Deterministic Dinic integer maximum flow
+7,42,84,84,True,0.00021260599987726891,Deterministic Dinic integer maximum flow
+8,42,84,84,True,0.00020543600021483144,Deterministic Dinic integer maximum flow
+9,43,86,86,True,0.00021802500032208627,Deterministic Dinic integer maximum flow
+10,45,90,90,True,0.000234660000387521,Deterministic Dinic integer maximum flow

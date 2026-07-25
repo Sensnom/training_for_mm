@@ -1,0 +1,40 @@
+{
+  "all_groups_full_flow": true,
+  "deficit_count": 0,
+  "demand_cell_count": 1100,
+  "employee_count": 417,
+  "full_milp_objective": 417,
+  "group_max_flows": [
+    78,
+    78,
+    86,
+    82,
+    88,
+    78,
+    84,
+    84,
+    86,
+    90
+  ],
+  "group_staff": [
+    39,
+    39,
+    43,
+    41,
+    44,
+    39,
+    42,
+    42,
+    43,
+    45
+  ],
+  "maximum_slack": 41,
+  "minimum_slack": 0,
+  "record_count": 4170,
+  "rest_record_count": 834,
+  "status": "OPTIMAL",
+  "total_slack": 9006,
+  "total_staff": 417,
+  "verification_status": "PASS",
+  "work_record_count": 3336
+}

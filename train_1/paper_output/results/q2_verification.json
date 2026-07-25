@@ -1,0 +1,13 @@
+{
+  "deficit_count": 0,
+  "demand_cell_count": 1100,
+  "employee_count": 406,
+  "maximum_slack": 41,
+  "minimum_slack": 0,
+  "one_group_per_workday": true,
+  "record_count": 4060,
+  "rest_record_count": 812,
+  "status": "PASS",
+  "total_slack": 8302,
+  "work_record_count": 3248
+}

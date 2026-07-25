@@ -1,0 +1,54 @@
+{
+  "days": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "dtype": "int64",
+  "duplicate_day_hour_count": 0,
+  "group_labels": [
+    "小组1",
+    "小组2",
+    "小组3",
+    "小组4",
+    "小组5",
+    "小组6",
+    "小组7",
+    "小组8",
+    "小组9",
+    "小组10"
+  ],
+  "hour_labels": [
+    "08:00-09:00",
+    "09:00-10:00",
+    "10:00-11:00",
+    "11:00-12:00",
+    "12:00-13:00",
+    "13:00-14:00",
+    "14:00-15:00",
+    "15:00-16:00",
+    "16:00-17:00",
+    "17:00-18:00",
+    "18:00-19:00"
+  ],
+  "maximum_demand": 30,
+  "minimum_demand": 1,
+  "missing_value_count": 0,
+  "shape": [
+    10,
+    11,
+    10
+  ],
+  "size": 1100,
+  "source_path": "/workspace/scratch/dc0af2731a8f/local_delivery/train_1/data/附件1.xlsx",
+  "source_sha256": "1eae47338d7b1e586e902aec7591d01c1218cd52f1781a27f071c1cfe92e1acf",
+  "status": "VALID",
+  "total_person_hours": 17682
+}

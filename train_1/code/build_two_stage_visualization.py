@@ -9,9 +9,9 @@ import numpy as np
 import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parents[3]
-CSV_PATH = ROOT / "paper_output" / "tables" / "q2_employee_schedule.csv"
-OUT_DIR = ROOT / "paper_output" / "figures" / "two_stage_visualization"
+PROJECT_DIR = Path(__file__).resolve().parents[1]  # train_1
+CSV_PATH = PROJECT_DIR / "paper_output" / "tables" / "q2_employee_schedule.csv"
+OUT_DIR = PROJECT_DIR / "paper_output" / "figures" / "two_stage_visualization"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 df = pd.read_csv(CSV_PATH)
@@ -19,6 +19,7 @@ for col in ["employee", "day"]:
     df[col] = pd.to_numeric(df[col])
 for col in ["group", "shift"]:
     df[col] = pd.to_numeric(df[col], errors="coerce")
+EMPLOYEE_COUNT = int(df["employee"].nunique())
 
 mpl.rcParams.update(
     {
@@ -138,7 +139,7 @@ def draw_main_framework():
     ax.text(0.05, 0.825, "阶段 1  宏观匿名排班", fontsize=15.5, fontweight="bold", color=BLUE)
     ax.text(0.05, 0.793, "Mixed-integer linear programming (MILP)", fontsize=8.5, color=GRAY)
     ax.text(0.60, 0.825, "阶段 2  微观员工指派", fontsize=15.5, fontweight="bold", color=GREEN)
-    ax.text(0.60, 0.793, "Constraint satisfaction / CP-SAT", fontsize=8.5, color=GRAY)
+    ax.text(0.60, 0.793, "Maximum flow / bipartite b-matching", fontsize=8.5, color=GRAY)
 
     # Demand tensor
     rounded_box(ax, (0.05, 0.60), 0.135, 0.145, "white", SKY, lw=1.4)
@@ -344,7 +345,7 @@ def draw_main_framework():
     for (title, formula, color), x in zip(checks, xs):
         ax.text(x, 0.108, title, ha="center", fontsize=9.3, fontweight="bold", color=color)
         ax.text(x, 0.078, formula, ha="center", fontsize=8.2, color=NAVY)
-    ax.text(0.5, 0.018, "图中热图和个人排班示例均取自问题二 406 人员工级排班结果", ha="center", fontsize=7.5, color=GRAY)
+    ax.text(0.5, 0.018, f"图中热图和个人排班示例均取自问题二 {EMPLOYEE_COUNT} 人员工级排班结果", ha="center", fontsize=7.5, color=GRAY)
 
     save_all(fig, "fig_two_stage_framework_enhanced")
     plt.close(fig)
@@ -391,7 +392,7 @@ def draw_evidence_panels():
     ax_b.set_xticklabels([f"D{i}" for i in range(1, 11)], fontsize=7)
     ax_b.set_yticks([0, 99, 199, 299, 405])
     ax_b.set_yticklabels(["E1", "E100", "E200", "E300", "E406"], fontsize=7)
-    ax_b.set_title("B  第二阶段状态寻优：406 人的工作/休息矩阵", loc="left", fontsize=12, fontweight="bold", color=NAVY, pad=10)
+    ax_b.set_title(f"B  第二阶段状态寻优：{EMPLOYEE_COUNT} 人的工作/休息矩阵", loc="left", fontsize=12, fontweight="bold", color=NAVY, pad=10)
     ax_b.set_xlabel("展销会日期", fontsize=8.5)
     ax_b.set_ylabel("员工编号", fontsize=8.5)
     ax_b.text(
@@ -422,7 +423,7 @@ def draw_evidence_panels():
     ax_c.set_xticklabels([f"第{i}天" for i in range(1, 11)], fontsize=8)
     ax_c.set_yticks(range(24))
     ax_c.set_yticklabels([f"E{i}" for i in range(1, 25)], fontsize=6.5)
-    ax_c.set_title("C  贪心映射后的具体小组排班（前 24 名员工示例）", loc="left", fontsize=12, fontweight="bold", color=NAVY, pad=10)
+    ax_c.set_title("C  确定性映射后的具体小组排班（前 24 名员工示例）", loc="left", fontsize=12, fontweight="bold", color=NAVY, pad=10)
     ax_c.set_xlabel("日期", fontsize=8.5)
     ax_c.set_ylabel("员工编号", fontsize=8.5)
     for r in range(group_mat.shape[0]):

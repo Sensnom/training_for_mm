@@ -1,0 +1,9 @@
+{
+  "ortools_version": "9.15.6755",
+  "q1_all_groups_feasible": true,
+  "q2_daily_counts_match": true,
+  "q2_feasible": true,
+  "reason": null,
+  "runtime_seconds": 0.43478864900043845,
+  "status": "PASS"
+}

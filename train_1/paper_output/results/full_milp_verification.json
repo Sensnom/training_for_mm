@@ -1,0 +1,33 @@
+{
+  "q1": {
+    "best_bound": 417.0,
+    "group_staff": [
+      39,
+      39,
+      43,
+      41,
+      44,
+      39,
+      42,
+      42,
+      43,
+      45
+    ],
+    "objective_value": 417,
+    "relative_gap": 0.0,
+    "runtime_seconds": 0.15304361000016797,
+    "solver_name": "PySCIPOpt/SCIP",
+    "solver_version": "10.0.2",
+    "status": "OPTIMAL"
+  },
+  "q2": {
+    "best_bound": 406.0,
+    "objective_value": 406,
+    "relative_gap": 0.0,
+    "runtime_seconds": 0.06913417899977503,
+    "solver_name": "PySCIPOpt/SCIP",
+    "solver_version": "10.0.2",
+    "status": "OPTIMAL"
+  },
+  "role": "independent aggregate MILP verification; not the main construction"
+}
