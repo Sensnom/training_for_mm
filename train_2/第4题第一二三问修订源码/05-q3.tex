@@ -1,0 +1,107 @@
+% 问题三：基于物理先验的鲁棒多目标优化
+\section{问题三的建模与求解}
+
+\subsection{对初步思路的客观分析}
+
+初步方案提出以转子内圆直径、进排气重叠角、点火提前角、喷油结束时刻和过量空气系数为设计变量，并用 Pareto 前沿选择折中点。这个总体方向合理，但有三个必须修正的地方：第一，BSFC 与有效热效率由 $\mathrm{BSFC}=3.6\times10^9/(\eta_b H_u)$ 严格关联，不能在没有说明的情况下作为两个等权独立目标；第二，已有的 Turner 等公开 AIE 225CS 台架曲线可以标定 BMEP 基线和转速趋势，但它不是题设目标机型完整设计空间的样本，不能据此声称 GPR 或随机森林已达到某个 $R^2$；第三，排放和密封可靠性不能由功率单独推出，必须定义为包含换气、混合气和峰值载荷的代理指标。因此本文采用“公开台架 BMEP 标定--物理先验响应面--约束筛选--Pareto--最小最大鲁棒评分”的可复核流程，结果称为当前数据条件下的设计推荐，而非目标机型实测最优点。
+
+\subsection{设计变量、边界与几何约束}
+
+令
+\begin{equation}
+ \mathbf{x}=(d,\alpha_{ov},\theta_{ign},\theta_{EOI},\lambda),
+\end{equation}
+其中 $d$ 为内圆直径（mm），$\alpha_{ov}$ 为进排气重叠角，$\theta_{ign}$ 为相对压缩上止点的点火提前角，$\theta_{EOI}$ 为相对点火参考事件的偏心轴喷油结束角，$\lambda$ 为过量空气系数。取设计先验范围
+\begin{equation}
+ d\in[132.3,159.0],\quad \alpha_{ov}\in[20^\circ,60^\circ],\quad
+ \theta_{ign}\in[10^\circ,30^\circ],\quad \theta_{EOI}\in[570^\circ,620^\circ],\quad
+ \lambda\in[0.95,1.15].
+\end{equation}
+上界 $159.0\,\mathrm{mm}$ 严格低于第一问得到的几何干涉极限 $159.873\,\mathrm{mm}$。对每一个 $d$，用第一问的圆弧面积模型重新计算 $V_{min}(d),V_{max}(d),CR(d)$，从而保证优化候选不会产生负余隙。
+
+\subsection{物理先验响应面}
+
+\subsection{公开台架数据的第三问标定}
+
+第二问搜集的 Turner、Pearson、Bassett 公开台架数据继续用于本问，而不是只作为背景引用。该数据给出 AIE 225CS 在 $5000$--$7500\,\mathrm{r/min}$ 的扭矩曲线；本文将图中扭矩点按 $1\,\mathrm{lb\,ft}=1.35581795\,\mathrm{N\,m}$ 数字化，并用
+\begin{equation}
+ BMEP(n)=\frac{2\pi T_{bench}(n)}{V_{s,225}},\qquad V_{s,225}=225\,\mathrm{cm^3}
+\end{equation}
+得到公开机型的 BMEP 曲线。在 $6000\,\mathrm{r/min}$ 处，插值得到 $T_{bench}=39.3187\,\mathrm{N\,m}$、$BMEP=10.9799\,\mathrm{bar}$；迁移到第一问的单腔扫气容积 $V_s=409.1970\,\mathrm{cm^3}$ 后，基准制动功率为
+\begin{equation}
+ P_0=BMEP(6000)V_s\frac{6000}{60}=44.9293\,\mathrm{kW}.
+\end{equation}
+因此第三问的功率响应不是任意设定的常数，而是由公开台架曲线标定的基准。由于公开曲线没有题设目标机型在全部 $(d,\alpha_{ov},\theta_{ign},\theta_{EOI},\lambda)$ 组合下的样本，后续设计变量影响仍采用显式物理响应因子，并用 $\pm15\%$ 表示跨机型迁移不确定度。
+
+附件没有端口面积曲线，故将重叠角先映射为无量纲换气吞吐量
+\begin{equation}
+ \xi(\alpha_{ov})=0.20\,\frac{\alpha_{ov}}{44^\circ}.
+\end{equation}
+系数 $0.20$ 取自第二问的代表性换气点，实际试验应由端口面积和压差积分替换。完全混合假设给出残余废气清除率 $r=1-e^{-\xi}$ 和参考充气质量短路损失 $s=\xi-(1-e^{-\xi})$。
+
+以第二问标定的 $P_0=44.9293\,\mathrm{kW}$、$\eta_0=0.309118$ 为中心，构造有界响应面：
+\begin{equation}
+ P=P_0 f_d f_{ov}f_{ign}f_{EOI}f_\lambda,
+ \qquad \eta_b=\eta_0 g_d g_{ov}g_{ign}g_{EOI}g_\lambda,
+\end{equation}
+其中各因子均为以基准点 $(d,\alpha_{ov},\theta_{ign},\theta_{EOI},\lambda)=(147,44,18,597,1.0)$ 为中心的平滑、有界函数；具体系数和代码见附录 `q3_model.py`。BSFC 由能量守恒直接计算，不另行拟合。
+
+没有排放台架时，采用可解释的无量纲排放代理
+\begin{equation}
+ E_{em}=1.8s\left(1+0.55\frac{\max(0,597-\theta_{EOI})}{30}\right)
+ +0.75\frac{\max(0,1-\lambda)}{0.05}+0.10\left(\frac{\lambda-1}{0.10}\right)^2+E_{NO_x},
+\end{equation}
+其中 $E_{NO_x}$ 由压缩比、点火提前角和稀混合气对燃烧温度的二次代理给出。可靠性代理取
+\begin{equation}
+ R_{risk}=0.55\left(\frac{p_{peak}}{8\,\mathrm{MPa}}\right)^2+0.30L_s^2+0.15\left(\frac{T_f}{1.2T_{f0}}\right)^2,
+\end{equation}
+其中 $p_{peak}$ 为峰值压力代理，$L_s$ 为归一化密封载荷，$T_f$ 为摩擦转矩代理。$8\,\mathrm{MPa}$ 是筛选门槛而非题设实测极限。
+
+\subsection{约束、Pareto 与鲁棒选择}
+
+保留 $V_{min}>0$、$5\le CR\le18$、$p_{peak}\le8\,\mathrm{MPa}$ 和 $0.22\le\eta_b\le0.36$ 的候选。目标为最大化 $P$，最小化 BSFC、$E_{em}$ 与 $R_{risk}$。采用 70000 个均匀随机候选进行确定性筛选，并用非支配排序得到 Pareto 集。考虑第二问 BMEP 转移的 $\pm15\%$ 不确定度，同时对换气吞吐量施加 $\pm15\%$ 扰动；对每个候选计算三种情景评分，最终以四个目标归一化评分的最小值作为鲁棒评分：
+\begin{equation}
+ S_{rob}(\mathbf{x})=\min_{k\in\{-1,0,+1\}}S(\mathbf{x};\,\mathrm{BMEP}_k,\xi_k).
+\end{equation}
+
+\subsection{计算结果}
+
+可行候选共 47711 个，Pareto 候选 227 个。最大最小鲁棒评分对应的推荐点为
+\begin{equation}
+ (d,\alpha_{ov},\theta_{ign},\theta_{EOI},\lambda)
+ =(149.28\,\mathrm{mm},20.36^\circ,18.74^\circ,600.60^\circ,1.006).
+\end{equation}
+
+\begin{table}[H]
+\centering
+\caption{问题三鲁棒推荐点及其物理先验预测}
+\begin{tabular}{lcc}
+\toprule
+指标 & 推荐值 & 说明\\
+\midrule
+制动功率 $P$ & $45.84\,\mathrm{kW}$ & 6000 r/min，中心先验\\
+有效热效率 $\eta_b$ & $31.21\%$ & 与 BSFC 由能量式关联\\
+BSFC & $265.2\,\mathrm{g/(kW\,h)}$ & $H_u=43.5\,\mathrm{MJ/kg}$\\
+排放代理 $E_{em}$ & $0.132$ & 无量纲，相对比较\\
+峰值压力代理 & $6.79\,\mathrm{MPa}$ & 低于 8 MPa 筛选门槛\\
+可靠性风险代理 & $0.902$ & 越小越好\\
+鲁棒评分 & $0.521$ & 三情景最小值\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.86\textwidth]{figure/q3_pareto.png}
+\caption{功率--BSFC Pareto 前沿（颜色表示排放代理）}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.86\textwidth]{figure/q3_robustness.png}
+\caption{候选解鲁棒评分排序}
+\end{figure}
+
+\subsection{结论与试验落地}
+
+推荐点并非声称唯一最优，而是当前公开标定和附件几何约束下的稳健初值。它相对于第二问中心点的功率增加仅约 $2.0\%$，同时保持 $31\%$ 左右效率和较低排放代理，说明鲁棒筛选没有用不受约束的功率增长换取虚假的最优。实际台架试验建议首先锁定 $d$ 和点火角，在 $\alpha_{ov}=18^\circ$--$25^\circ$、$\theta_{EOI}=590^\circ$--$610^\circ$、$\lambda=0.98$--$1.04$ 内做小型正交试验；用实测端口流量、缸压、燃油流量、HC/CO/NOx 和 apex-seal 温度反标定 $\xi$、Wiebe 参数、排放代理和可靠性代理，再运行同一 Pareto 流程。这样第三问的结果可由“物理先验推荐”逐步升级为“台架数据驱动优化”。

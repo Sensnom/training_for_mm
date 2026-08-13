@@ -1,0 +1,896 @@
+schema_version: 1
+evidence:
+  problem_statement:
+    problem: global
+    type: official_problem_statement
+    source_path: 2026年武汉理工大学数学建模训练题目4-6.docx
+    reproduction_command: null
+    key_fields:
+      - 第4题正式题名
+      - 三个问题的正式要求
+    supports:
+      - project title
+      - problem count
+      - problem requirements
+    status: verified
+    accepted_by: project-controller
+    accepted_date: "2026-08-13"
+  official_attachment:
+    problem: global
+    type: official_attachment
+    source_path: 第4题附件/附件.docx
+    reproduction_command: null
+    key_fields:
+      - 转子发动机结构与工作原理
+      - 齿轮传动约束
+      - 四冲程换气时序
+      - 几何尺寸
+    supports:
+      - confirmed geometric dimensions
+      - confirmed transmission ratios
+      - attachment definitions of displacement and compression ratio
+    status: verified
+    accepted_by: project-controller
+    accepted_date: "2026-08-13"
+  q1_candidate_script:
+    problem: problem_1
+    type: reproducible_program
+    source_path: 第4题第一二三问修订源码/q1_geometry.py
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - baseline Vmin, Vs, Vmax, and CR
+      - d_contact and algebraic d_zero
+      - 10001-point period and conservation checks
+      - direct CSV, PNG, and JSON output
+    supports:
+      - candidate Q1 geometry results
+    status: verified
+    note: 2026-08-13 从 train_2 根目录连续两次按登记命令运行均退出0；系统环境无 Shapely 时明确 skipped，PYTHONPATH=/tmp/q1-shapely-deps 时完成可选多边形交叉检查。两环境的 CSV 与 PNG 哈希相同，各环境内 JSON 哈希固定；全部结论仅适用于用户批准的圆弧理想化。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_candidate_results:
+    problem: problem_1
+    type: tabular_output
+    source_path: 第4题第一二三问修订源码/q1_results.csv
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - baseline row d_inner_mm=147.0
+      - six diameter-summary rows and five event-angle rows
+      - full-precision algebraic root row
+      - d=150 contact boundary and d>150 entity-overlap semantics
+      - d=161.7 negative CR marked nonphysical algebraic continuation
+    supports:
+      - candidate displacement and compression-ratio calculations
+    status: verified
+    note: 正式运行直接生成19字段、11数据行的 CSV；独立高精度公式重算与各数值最大绝对差为4.1e-12，事件行三腔和最大误差为5.7e-13 cm3。150 mm以上均标为entity_overlap，161.7 mm的负CR明确为非物理解延拓；结果仅适用于已批准圆弧理想化。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_modeling_review_submitted:
+    problem: problem_1
+    type: submitted_modeling_review
+    source_path: "submitted report: 粘贴的 markdown (1)。md"
+    reproduction_command: null
+    key_fields:
+      - Q1 主体模型命题级审查
+      - 540 度几何周期与 1080 度热力循环的区分
+      - 圆弧侧边构造的适用范围
+      - BMEP 与排量口径风险
+    supports:
+      - Q1 repair scope and evidence-gap identification
+    status: generated
+    note: 网页只读审查报告已提交；其结论仅在用户批准的“对称、边中点相切劣圆弧”理想化范围内适用，尚未由本地正式重跑验收，不能整体视为 verified。
+    accepted_by: null
+    accepted_date: null
+  q1_verification_review_submitted:
+    problem: problem_1
+    type: submitted_verification_review
+    source_path: "submitted report: 粘贴的 markdown (2)。md"
+    reproduction_command: null
+    key_fields:
+      - 独立高精度和数值几何交叉检查
+      - 150 mm 条件性实体接触边界
+      - 159.872613647 mm 代数零余隙根
+      - 脚本、CSV 和图片 lineage 审查
+    supports:
+      - Q1 repair scope and local acceptance criteria
+    status: generated
+    note: 网页只读独立验证报告已提交；它不是本地正式验收记录，且全部几何结论仅在用户批准的圆弧理想化范围内适用。
+    accepted_by: null
+    accepted_date: null
+  q1_geometric_volume_period:
+    problem: problem_1
+    type: mathematical_proposition
+    source_path: "submitted reports: 粘贴的 markdown (1)。md; 粘贴的 markdown (2)。md"
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - 单工作腔几何容积最小周期为 540 度曲轴角
+      - 1080 度仅为同一工作腔完整热力状态循环
+    supports:
+      - corrected Q1 period wording
+    status: verified
+    note: 余弦项解析最小正周期为540度；独立20003点检查的540度周期最大误差为8.3e-13 cm3，而270度平移差达到一个完整Vs。结论仅适用于已批准圆弧理想化。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_thermal_cycle_period:
+    problem: problem_1
+    type: mathematical_proposition
+    source_path: "submitted reports: 粘贴的 markdown (1)。md; 粘贴的 markdown (2)。md"
+    reproduction_command: null
+    key_fields:
+      - 同一工作腔做功、排气、进气、压缩的热力状态循环为 1080 度曲轴角
+    supports:
+      - corrected Q1 event-cycle wording
+    status: verified
+    note: 正式附件给出每行程270度曲轴角、四行程合计1080度；独立热力相位检查在1080度后误差为1.2e-13度，而540度后热力状态相差540度。不得与几何容积周期混写。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_contact_boundary_150mm:
+    problem: problem_1
+    type: geometric_feasibility_proposition
+    source_path: "submitted report: 粘贴的 markdown (2)。md"
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - g(d)=R-2e-d/2
+      - d_contact=150.000 mm
+      - d=150 mm is a contact boundary; d>150 mm has entity overlap in the ideal geometry
+    supports:
+      - Q1 d-sensitivity feasibility boundary
+      - problem-1 verification section: ideal-geometry contact boundary
+    status: verified
+    note: 独立解析得到g(147)=1.5 mm、g(150)=0、g(150.01)=-0.005 mm；独立验证了转子姿态的三个顶点与壳体轨迹对应关系，并以721个姿态、24001个壳体点复核147和150包含、150.01越界。该边界仅是已批准理想几何内的条件性实体接触边界，不是实际制造界限。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_algebraic_zero_clearance_root:
+    problem: problem_1
+    type: derived_root
+    source_path: "submitted report: 粘贴的 markdown (2)。md"
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - Vmin(d)=0
+      - d_zero=159.872613647263 mm
+    supports:
+      - algebraic extension diagnostic only
+    status: verified
+    note: 独立80位十进制二分重算得159.8726136472625832602 mm，与脚本结果一致；仅为当前标量容积模型的Vmin=0代数根，不是实体机械接触或制造界限，且位于d>150的实体重叠区。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_bmep_single_chamber_volume_basis:
+    problem: problem_1
+    type: convention_proposition
+    source_path: "submitted reports: 粘贴的 markdown (1)。md; 粘贴的 markdown (2)。md"
+    reproduction_command: null
+    key_fields:
+      - single-chamber Vs is the swept-volume basis for P=BMEP*Vs*n/60 under the stated single-rotor convention
+    supports:
+      - Q1 terminology and Q2 interface constraint
+    status: verified
+    note: 单转子有三个工作面、每个工作面每三圈曲轴完成一个热力循环，因此每圈曲轴平均完成一个chamber-cycle；在每循环有效功定义为BMEP乘单腔Vs时，P=BMEP*Vs*n/60。Vs数值仅适用于用户批准的圆弧理想化。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_three_vs_power_formula_constraint:
+    problem: problem_1
+    type: convention_proposition
+    source_path: "submitted reports: 粘贴的 markdown (1)。md; 粘贴的 markdown (2)。md"
+    reproduction_command: null
+    key_fields:
+      - 3Vs cannot be directly substituted into P=BMEP*V*n/60 with the same n and single-chamber BMEP definition
+      - doing so creates a factor-of-three error
+    supports:
+      - Q1 terminology and downstream power-calculation guardrail
+    status: verified
+    note: 3Vs可作为三个工作面的swept-volume数值和；若保持同一单腔BMEP定义和n/60循环频率直接代入，会把功率放大三倍。使用3Vs时必须同步把循环频率改为n/180或重定义BMEP口径。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_script_output_path_reproduction:
+    problem: problem_1
+    type: reproducibility_check
+    source_path: 第4题第一二三问修订源码/q1_geometry.py
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - attempted output path writer/figure/q1_corrected_volume_cr.png
+      - current project output directory figure/
+      - FileNotFoundError on direct execution
+    supports:
+      - Q1 script repair requirement
+    status: rejected
+    note: 这是修复前“当前脚本仍写入writer/figure并失败”的旧命题；修复后的脚本已否定该命题。按命题粒度保留rejected，不用它描述当前脚本状态，当前复现验收见q1_candidate_script。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_csv_direct_lineage:
+    problem: problem_1
+    type: output_lineage
+    source_path: 第4题第一二三问修订源码/q1_results.csv
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - q1_geometry.py directly writes q1_results.csv
+      - 19 fields and 11 data rows
+      - SHA-256 e1287912ca1298f644139de54e9d758d6ae3cf58f42b00ffcc6e76cdcc6abee9
+    supports:
+      - Q1 CSV acceptance
+    status: verified
+    note: 无Shapely与可选Shapely两环境各连续运行两次均直接得到相同CSV哈希；字段、11行结构、事件角、根精度和非物理解语义均已逐项核对。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_figure_lineage:
+    problem: problem_1
+    type: output_lineage
+    source_path: 第4题第一二三问修订源码/figure/q1_corrected_volume_cr.png
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - script directly writes figure/q1_corrected_volume_cr.png
+      - SHA-256 d957c1083a083f7e4b63e54e28ac8e74ace994203b683438904817b0df8350d1
+      - 150 mm contact boundary and nonphysical d>150 region
+    supports:
+      - Q1 figure acceptance
+    status: verified
+    note: 正式运行直接重生成；两依赖环境及重复运行哈希一致。目视核对确认540/1080度标题、69/339/609/879度事件线、三腔曲线、150 mm接触线及d>150灰色非物理区准确，未暗示159.8726 mm才开始干涉。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_formal_figure_copy:
+    problem: problem_1
+    type: formal_figure_copy
+    source_path: figures/q1-volume-cr.png
+    reproduction_command: cp 第4题第一二三问修订源码/figure/q1_corrected_volume_cr.png figures/q1-volume-cr.png
+    key_fields:
+      - SHA-256 d957c1083a083f7e4b63e54e28ac8e74ace994203b683438904817b0df8350d1
+      - pixel-identical copy of q1_figure_lineage output
+      - 150 mm contact boundary and nonphysical d>150 region
+    supports:
+      - formal Q1 volume and compression-ratio figure in main.tex
+    status: verified
+    note: 2026-08-13 已核对正式图片副本与q1_figure_lineage的已验收源图SHA-256一致；仅复制至稳定正式图名，未改变像素。
+    accepted_by: problem-modeling-writer
+    accepted_date: "2026-08-13"
+  q1_baseline_geometry_results:
+    problem: problem_1
+    type: verified_baseline_calculation
+    source_path: 第4题第一二三问修订源码/q1_geometry.py
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - Ah=36756.634047000581 mm2
+      - Ar=22041.104855209917 mm2
+      - Vsum=735.776459589533 cm3
+      - Vmin=40.660318219104 cm3
+      - Vs=409.197003288147 cm3
+      - Vmax=449.857321507251 cm3
+      - CR=11.063792444593
+      - attachment 3Vmax=1349.571964521754 cm3
+      - 3Vs=1227.591009864442 cm3
+    supports:
+      - Q1 baseline values within the approved ideal geometry
+      - problem-1 verification section: analytical-numerical agreement
+    status: verified
+    note: 由独立80位十进制实现重算，不导入候选脚本；直接Green边界离散积分在关键角与余弦式最大差5.2e-7 cm3。3Vmax是题面排量口径，3Vs仅为辅助数值和。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_run_metadata_lineage:
+    problem: problem_1
+    type: run_metadata
+    source_path: 第4题第一二三问修订源码/q1_run_metadata.json
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - Python, NumPy, and Matplotlib versions
+      - command and script paths
+      - angle range, 10001 samples, and tolerances
+      - optional Shapely availability, version, resolution, and cases
+      - output names and row count
+    supports:
+      - Q1 reproducibility and deterministic lineage
+    status: verified
+    note: 无Shapely与可选Shapely状态的metadata内容按环境有意不同；各环境连续两次运行哈希固定。CSV和PNG不随Shapely是否可用而变化。无时间戳，命令、依赖、扫描分辨率、容差和输出均已记录。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q1_geometry_formulae_and_conservation:
+    problem: problem_1
+    type: mathematical_propositions
+    source_path: 第4题第一二三问修订源码/q1_geometry.py
+    reproduction_command: python 第4题第一二三问修订源码/q1_geometry.py
+    key_fields:
+      - minor circular-arc branch and rotor segment area
+      - Green housing area Ah=pi(R2+3e2)
+      - cosine chamber-volume expression
+      - ABC phase offsets of 360 and 720 crank degrees
+      - three-chamber volume conservation
+      - event angles 69, 339, 609, 879, and 1149 degrees
+    supports:
+      - Q1 geometric derivation and event anchoring
+      - problem-1 verification section: periods, conservation, and event anchoring
+    status: verified
+    note: 独立采用gamma=4 atan(s/a)确认劣弧分支；80位公式、直接边界Green积分、20003点三腔检查和正式附件事件时序相互一致。三腔守恒最大误差1.1e-12 cm3。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q2_candidate_script:
+    problem: problem_2
+    type: reproducible_program
+    source_path: 第4题第一二三问修订源码/q2_model.py
+    reproduction_command: python 第4题第一二三问修订源码/q2_model.py
+    key_fields:
+      - calibrated_BMEP_bar
+      - target_power_6000_kW
+      - overlap response metrics
+    supports:
+      - candidate Q2 power and overlap calculations
+    status: generated
+    accepted_by: null
+    accepted_date: null
+  q2_candidate_results:
+    problem: problem_2
+    type: tabular_output
+    source_path: 第4题第一二三问修订源码/q2_results.csv
+    reproduction_command: python 第4题第一二三问修订源码/q2_model.py
+    key_fields:
+      - target_power_6000_kW
+      - target_power_low_kW
+      - target_power_high_kW
+      - brake_thermal_efficiency_center_pct
+    supports:
+      - candidate Q2 numerical conclusions
+    status: generated
+    accepted_by: null
+    accepted_date: null
+  q2_closed_loop_script_reproducibility:
+    problem: problem_2
+    type: reproducible_program
+    source_path: 第4题第一二三问修订源码/q2_closed_loop.py
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - open-system mass and energy ODE with RK4-integrated work and wall heat
+      - cyclic convergence status, cycle count, and state residual
+      - 31-point overlap scan, 1081-point cycle trace, and three-chamber torque trace
+      - direct CSV, JSON, candidate PNG, and formal PNG-copy outputs
+    supports:
+      - deterministic execution and output lineage of the repaired Q2 candidate
+      - numerical implementation checks only
+    status: verified
+    note: 2026-08-14 最小返修版脚本将批量标定、基准、31点扫描和0.5度细化统一为循环起点fresh charge推得且循环内固定的燃料量。未落盘独立调用重算基准、细化、31点扫描和16转速批量路径均成功；JSON登记的4份CSV及6幅PNG哈希与现场文件全部一致。1度正式网格、7x7精确ODE筛查、三起点代理拟合、精确ODE回代和0.5度细化路线未改变。验收不把跨机型条件模型升级为目标机实测。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q2_rk4_open_system_implementation:
+    problem: problem_2
+    type: numerical_implementation_propositions
+    source_path: 第4题第一二三问修订源码/q2_closed_loop.py
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - dm/dtheta has kg/degree units and signed intake, exhaust, and leakage flows
+      - dU/dtheta includes heat release, negative p dV, wall heat, and flow enthalpy
+      - work and wall heat are RK4 states evaluated at synchronized intermediate states
+      - 1080 degree endpoint trace and fixed-point cyclic convergence
+    supports:
+      - dimensional and numerical consistency of the implemented candidate equations
+    status: verified
+    note: 最小返修参数下参考工况1度轨迹共1081点、4个循环，状态相对残差9.53e-7；RK4状态积分功453.953610 J与端点梯形重积分453.945632 J相对差1.76e-5。0.5度细化功率42.835217 kW与1度正式值42.820137 kW相差0.0352%；功、转矩、IMEP和BMEP相对差均不超0.0352%，eta_b与BSFC相对差均约0.00963%。这仅验收方程实现和数值分辨率。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q2_three_chamber_torque_consistency:
+    problem: problem_2
+    type: conservation_and_power_convention_check
+    source_path: 第4题第一二三问修订源码/q2_three_chamber_torque.csv
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - three channels shifted by 360 and 720 eccentric-shaft degrees
+      - common reference-pressure torque cancels through sum dV/dtheta equals zero
+      - integrated three-chamber gas torque equals three single-chamber cycle works
+      - mean shaft torque and power use the single-chamber Vs convention
+    supports:
+      - implemented instantaneous-torque phasing and power arithmetic
+      - Q2 use of the verified Q1 single-chamber swept volume
+    status: verified
+    note: 端点梯形积分得三腔气体功1361.836896 J，与3倍RK4单腔功1361.860831 J的相对差1.76e-5；平均轴转矩68.149095 N m与CSV由BMEP公式得到68.150365 N m相差1.27e-3 N m。三腔dV/dtheta恒等抵消，因此共同参考压力项仍不改变总转矩。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q2_overlap_scan_lineage:
+    problem: problem_2
+    type: parametric_scan_output
+    source_path: 第4题第一二三问修订源码/q2_overlap_response.csv
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - 31 rows from 20 to 170 degrees in 5 degree increments
+      - every row reports converged true with four cycles
+      - maximum conditional power 46.362162066967365 kW occurs at the 20 degree scan lower boundary
+      - conditional eta_b reaches its 31-point maximum 0.33626033968774355 at 75 degrees
+      - lower-bound result is not a proven physical optimum
+    supports:
+      - arithmetic and lineage of the conditional 31-point scan only
+    status: verified
+    note: 31行结构、角度网格和字段已独立重算；全部状态残差不超8.31e-6。功率由20度的46.3622 kW降至170度的40.1573 kW；条件制动热效率在75度达到网格最大0.336260，BSFC同时达到网格最小246.114724 g/kWh。所有行采用同一循环起点燃料定义且公式误差不超浮点舍入。20度不是实际最优功率角，75度也只是当前条件模型在指定网格内的效率最优点，不是目标机物理最优。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q2_in_sample_fit_metrics:
+    problem: problem_2
+    type: fit_diagnostic_arithmetic
+    source_path: 第4题第一二三问修订源码/q2_closed_loop_results.csv
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - MAPE 3.7566068326202093 percent
+      - RMSE 1.5691291034374597 N m
+      - same 16 manual-digitisation candidate points used for parameter fitting and scoring
+    supports:
+      - arithmetic of in-sample residual diagnostics only
+    status: verified
+    note: 从代码内16个手工数字化候选点和逐转速模型输出独立重算，MAPE和RMSE与CSV逐位一致。该指标是同一手工候选样本上的样本内诊断，不是独立台架验证、交叉验证、测量误差或跨机型误差。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q2_local_calibration_converged:
+    problem: problem_2
+    type: optimizer_convergence_proposition
+    source_path: 第4题第一二三问修订源码/q2_run_metadata.json
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - least_squares success false and status 0
+      - nfev equals 3 and maximum evaluations exceeded
+      - optimality equals 2367.010873966524
+      - returned parameter vector equals the submitted initial vector exactly
+    supports:
+      - rejection of any claim that the current eight parameters were successfully calibrated
+    status: rejected
+    note: 保留为第一轮修复的历史rejected命题，对应旧脚本哈希559f3f3d...的nfev=3八参数尝试；第二轮已改为六项固定先验、两参数代理拟合和精确ODE回代，当前程序状态见q2_two_parameter_surrogate_calibration。不得用本历史条目描述当前脚本。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q2_reference_condition_prediction:
+    problem: problem_2
+    type: conditioned_cross_engine_model_prediction
+    source_path: 第4题第一二三问修订源码/q2_closed_loop_results.csv
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - 42.820137227602444 kW and 68.15036503646216 N m at 6000 r/min and 128 degree overlap
+      - conditional eta_b 0.33566428101209983 and BSFC 246.55176428102558 g/kWh
+      - peak model pressure 4.286973480808949 MPa and peak model temperature 2739.895669191576 K
+      - conditioned on six fixed engineering priors and two bounded fitted coefficients
+    supports:
+      - candidate-scale discussion only
+    status: generated
+    note: 数值可由程序稳定复现且算术另有verified条目，但同时受缺失的目标机台架数据、六项固定工程先验、摩擦尺度上界命中、手工数字化源点及假定端口几何约束。不得把42.8201 kW、效率、峰压或峰温写成目标机实测或已验证最大值。
+    accepted_by: null
+    accepted_date: null
+  q2_overlap_boundary_prediction:
+    problem: problem_2
+    type: conditioned_scan_boundary_prediction
+    source_path: 第4题第一二三问修订源码/q2_overlap_response.csv
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - 46.362162066967365 kW at 20 degree lower scan boundary
+      - decrease to 40.15726217472768 kW at 170 degrees under current coefficients
+    supports:
+      - candidate parametric trend only
+    status: generated
+    note: 扫描算术和端点语义已验收，但趋势幅度与绝对值未经目标机标定。只能称为当前候选参数下的条件响应，不得称20度为唯一或实际最优重叠角。
+    accepted_by: null
+    accepted_date: null
+  q2_overlap_efficiency_response:
+    problem: problem_2
+    type: conditioned_cross_engine_efficiency_response
+    source_path: 第4题第一二三问修订源码/q2_overlap_response.csv
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - eta_b ranges from 0.3344236196222449 to 0.33626033968774355 on the specified grid
+      - grid maximum eta_b 0.33626033968774355 occurs at 75 degrees
+      - grid minimum BSFC 246.1147239859036 g/kWh occurs at 75 degrees
+      - one unified cycle-start fuel-mass definition is used for all rows
+    supports:
+      - conditional efficiency-response discussion only
+    status: generated
+    note: 程序实现、统一燃料口径和逐行算术已有verified证据；但效率幅度及75度位置仍依赖跨机型候选点、六项固定工程先验、上界命中的摩擦尺度和假定端口几何。因此只可表述为当前条件模型在20--170度、5度网格内的响应，不是目标机实测效率或实际最优重叠角。
+    accepted_by: null
+    accepted_date: null
+  q2_output_hash_lineage:
+    problem: problem_2
+    type: output_lineage
+    source_path: 第4题第一二三问修订源码/q2_run_metadata.json
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - results CSV SHA-256 b7b2510ba216e792dcae3cff591c85df9b61a4cf20da237ee6ad8e0328f50d0e
+      - cycle CSV SHA-256 2b581ab119e175e2fca1635d8eaaa79df86edb5ae951cadcdb5e1627564ad892
+      - overlap CSV SHA-256 b458f3cdf8162273e98ba1a3fdd97007f589116dac97f6fbd79082ae04ca1f55
+      - torque CSV SHA-256 198d7126daa985eae2904d926d3785508585b7e70e9fb23932e115e2d19b4ea0
+      - candidate and formal PNG hashes match pairwise
+    supports:
+      - exact Q2 script-to-output lineage
+    status: verified
+    note: 2026-08-14 JSON内登记的10个输出哈希与现场文件逐一一致；正式图名副本与候选源图逐字节相同。三幅PNG哈希依次为82394527...、98abdcf1...、20add23d...；JSON自身SHA-256为7b589b82b3a919e685920c806ad4557b7a5e126fa1f5f8b69f06c4226882edca，脚本SHA-256为7a720d6eba10934250f3585f1373a9f818e6f756517f852c69ec077776e8be6b。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q2_two_parameter_surrogate_calibration:
+    problem: problem_2
+    type: conditional_calibration_procedure
+    source_path: 第4题第一二三问修订源码/q2_run_metadata.json
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - 49 exact one-degree ODE screen nodes on a 7 by 7 grid
+      - quadratic response surrogate for each of 16 source speeds
+      - three bounded least-squares starts all success true
+      - every candidate re-evaluated in exact one-degree ODE before selection
+      - selected eta_comb 0.7392333965932314 and friction_scale 1.8
+    supports:
+      - reproducibility of the stated conditional two-parameter calibration procedure
+      - not physical uniqueness or target-engine calibration
+    status: verified
+    note: 最新代码仍为49节点精确ODE筛查、逐转速二次代理、三起点受限最小二乘和候选精确ODE回代；元数据中三起点均success=true并收敛到eta_comb=0.7392333966、friction_scale=1.8。以最新批量精确ODE路径独立重算选中参数，得到成本19.6973291460、MAPE 3.756606833%、RMSE 1.569129103 N m，全部16例4循环收敛。这里的success属于代理最小二乘，精确ODE回代只支持数值候选，不消除上界命中及六项固定先验造成的物理不可辨识性。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q2_friction_scale_physically_identified:
+    problem: problem_2
+    type: parameter_identifiability_proposition
+    source_path: 第4题第一二三问修订源码/q2_run_metadata.json
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - friction_scale equals imposed upper bound 1.8 in all starts
+      - exact ODE active bound remains active
+      - six other engineering coefficients are fixed rather than identified
+    supports:
+      - rejection of physical uniqueness or independent identification claims
+    status: rejected
+    note: 最新三起点均给出friction_scale=1.8且元数据明确标记selected_friction_scale_at_upper_bound=true；其余六项工程系数仍固定。上一修订的独立参数剖面已显示目标函数在上界附近继续下降；本次燃料口径修复没有提供新的边界外剖面或独立台架信息，因此1.8仍不能解释为数据识别出的物理摩擦尺度，ISSUE-014保持open。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q2_reference_condition_arithmetic:
+    problem: problem_2
+    type: conditional_model_output_arithmetic
+    source_path: 第4题第一二三问修订源码/q2_closed_loop_results.csv
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - 42.820137227602444 kW and 68.15036503646216 N m
+      - eta_b 0.33566428101209983
+      - BSFC 246.55176428102558 g/kWh
+      - 453.9536102286643 J indicated work
+    supports:
+      - exact arithmetic of the specified conditional model at 6000 r/min and 128 degrees
+    status: verified
+    note: 由BMEP、单腔Vs和n/60独立重算功率与转矩一致；由循环起点fuel_mg、LHV和转速独立重算eta_b与BSFC逐位一致。此verified只表示“给定模型、先验、受限校准和统一燃料口径时的计算输出”，不支持目标机实测、跨机型真实性或最大功率结论。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q2_efficiency_fuel_basis_consistency:
+    problem: problem_2
+    type: implementation_consistency_proposition
+    source_path: 第4题第一二三问修订源码/q2_closed_loop.py
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - reference result with return_trace true uses maximum fresh mass over the cycle
+      - overlap rows and half-degree refinement with collect_extrema false use cycle-start fresh mass
+      - eta_b and BSFC therefore do not share one fuel-mass definition across outputs
+    supports:
+      - rejection of direct baseline-to-scan efficiency comparison in the current outputs
+    status: rejected
+    note: 保留为脚本哈希14ecb48fa...对应的历史rejected命题；该版本的return_trace/collect_extrema路径确实混用循环最大与循环起点燃料量。2026-08-14最小返修版已另以q2_efficiency_fuel_basis_repaired验收，不得用本历史条目描述当前脚本。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q2_efficiency_fuel_basis_repaired:
+    problem: problem_2
+    type: implementation_consistency_and_formula_check
+    source_path: 第4题第一二三问修订源码/q2_run_metadata.json
+    reproduction_command: python 第4题第一二三问修订源码/q2_closed_loop.py
+    key_fields:
+      - one definition for batch calibration, baseline, 31-point scan, and 0.5 degree refinement
+      - fuel is inferred from fresh charge at the converged 1080 degree cycle start and held fixed within that cycle
+      - 33 thermal cases use the same named definition
+      - maximum absolute eta_b and BSFC formula errors equal zero in metadata
+      - independent fuel-from-start error no greater than 6.8e-21 kg
+    supports:
+      - use of eta_b and BSFC as internally consistent conditional-model responses
+      - conditional overlap-efficiency comparison on the specified 20 to 170 degree grid
+    status: verified
+    note: 独立检查代码确认批量与标量路径均在每个1080度循环开始时由fresh charge计算一次燃料量，并在该循环全部RK4子步中固定；return_trace和collect_extrema不再参与燃料量选择。独立重算基准、0.5度细化和31点扫描共33例，定义字符串完全相同，燃料量与循环起点公式最大差6.8e-21 kg，eta_b与BSFC公式误差均为0；CSV逐行复算只出现不超5.6e-17的浮点舍入。该verified仅支持条件模型内部效率比较，不支持目标机真实效率或物理最优角。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q2_conditional_body_draft:
+    problem: problem_2
+    type: manuscript_conditional_model_draft
+    source_path: main.tex
+    reproduction_command: null
+    key_fields:
+      - model name 相似机型约束的开放系统热力--转矩耦合模型
+      - open-system mass and energy ODE, port flow, Wiebe heat release, simplified wall heat transfer, equivalent leakage, FMEP, and RK4
+      - three-chamber instantaneous torque with 360 and 720 degree phase shifts
+      - 6000 r/min and 128 degree conditional reference result
+      - 20 to 170 degree overlap scan interpreted as a conditional grid response
+      - active friction-scale bound and cross-engine identifiability limitation
+    supports:
+      - problem-2-analysis and non-verification problem-2 manuscript regions
+    status: generated
+    note: 正文已按命题级verified算术和复现证据写入，但42.82 kW、效率曲线及75度位置仍是跨机型条件模型预测；不得整体升级为目标机实测、已验证最大功率或实际最优重叠角。problem-2:verification受保护区域未改。
+    accepted_by: null
+    accepted_date: null
+  q3_candidate_script:
+    problem: problem_3
+    type: reproducible_program
+    source_path: 第4题第一二三问修订源码/q3_model.py
+    reproduction_command: python 第4题第一二三问修订源码/q3_model.py
+    key_fields:
+      - recommended design variables
+      - power_kW
+      - eta_b
+      - emission_proxy
+      - risk_proxy
+    supports:
+      - candidate Q3 robust multi-objective recommendation
+    status: generated
+    accepted_by: null
+    accepted_date: null
+  q3_candidate_results:
+    problem: problem_3
+    type: tabular_output
+    source_path: 第4题第一二三问修订源码/q3_results.csv
+    reproduction_command: python 第4题第一二三问修订源码/q3_model.py
+    key_fields:
+      - feasible
+      - pareto
+      - recommended
+      - robust_score
+    supports:
+      - candidate Q3 Pareto and robust-selection results
+    status: generated
+    accepted_by: null
+    accepted_date: null
+  turner_aie_225cs_source:
+    problem: [problem_2, problem_3]
+    type: external_literature_and_bench_data
+    source_path: null
+    submission_task: .modeling/tasks/literature/turner-aie225cs-source-verification.md
+    reproduction_command: null
+    key_fields:
+      - complete bibliographic record and DOI
+      - Peden et al. 2018 Fig. 17 torque curve at 5000--7500 r/min
+      - 6000 r/min approximate digitized value and uncertainty
+      - AIE 225CS 225 cc/chamber displacement convention
+      - provenance of flow coefficients, equivalent leakage area, model discrepancy, and mechanical-efficiency proxy
+      - cross-engine BMEP transfer limitations
+    supports:
+      - conditional BMEP prior used by candidate Q2 and Q3 work
+    status: generated
+    note: 文献检索与 model-verification-writer 验收已完成；本汇总项保持 generated，因为6000 r/min精确数字化点和跨机型结论尚未整体验收，具体已验收命题见后续细分证据项
+    accepted_by: null
+    accepted_date: null
+  peden_2018_bibliography:
+    problem: [problem_2, problem_3]
+    type: external_literature_metadata
+    source_path: null
+    reproduction_command: null
+    key_fields:
+      - DOI 10.4271/2018-01-1452
+      - Peden et al. author order
+      - SAE Technical Paper 2018-01-1452
+    supports:
+      - accurate citation and source identity
+    status: verified
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  peden_2018_torque_curve_scope:
+    problem: problem_2
+    type: external_bench_curve_scope
+    source_path: null
+    reproduction_command: null
+    key_fields:
+      - Fig. 17 is torque comparison
+      - 16 speed values from 5000 to 7500 r/min
+      - AIE 225CS is 225 cc/chamber single-rotor
+    supports:
+      - existence and scope of the external AIE torque prior
+    status: verified
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  peden_6000rpm_digitized_torque:
+    problem: problem_2
+    type: digitized_external_bench_point
+    source_path: null
+    reproduction_command: null
+    key_fields:
+      - approximately 29.0 lb ft at 6000 r/min
+      - assumed digitization error plus or minus 0.5 lb ft
+    supports:
+      - candidate 6000 r/min BMEP calculation
+    status: generated
+    note: 原图支持约29 lb ft，但项目缺原始PDF页、坐标标定、像素记录和数字化CSV，尚不能验收到一位小数
+    accepted_by: null
+    accepted_date: null
+  q2_torque_unit_conversion:
+    problem: problem_2
+    type: derived_calculation
+    source_path: 第4题第一二三问修订源码/q2_results.csv
+    reproduction_command: null
+    key_fields:
+      - 29.0 lb ft equals approximately 39.3187 N m
+    supports:
+      - torque unit conversion only
+    status: verified
+    note: 单位换算正确；不同时验收上游29.0 lb ft图读值
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q2_aie_bmep_derivation:
+    problem: problem_2
+    type: derived_calculation
+    source_path: 第4题第一二三问修订源码/q2_results.csv
+    reproduction_command: null
+    key_fields:
+      - 10.9798581 bar from 39.3187 N m and 225 cc/chamber
+    supports:
+      - conditional AIE BMEP prior
+    status: generated
+    note: 数学推导与单转子口径已验算，但直接依赖尚未完整数字化验收的29.0 lb ft读值
+    accepted_by: null
+    accepted_date: null
+  q2_conditional_power_transfer:
+    problem: problem_2
+    type: cross_engine_conditional_estimate
+    source_path: 第4题第一二三问修订源码/q2_results.csv
+    reproduction_command: null
+    key_fields:
+      - 71.5071 N m under equal-BMEP assumption
+      - approximately 44.9 kW at 6000 r/min
+      - single-chamber swept-volume convention is internally consistent
+    supports:
+      - conditional central power estimate only
+    status: generated
+    note: 只能表述为以AIE 225CS为相似机型先验、保持相同BMEP时的条件估计；不是题设发动机台架实测最大功率
+    accepted_by: null
+    accepted_date: null
+  q2_fifteen_percent_scenario:
+    problem: problem_2
+    type: sensitivity_scenario
+    source_path: 第4题第一二三问修订源码/q2_results.csv
+    reproduction_command: null
+    key_fields:
+      - 38.1899 to 51.6686 kW from an assumed plus or minus 15 percent perturbation
+    supports:
+      - illustrative sensitivity scenario only
+    status: generated
+    note: 无文献或统计模型支持正负15%为正式不确定区间，不得称为置信区间或Peden给出的迁移误差
+    accepted_by: null
+    accepted_date: null
+  q2_external_parameter_provenance:
+    problem: [problem_2, problem_3]
+    type: external_parameter_provenance
+    source_path: null
+    reproduction_command: null
+    key_fields:
+      - 0.92 and 0.95 are Tartakovsky virtual-blowing calculated values for other Wankel engines
+      - 0.03 mm2 is a representative equivalent leakage parameter selected after Peden sensitivity sweeps
+      - 2.5 percent is Peden average torque discrepancy, not established MAPE or measurement error
+      - 96.7 to 97 percent is an empirical-FMEP-derived mechanical-efficiency proxy, not motoring measurement
+    supports:
+      - qualified descriptions of external priors
+    status: verified
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-13"
+  q2_overlap_sensitivity_scenario:
+    problem: problem_2
+    type: parametric_sensitivity_scenario
+    source_path: 第4题第一二三问修订源码/q2_results.csv
+    reproduction_command: null
+    key_fields:
+      - perfect-mixing scavenging equations
+      - xi0 equals 0.20
+      - xi values 0.18, 0.20, and 0.22
+      - PFI and post-exhaust-DI efficiency response table
+    supports:
+      - scenario-level mechanism discussion only
+    status: generated
+    note: 完全混合公式在其假设下数学自洽，但xi0、重叠角到xi的映射、残余气参数和喷油情景均未由题设发动机标定
+    accepted_by: null
+    accepted_date: null
+  target_engine_bench_calibration:
+    problem: [problem_2, problem_3]
+    type: target_engine_bench_data
+    source_path: null
+    reproduction_command: null
+    key_fields:
+      - target-engine pressure or torque/power calibration
+      - fuel-flow and efficiency calibration
+      - emissions and reliability observations
+    supports:
+      - target-engine calibration and Q3 performance claims
+    status: missing
+    accepted_by: null
+    accepted_date: null
+  q3_conditional_design_program:
+    problem: problem_3
+    type: reproducible_program
+    source_path: 第4题第一二三问修订源码/q3_conditional_design.py
+    reproduction_command: MPLCONFIGDIR=/tmp/q3-mpl python 第4题第一二三问修订源码/q3_conditional_design.py
+    key_fields:
+      - 400-point seven-dimensional Latin-hypercube ODE design
+      - held-out Extra-Trees diagnostics
+      - 50000-candidate conditional search
+      - 40-candidate by 5-scenario ODE rescore
+      - one-degree formal recommendation and half-degree refinement
+    supports:
+      - reproducible Q3 conditional optimization chain
+      - numerical recommendation under stated priors, scenarios and weights
+    status: verified
+    note: 程序直接调用已验收Q2开放系统ODE；所有400个设计点及200次候选情景回代均收敛。verified只覆盖实现、数值链和条件推荐复算，不覆盖目标机物理真实性、排放/寿命预测或全局最优性。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q3_ode_design_set:
+    problem: problem_3
+    type: simulation_design_output
+    source_path: 第4题第一二三问修订源码/q3_ode_design.csv
+    reproduction_command: MPLCONFIGDIR=/tmp/q3-mpl python 第4题第一二三问修订源码/q3_conditional_design.py
+    key_fields:
+      - 400 rows
+      - all converged
+      - maximum state relative residual 1.9981300363e-5
+      - d upper bound 149.8 mm below 150 mm contact boundary
+    supports:
+      - ODE response design and geometry-feasibility screening
+    status: verified
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q3_emulator_diagnostics:
+    problem: problem_3
+    type: held_out_validation
+    source_path: 第4题第一二三问修订源码/q3_run_metadata.json
+    reproduction_command: MPLCONFIGDIR=/tmp/q3-mpl python 第4题第一二三问修订源码/q3_conditional_design.py
+    key_fields:
+      - held-out R2 power 0.8832848391
+      - held-out R2 eta_b 0.8524976325
+      - held-out R2 pmax 0.7823995885
+      - held-out R2 Tmax 0.9226529425
+    supports:
+      - proxy use for candidate screening only
+    status: verified
+    note: 峰压代理精度不足以独立确定推荐，故正式选择由40候选五情景ODE复排完成；该证据不支持代理全局最优性。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q3_ode_robust_rescore:
+    problem: problem_3
+    type: robust_scenario_output
+    source_path: 第4题第一二三问修订源码/q3_ode_rescore.csv
+    reproduction_command: MPLCONFIGDIR=/tmp/q3-mpl python 第4题第一二三问修订源码/q3_conditional_design.py
+    key_fields:
+      - 40 candidate rows
+      - five actual ODE-input scenarios per candidate
+      - selected worst scenario index 1
+      - selected three-degree robust score 0.8649121661
+    supports:
+      - non-degenerate conditional robust ranking
+    status: verified
+    note: 最坏情景直接改变燃烧效率、摩擦尺度和重叠角后重新积分ODE；不是结果端统一缩放。评分仍依赖人为情景范围与权重。
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q3_conditional_recommendation:
+    problem: problem_3
+    type: conditioned_model_prediction
+    source_path: 第4题第一二三问修订源码/q3_run_metadata.json
+    reproduction_command: MPLCONFIGDIR=/tmp/q3-mpl python 第4题第一二三问修订源码/q3_conditional_design.py
+    key_fields:
+      - d 149.6018528839 mm
+      - overlap 23.2612304012 degree
+      - ignition 29.7450656988 degree BTDC
+      - EOI 591.6815249072 degree
+      - lambda 0.9689199475
+      - one-degree power 52.7633635604 kW
+      - one-degree eta_b 0.3724832047
+      - one-degree pmax 6.9773576785 MPa
+    supports:
+      - conditional experiment starting point only
+    status: generated
+    note: 数值公式、ODE收敛和步长细化已verified，但目标机台架缺失、Q2跨机型先验、代理候选遗漏风险和边界贴近使物理推荐保持generated；不得称目标机实测或全局最优。
+    accepted_by: null
+    accepted_date: null
+  q3_numerical_refinement:
+    problem: problem_3
+    type: numerical_convergence_check
+    source_path: 第4题第一二三问修订源码/q3_run_metadata.json
+    reproduction_command: independent direct calls to q3_conditional_design.ode_case at 3, 1 and 0.5 degree
+    key_fields:
+      - power 52.7582005, 52.7633636, 52.7730954 kW
+      - pmax 6.9745635, 6.9773577, 6.9774717 MPa
+      - all three runs converged
+    supports:
+      - one-degree numerical result
+    status: verified
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"
+  q3_figure_lineage:
+    problem: problem_3
+    type: figure_output
+    source_path:
+      - figures/q3-conditional-pareto.png
+      - figures/q3-validation-sensitivity.png
+    reproduction_command: MPLCONFIGDIR=/tmp/q3-mpl python 第4题第一二三问修订源码/q3_conditional_design.py
+    key_fields:
+      - hashes recorded in q3_run_metadata.json
+      - paper figures equal source-directory figures
+    supports:
+      - Q3 result and verification figures
+    status: verified
+    accepted_by: model-verification-writer
+    accepted_date: "2026-08-14"

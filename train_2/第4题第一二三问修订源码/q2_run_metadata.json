@@ -1,0 +1,293 @@
+{
+  "calibration": {
+    "fixed_prior_coefficients": {
+      "Aex_max_mm2": 606.159284370356,
+      "Ain_max_mm2": 361.91521693994156,
+      "combustion_duration_deg": 111.2396719111877,
+      "combustion_efficiency_submitted": 0.7200431789874384,
+      "friction_scale_submitted": 1.0503262156424105,
+      "heat_scale": 0.9694097189196712,
+      "intake_pressure_linear": 0.07790785923613822,
+      "intake_pressure_quadratic": -0.01829931843876515
+    },
+    "formal_grid_step_deg": 1.0,
+    "free_coefficients": [
+      "combustion_efficiency",
+      "friction_scale"
+    ],
+    "mape_pct_in_sample": 3.7566068326202093,
+    "multistart_diagnostics": {
+      "active_bound_warning": "friction_scale reaches its imposed upper bound 1.80; the source candidate curve does not independently identify this loss scale",
+      "eta_comb_range": [
+        0.7392333965932313,
+        0.7392333965932316
+      ],
+      "exact_ode_cost_range": [
+        19.697329146035568,
+        19.69732914603567
+      ],
+      "friction_scale_range": [
+        1.7999999999999998,
+        1.7999999999999998
+      ],
+      "selected_friction_scale_at_upper_bound": true,
+      "target_power_kW_range": [
+        42.820137227602444,
+        42.820137227602444
+      ]
+    },
+    "ode_screen": {
+      "cycles_completed": 4,
+      "max_state_relative_residual": 5.230440778673837e-06,
+      "nodes": 49,
+      "screen_minimum_free_coefficients": [
+        0.72,
+        0.9666666666666668
+      ]
+    },
+    "optimizer_route": "least_squares on quadratic response surrogate fitted to a 7x7 exact one-degree ODE screen; every multi-start candidate is re-evaluated in exact ODE before selection",
+    "reference_curve_status": "16 manual digitisation candidates from a public AIE 225CS curve; not target-engine measurements",
+    "rmse_Nm_in_sample": 1.5691291034374597,
+    "selected": {
+      "cost": 19.703228683261962,
+      "eta_comb": 0.7392333965932314,
+      "exact_ode_converged": true,
+      "exact_ode_cost": 19.697329146035568,
+      "exact_ode_mape_pct_in_sample": 3.7566068326202093,
+      "friction_scale": 1.7999999999999998,
+      "max_parameter_move": 0.6999999999999997,
+      "message": "`gtol` termination condition is satisfied.",
+      "nfev": 10,
+      "optimality": 1.1413606252018089e-12,
+      "start_eta_comb": 0.86,
+      "start_friction_scale": 1.1,
+      "start_index": 2,
+      "status": 1,
+      "success": true,
+      "target_power_kW": 42.820137227602444,
+      "target_torque_Nm": 68.15036503646216
+    },
+    "selection_rule": "minimum exact one-degree ODE cost among starts with success=true and a nonzero parameter move; ties use lower start_index",
+    "starts": [
+      {
+        "cost": 19.70322868326195,
+        "eta_comb": 0.7392333965932313,
+        "exact_ode_converged": true,
+        "exact_ode_cost": 19.697329146035614,
+        "exact_ode_mape_pct_in_sample": 3.756606832620208,
+        "friction_scale": 1.7999999999999998,
+        "max_parameter_move": 0.8999999999999998,
+        "message": "`gtol` termination condition is satisfied.",
+        "nfev": 8,
+        "optimality": 2.745935789852405e-12,
+        "start_eta_comb": 0.74,
+        "start_friction_scale": 0.9,
+        "start_index": 1,
+        "status": 1,
+        "success": true,
+        "target_power_kW": 42.820137227602444,
+        "target_torque_Nm": 68.15036503646216
+      },
+      {
+        "cost": 19.703228683261962,
+        "eta_comb": 0.7392333965932314,
+        "exact_ode_converged": true,
+        "exact_ode_cost": 19.697329146035568,
+        "exact_ode_mape_pct_in_sample": 3.7566068326202093,
+        "friction_scale": 1.7999999999999998,
+        "max_parameter_move": 0.6999999999999997,
+        "message": "`gtol` termination condition is satisfied.",
+        "nfev": 10,
+        "optimality": 1.1413606252018089e-12,
+        "start_eta_comb": 0.86,
+        "start_friction_scale": 1.1,
+        "start_index": 2,
+        "status": 1,
+        "success": true,
+        "target_power_kW": 42.820137227602444,
+        "target_torque_Nm": 68.15036503646216
+      },
+      {
+        "cost": 19.703228683261955,
+        "eta_comb": 0.7392333965932316,
+        "exact_ode_converged": true,
+        "exact_ode_cost": 19.69732914603567,
+        "exact_ode_mape_pct_in_sample": 3.75660683262022,
+        "friction_scale": 1.7999999999999998,
+        "max_parameter_move": 0.4999999999999998,
+        "message": "`gtol` termination condition is satisfied.",
+        "nfev": 11,
+        "optimality": 1.5497414364577854e-13,
+        "start_eta_comb": 0.98,
+        "start_friction_scale": 1.3,
+        "start_index": 3,
+        "status": 1,
+        "success": true,
+        "target_power_kW": 42.820137227602444,
+        "target_torque_Nm": 68.15036503646216
+      }
+    ]
+  },
+  "compression_ratio": 11.063792444592519,
+  "fuel_mass_basis": {
+    "bsfc_formula": "mfuel_per_cycle*n*60000/P",
+    "definition": "mfuel_per_cycle is the fuel implied by the fresh charge at the start of the converged 1080-degree cycle, held fixed during that cycle",
+    "eta_b_formula": "P/(mfuel_per_cycle*LHV*n/60)"
+  },
+  "fuel_mass_consistency_check": {
+    "all_cases_use_same_definition": true,
+    "baseline_mfuel_per_cycle_kg": 2.9326056611725016e-05,
+    "checked_cases": 33,
+    "definition": "mfuel_per_cycle is the fuel implied by the fresh charge at the start of the converged 1080-degree cycle, held fixed during that cycle",
+    "maximum_abs_BSFC_g_kWh_formula_error": 0.0,
+    "maximum_abs_eta_b_formula_error": 0.0,
+    "overlap_mfuel_per_cycle_kg_range": [
+      2.7604373558762376e-05,
+      3.176481620429095e-05
+    ],
+    "refined_mfuel_per_cycle_kg": 2.9339208884085855e-05
+  },
+  "interpretation_limits": [
+    "AIE 225CS points are manual digitisation candidates, not raw target-engine bench measurements",
+    "MAPE and RMSE are in-sample fit diagnostics, not out-of-sample validation",
+    "Six of eight submitted coefficients are fixed engineering priors because 16 torque candidates cannot identify all eight independently",
+    "Only combustion efficiency and FMEP scale are fitted; even deterministic multi-start convergence does not establish physical uniqueness",
+    "42.8 kW-scale outputs are conditioned cross-engine model predictions, not measured maximum power",
+    "20 degree is the lower boundary of the specified scan and is not asserted to be a physical optimum",
+    "Brake thermal efficiency and BSFC use the fixed-point cycle-start fresh-charge fuel mass consistently; they remain conditional-model responses"
+  ],
+  "metadata_hash_note": "The JSON file's own byte hash is reported externally because embedding it would be self-referential.",
+  "model_route": "open-system zero-dimensional ODE with port flow, Wiebe heat release, wall heat transfer, leakage and FMEP",
+  "model_status": "generated_candidate_pending_independent_verification",
+  "numerical_refinement": {
+    "formal_step_deg": 1.0,
+    "metrics": {
+      "BMEP_bar": {
+        "half_degree": 10.468116036119731,
+        "one_degree": 10.464430795806562,
+        "relative_difference": 0.00035204427429477833
+      },
+      "BSFC_g_kWh": {
+        "half_degree": 246.57550278201415,
+        "one_degree": 246.55176428102558,
+        "relative_difference": 9.627274697096502e-05
+      },
+      "IMEP_bar": {
+        "half_degree": 11.097451973228383,
+        "one_degree": 11.093766732915213,
+        "relative_difference": 0.0003320798614005825
+      },
+      "eta_b": {
+        "half_degree": 0.3356319656897068,
+        "one_degree": 0.33566428101209983,
+        "relative_difference": 9.628201630497202e-05
+      },
+      "power_kW": {
+        "half_degree": 42.83521712052791,
+        "one_degree": 42.820137227602444,
+        "relative_difference": 0.00035204427429496275
+      },
+      "torque_Nm": {
+        "half_degree": 68.174365431466,
+        "one_degree": 68.15036503646216,
+        "relative_difference": 0.0003520442742949408
+      },
+      "work_J": {
+        "half_degree": 454.10440915791884,
+        "one_degree": 453.9536102286643,
+        "relative_difference": 0.00033207986140060004
+      }
+    },
+    "reference_condition": "6000 r/min, 128 degree overlap",
+    "refined_step_deg": 0.5
+  },
+  "outputs": [
+    {
+      "path": "第4题第一二三问修订源码/q2_closed_loop_results.csv",
+      "sha256": "b7b2510ba216e792dcae3cff591c85df9b61a4cf20da237ee6ad8e0328f50d0e"
+    },
+    {
+      "path": "第4题第一二三问修订源码/q2_overlap_response.csv",
+      "sha256": "b458f3cdf8162273e98ba1a3fdd97007f589116dac97f6fbd79082ae04ca1f55"
+    },
+    {
+      "path": "第4题第一二三问修订源码/q2_cycle_trace.csv",
+      "sha256": "2b581ab119e175e2fca1635d8eaaa79df86edb5ae951cadcdb5e1627564ad892"
+    },
+    {
+      "path": "第4题第一二三问修订源码/q2_three_chamber_torque.csv",
+      "sha256": "198d7126daa985eae2904d926d3785508585b7e70e9fb23932e115e2d19b4ea0"
+    },
+    {
+      "path": "第4题第一二三问修订源码/figure/q2_overlap_response.png",
+      "sha256": "82394527d7775f485d8df10cd9655fd25e96754212ee999c5e2d0cb81767109f"
+    },
+    {
+      "path": "第4题第一二三问修订源码/figure/q2_pressure_temperature_trace.png",
+      "sha256": "98abdcf14f979e2de4968d2463e8f7cd4d521086b68eb2b4b8f3d9264856a9cd"
+    },
+    {
+      "path": "第4题第一二三问修订源码/figure/q2_three_chamber_torque.png",
+      "sha256": "20add23d548bc7d75d5caa233b2b1ef8b8b42c6f918f90bf72756b4dda4b6ae7"
+    },
+    {
+      "path": "figures/q2-overlap-response.png",
+      "sha256": "82394527d7775f485d8df10cd9655fd25e96754212ee999c5e2d0cb81767109f"
+    },
+    {
+      "path": "figures/q2-pressure-temperature-trace.png",
+      "sha256": "98abdcf14f979e2de4968d2463e8f7cd4d521086b68eb2b4b8f3d9264856a9cd"
+    },
+    {
+      "path": "figures/q2-three-chamber-torque.png",
+      "sha256": "20add23d548bc7d75d5caa233b2b1ef8b8b42c6f918f90bf72756b4dda4b6ae7"
+    }
+  ],
+  "parameters": {
+    "Aex_max_mm2": 606.159284370356,
+    "Ain_max_mm2": 361.91521693994156,
+    "combustion_duration_deg": 111.2396719111877,
+    "combustion_efficiency": 0.7392333965932314,
+    "friction_scale": 1.7999999999999998,
+    "heat_scale": 0.9694097189196712,
+    "intake_pressure_linear": 0.07790785923613822,
+    "intake_pressure_quadratic": -0.01829931843876515
+  },
+  "reference_condition": {
+    "cycle_tolerance": 2e-05,
+    "max_cycles": 60,
+    "overlap_deg": 128.0,
+    "rpm": 6000.0,
+    "step_deg": 1.0
+  },
+  "reference_result": {
+    "BMEP_bar": 10.464430795806562,
+    "BSFC_g_kWh": 246.55176428102558,
+    "FMEP_bar": 0.629335937108652,
+    "IMEP_bar": 11.093766732915213,
+    "Tmax_K": 2739.895669191576,
+    "converged": true,
+    "cycles_completed": 4,
+    "eta_b": 0.33566428101209983,
+    "eta_m": 0.9432712123609548,
+    "fresh_charge_end_mg": 425.22799209390627,
+    "fresh_charge_start_mg": 425.22782087001275,
+    "mfuel_per_cycle_kg": 2.9326056611725016e-05,
+    "mfuel_per_cycle_mg": 29.326056611725015,
+    "pmax_MPa": 4.286973480808949,
+    "power_kW": 42.820137227602444,
+    "qwall_J": 46.814963745734474,
+    "state_relative_residual": 9.525932406946824e-07,
+    "torque_Nm": 68.15036503646216,
+    "work_J": 453.9536102286643
+  },
+  "script_sha256": "7a720d6eba10934250f3585f1373a9f818e6f756517f852c69ec077776e8be6b",
+  "single_chamber_swept_volume_cm3": 409.197003288147,
+  "versions": {
+    "matplotlib": "3.10.8",
+    "numpy": "2.3.5",
+    "platform": "Linux-6.18.35-x86_64-with-glibc2.39",
+    "python": "3.12.13",
+    "scipy": "1.17.0"
+  }
+}

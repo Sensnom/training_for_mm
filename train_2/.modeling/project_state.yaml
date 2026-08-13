@@ -1,0 +1,136 @@
+schema_version: 1
+project:
+  title: 转子发动机容积建模与动力学优化设计
+  competition: 2026年武汉理工大学数学建模训练
+  year: 2026
+  problem_type: 第4题
+  problem_count: 3
+  main_file: main.tex
+  bibliography_file: references.bib
+  figure_directory: figures
+  compile_command: latexmk -xelatex main.tex
+  git_required: true
+writing:
+  style_baseline: national-award
+  primary_pronoun: 本文
+  title_status: confirmed_from_problem_statement
+  abstract_status: unconfirmed
+  appendices:
+    numbering: sequential_from_A
+    proof: optional
+    core_code: required_when_available
+    support_file_list: required
+sources:
+  official_problem_statement:
+    path: 2026年武汉理工大学数学建模训练题目4-6.docx
+    selected_problem: 第4题
+    status: confirmed
+  official_attachment:
+    path: 第4题附件/附件.docx
+    status: confirmed
+  modeling_programming_handoff:
+    directory: 第4题第一二三问修订源码
+    status: submitted
+    note: 建模手和编程手提供；脚本、结果和正文均待独立验收，不得视为题目附件台架实测数据
+problems:
+  problem_1:
+    requirement_status: confirmed
+    requirement: 建立各缸容积随转角变化模型，计算排量与压缩比，并分析转子内圆直径在基准值正负10%范围变化时对压缩比的影响
+    approved_modeling_assumptions:
+      - id: q1_symmetric_circular_arc_rotor_sides
+        status: confirmed_by_user
+        statement: 转子三条侧边均连接相邻顶点、关于该边中线对称，并为在边中点与直径 d 的内切圆相切的劣圆弧。
+        scope: 仅用于问题一的理想几何、容积、压缩比及 d 灵敏度计算；不作为正式附件对实际转子侧边形状的事实断言，也不外推为制造、热变形或密封模型。
+        source: 用户明确批准，2026-08-13
+    model_name: 圆弧转子--Green面积容积模型
+    allowed_abbreviation: null
+    algorithm_name: 解析边界积分与内圆直径参数扫描法
+    official_results:
+      scope: 仅适用于用户批准的“对称、边中点相切劣圆弧”理想几何；不作为实际CAD轮廓、制造、热变形或密封模型的结论
+      baseline_d_mm: 147.0
+      housing_area_mm2: 36756.63
+      rotor_area_mm2: 22041.10
+      total_free_volume_cm3: 735.78
+      vmin_cm3: 40.66
+      vs_single_cm3: 409.20
+      vmax_cm3: 449.86
+      compression_ratio: 11.064
+      attachment_displacement_3vmax_cm3: 1349.57
+      three_face_swept_sum_3vs_cm3: 1227.59
+      physical_noninterference_interval_mm: "[132.3, 150)"
+      contact_boundary_mm: 150.0
+    verification_status: verified
+  problem_2:
+    requirement_status: confirmed
+    requirement: 建立动力学模型并结合容积模型计算6000 r/min时最大输出功率，定量分析重叠角变化对发动机效率的影响
+    model_name: 相似机型约束的开放系统热力--转矩耦合模型
+    allowed_abbreviation: null
+    algorithm_name: 循环收敛RK4积分与受限两参数代理拟合法
+    official_results: {}
+    verification_status: pending
+  problem_3:
+    requirement_status: confirmed
+    requirement: 根据附件中的发动机台架标定结果并结合前两问模型提出综合性能改进方法
+    model_name: 开放系统ODE约束的条件鲁棒多目标设计模型
+    allowed_abbreviation: null
+    algorithm_name: 拉丁超立方ODE设计--极端随机树筛选--多情景ODE复排
+    official_results: {}
+    conditional_model_outputs:
+      status: conditional_model_output_not_target_bench_result
+      d_mm: 149.602
+      overlap_deg: 23.261
+      ignition_btdc_deg: 29.745
+      eoi_deg: 591.682
+      lambda: 0.9689
+      power_kW: 52.7634
+      brake_thermal_efficiency: 0.3725
+      peak_pressure_MPa: 6.9774
+      note: 指定候选池、情景与权重下经ODE复排的条件试验起点；不是目标机实测或全局最优
+    verification_status: pending
+global_symbols:
+  R:
+    meaning: 转子顶点半径
+    unit: mm
+  e:
+    meaning: 曲轴偏心距
+    unit: mm
+  B:
+    meaning: 转子厚度
+    unit: mm
+  d:
+    meaning: 转子内圆直径
+    unit: mm
+  theta:
+    meaning: 曲轴转角
+    unit: degree
+  V_s:
+    meaning: 单腔扫气容积
+    unit: cm3
+  V_min:
+    meaning: 单腔最小余隙容积
+    unit: cm3
+  V_max:
+    meaning: 单腔最大容积
+    unit: cm3
+global_assumptions: []
+immutable_constraints:
+  - 不得修改 cumcmthesis.cls
+  - 不得自行 git commit
+  - 不得自行 git push
+  - 不得直接修改 code/ 中程序
+  - 不得直接修改 第4题第一二三问修订源码/ 中程序
+  - 未验收的移植数据、物理先验和代理指标不得写成题设发动机台架实测结论
+formal_names:
+  engine: 转子发动机（汪克尔发动机）
+  problem_title: 转子发动机容积建模与动力学优化设计
+confirmed_facts:
+  rotor_vertex_length_mm: 210
+  rotor_inner_circle_diameter_mm: 147
+  rotor_thickness_mm: 50
+  fixed_outer_gear_inner_diameter_mm: 60
+  rolling_inner_gear_outer_diameter_mm: 90
+  gear_tooth_ratio_inner_to_outer: "3:2"
+  crank_to_rotor_angular_speed_ratio: "3:1"
+  crank_zero_before_compression_tdc_deg: 69
+  displacement_definition_from_attachment: 单缸进气结束点容积乘以3
+  compression_ratio_definition_from_attachment: 单腔最大容积除以单腔最小余隙容积

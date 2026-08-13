@@ -1,0 +1,85 @@
+{
+  "algebraic_root": {
+    "d_zero_mm": 159.8726136472626,
+    "meaning": "Not a mechanical contact or interference boundary.",
+    "root_kind": "Vmin(d)=0 only",
+    "root_residual_cm3": 7.579122514774402e-14
+  },
+  "baseline_d_147": {
+    "CR": 11.063792444592519,
+    "Vmax_cm3": 449.8573215072514,
+    "Vmin_cm3": 40.66031821910409,
+    "Vs_single_cm3": 409.1970032881473,
+    "attachment_3Vmax_cm3": 1349.5719645217541,
+    "three_face_swept_sum_cm3": 1227.591009864442
+  },
+  "command": "python 第4题第一二三问修订源码/q1_geometry.py",
+  "dependencies": {
+    "matplotlib": "3.10.8",
+    "numpy": "2.5.2"
+  },
+  "determinism": "No timestamps are written; CSV/JSON serialization and PNG metadata are fixed for repeatable output in a fixed environment.",
+  "formal_contact_criterion": {
+    "d_contact_mm": 150.0,
+    "formula": "g(d)=R-2e-d/2",
+    "meaning": "d<150 noninterfering; d=150 contact; d>150 entity overlap, conditional on the approved ideal geometry."
+  },
+  "model_scope": "Approved symmetric minor circular-arc flanks only; not a manufacturing, thermal-expansion, or sealing model.",
+  "optional_shapely_polygon_cross_check": {
+    "available": true,
+    "cases": {
+      "147.00": {
+        "max_exterior_area_mm2": 3.236222977578679e-26,
+        "within_polygon_tolerance": true
+      },
+      "150.00": {
+        "max_exterior_area_mm2": 4.86190753105814e-26,
+        "within_polygon_tolerance": true
+      },
+      "150.01": {
+        "max_exterior_area_mm2": 0.003215150968626149,
+        "within_polygon_tolerance": false
+      }
+    },
+    "exterior_area_tolerance_mm2": 0.001,
+    "housing_samples": 6001,
+    "interpretation": "Cross-check only; analytic g(d)=R-2e-d/2 is the formal contact evidence.",
+    "pose_samples": 121,
+    "rotor_points_per_arc": 81,
+    "shapely_version": "2.1.2",
+    "status": "completed"
+  },
+  "outputs": {
+    "csv": "q1_results.csv",
+    "csv_rows": 11,
+    "figure": "figure/q1_corrected_volume_cr.png",
+    "metadata": "q1_run_metadata.json"
+  },
+  "parameters_mm": {
+    "B": 50.0,
+    "R": 105.0,
+    "e": 15.0,
+    "phase_deg": 69.0
+  },
+  "period_and_conservation_checks": {
+    "angle_samples": 10001,
+    "geometric_period_max_abs_error_cm3": 7.958078640513122e-13,
+    "geometric_volume_min_period_deg": 540.0,
+    "thermal_state_1080_cycle_max_error_deg": 2.2737367544323206e-13,
+    "thermal_state_540_cycle_difference_deg": 540.0,
+    "thermodynamic_state_cycle_deg": 1080.0,
+    "three_chamber_conservation_max_abs_error_cm3": 4.547473508864641e-13
+  },
+  "python": "3.12.13",
+  "scan": {
+    "analytic_gap_tolerance_mm": 1e-12,
+    "angle_range_deg": [
+      0.0,
+      1080.0
+    ],
+    "angle_samples": 10001,
+    "numerical_volume_tolerance_cm3": 1e-10
+  },
+  "schema_version": 1,
+  "script": "第4题第一二三问修订源码/q1_geometry.py"
+}

@@ -1,0 +1,143 @@
+schema_version: 1
+regions:
+  title:
+    owner: abstract-writer
+    file: main.tex
+    start_marker: "% <skill-region:title:start>"
+    end_marker: "% <skill-region:title:end>"
+    status: initialized
+  abstract:
+    owner: abstract-writer
+    file: main.tex
+    start_marker: "% <skill-region:abstract:start>"
+    end_marker: "% <skill-region:abstract:end>"
+    status: initialized
+  keywords:
+    owner: abstract-writer
+    file: main.tex
+    start_marker: "% <skill-region:keywords:start>"
+    end_marker: "% <skill-region:keywords:end>"
+    status: initialized
+  problem_restatement:
+    owner: front-matter-writer
+    file: main.tex
+    start_marker: "% <skill-region:problem-restatement:start>"
+    end_marker: "% <skill-region:problem-restatement:end>"
+    status: initialized
+  overall_analysis:
+    owner: front-matter-writer
+    file: main.tex
+    start_marker: "% <skill-region:overall-analysis:start>"
+    end_marker: "% <skill-region:overall-analysis:end>"
+    status: initialized
+  model_assumptions:
+    owner: front-matter-writer
+    file: main.tex
+    start_marker: "% <skill-region:model-assumptions:start>"
+    end_marker: "% <skill-region:model-assumptions:end>"
+    status: initialized
+  symbols:
+    owner: front-matter-writer
+    file: main.tex
+    start_marker: "% <skill-region:symbols:start>"
+    end_marker: "% <skill-region:symbols:end>"
+    status: initialized
+  problem_1_analysis:
+    owner: problem-modeling-writer
+    file: main.tex
+    start_marker: "% <skill-region:problem-1-analysis:start>"
+    end_marker: "% <skill-region:problem-1-analysis:end>"
+    location: 集中式问题分析章节的问题一分析小节
+    status: initialized
+  problem_1:
+    owner: problem-modeling-writer
+    file: main.tex
+    start_marker: "% <skill-region:problem-1:start>"
+    end_marker: "% <skill-region:problem-1:end>"
+    protected_subregions: [problem_1_verification]
+    status: initialized
+  problem_1_verification:
+    owner: model-verification-writer
+    file: main.tex
+    start_marker: "% <skill-region:problem-1:verification:start>"
+    end_marker: "% <skill-region:problem-1:verification:end>"
+    status: completed
+  problem_2_analysis:
+    owner: problem-modeling-writer
+    file: main.tex
+    start_marker: "% <skill-region:problem-2-analysis:start>"
+    end_marker: "% <skill-region:problem-2-analysis:end>"
+    location: 集中式问题分析章节的问题二分析小节
+    status: completed
+    scope_note: 已写入条件模型分析；跨机型物理预测未升级为目标机验证结论
+  problem_2:
+    owner: problem-modeling-writer
+    file: main.tex
+    start_marker: "% <skill-region:problem-2:start>"
+    end_marker: "% <skill-region:problem-2:end>"
+    protected_subregions: [problem_2_verification]
+    status: completed
+    scope_note: 已写入条件模型主体；problem_2_verification受保护区域保持未写
+  problem_2_verification:
+    owner: model-verification-writer
+    file: main.tex
+    start_marker: "% <skill-region:problem-2:verification:start>"
+    end_marker: "% <skill-region:problem-2:verification:end>"
+    status: completed
+    scope_note: 数值实现、循环收敛、网格细化、三腔功率口径与条件扫描已检验；跨机型物理预测未验收
+  problem_3_analysis:
+    owner: problem-modeling-writer
+    file: main.tex
+    start_marker: "% <skill-region:problem-3-analysis:start>"
+    end_marker: "% <skill-region:problem-3-analysis:end>"
+    location: 集中式问题分析章节的问题三分析小节
+    status: completed
+  problem_3:
+    owner: problem-modeling-writer
+    file: main.tex
+    start_marker: "% <skill-region:problem-3:start>"
+    end_marker: "% <skill-region:problem-3:end>"
+    protected_subregions: [problem_3_verification]
+    status: completed
+  problem_3_verification:
+    owner: model-verification-writer
+    file: main.tex
+    start_marker: "% <skill-region:problem-3:verification:start>"
+    end_marker: "% <skill-region:problem-3:verification:end>"
+    status: completed
+    scope_note: 数值收敛、真实情景传播、候选ODE复排和步长细化已检验；不构成目标机台架验证或全局最优性证明
+  synthesis_evaluation:
+    owner: synthesis-evaluation-writer
+    file: main.tex
+    start_marker: "% <skill-region:synthesis-evaluation:start>"
+    end_marker: "% <skill-region:synthesis-evaluation:end>"
+    status: initialized
+  appendix_proof:
+    owner: finalization-controller
+    file: main.tex
+    start_marker: "% <skill-region:appendix-proof:start>"
+    end_marker: "% <skill-region:appendix-proof:end>"
+    status: initialized
+  appendix_code:
+    owner: finalization-controller
+    file: main.tex
+    start_marker: "% <skill-region:appendix-code:start>"
+    end_marker: "% <skill-region:appendix-code:end>"
+    status: initialized
+  appendix_support_list:
+    owner: finalization-controller
+    file: main.tex
+    start_marker: "% <skill-region:appendix-support-list:start>"
+    end_marker: "% <skill-region:appendix-support-list:end>"
+    status: initialized
+shared_regions:
+  preamble:
+    file: main.tex
+    approval_required: true
+  bibliography:
+    file: references.bib
+    approval_required: true
+protected_paths:
+  - cumcmthesis.cls
+  - code/**
+  - 第4题第一二三问修订源码/**

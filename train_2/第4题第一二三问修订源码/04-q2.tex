@@ -1,0 +1,143 @@
+% ============================================================
+% 问题二的建模与求解（台架标定—机理混合模型）
+% ============================================================
+\section{问题二的建模与求解}
+
+\subsection{初步思路的合理性审查}
+
+初步方案采用``缸内热力学--气体转矩--机械损失--重叠角换气''四步框架，主因果链是正确的，但若直接据此计算会出现三类系统误差。第一，附件给出的偏心距为$e=45-30=15\,\mathrm{mm}$，不是$30\,\mathrm{mm}$；截图中的离心力也不是平均输出功率的组成项，转子惯性项在稳态完整循环上的净功为零，只影响瞬时轴承载荷。第二，瞬时气体转矩应写为$T_g=p\,\mathrm dV/\mathrm d\theta$，但采用\emph{表压}时可以直接求和，采用绝对压力时必须减去参考压力；三腔恒有$\sum_i\mathrm dV_i/\mathrm d\theta=0$，共同压力项自行抵消。第三，单转子每个工作腔的循环为$1080^\circ$偏心轴角，但三腔错相后偏心轴每转一圈恰有一次做功，不能套用往复四冲程的$n/120$功率公式。
+
+更关键的是，题目没有给出端口面积曲线、缸压、燃油流量或摩擦试验，因而单靠Wiebe函数无法唯一确定$6000\,\mathrm{r/min}$最大功率。本文据此采用``公开台架BMEP标定+单区热力学机理+端口流量积分''的混合模型：台架数据确定功率量级；热力学方程保证压力与能量闭合；端口模型定量分析重叠变化，并显式报告不可辨识参数带来的区间。
+
+\subsection{单区热力学与气体转矩模型}
+
+问题一给出的A腔容积为
+\begin{equation}
+V_A(\theta)=V_{\min}+\frac{V_s}{2}
+\left[1-\cos\frac{2(\theta-69^\circ)}{3}\right],
+\label{eq:q2_volume}
+\end{equation}
+其中$V_s=409.197\,\mathrm{cm^3}$、$V_{\min}=40.660\,\mathrm{cm^3}$、$CR=11.064$。B、C腔分别平移$360^\circ$和$720^\circ$偏心轴角。
+
+对关闭系统段采用单区理想气体模型。以偏心轴角$\theta$为自变量，第一定律为
+\begin{equation}
+\frac{\mathrm dU}{\mathrm d\theta}
+=\frac{\mathrm dQ_b}{\mathrm d\theta}
+-p\frac{\mathrm dV}{\mathrm d\theta}
+-\frac{\mathrm dQ_w}{\mathrm d\theta}
+-h_\ell\frac{\mathrm dm_\ell}{\mathrm d\theta},
+\qquad U=mc_vT,\quad pV=mRT .
+\label{eq:q2_first_law}
+\end{equation}
+燃烧放热采用Wiebe函数
+\begin{equation}
+x_b(\theta)=1-\exp\left[-a\left(
+\frac{\theta-\theta_0}{\Delta\theta_b}\right)^{m_w+1}\right],
+\qquad \frac{\mathrm dQ_b}{\mathrm d\theta}
+=m_fH_u\frac{\mathrm dx_b}{\mathrm d\theta}.
+\label{eq:q2_wiebe}
+\end{equation}
+公开AIE 225CS模型采用$a=5,m_w=2$，汽油低位热值$H_u=43.5\,\mathrm{MJ/kg}$，本文以其为先验；点火提前角和燃烧持续角在有实测缸压后再由最小二乘辨识。传热可写为Woschni型$\mathrm dQ_w/\mathrm d\theta=h_gA_w(T-T_w)/\omega$，泄漏则用等效孔口面积模型。缺少题设原机缸压时，本节不把未标定的峰压、峰温冒充实测结果。
+
+单腔气体转矩和三腔总气体转矩分别为
+\begin{equation}
+T_{g,i}(\theta)=[p_i(\theta)-p_0]
+\frac{\mathrm dV_i}{\mathrm d\theta},\qquad
+T_g(\theta)=\sum_{i=A,B,C}T_{g,i}(\theta).
+\label{eq:q2_torque}
+\end{equation}
+一个工作腔循环的指示功为$W_i=\oint p\,\mathrm dV$。由于三个腔室每个$1080^\circ$循环错开$360^\circ$，单转子偏心轴每转发生一次做功，所以
+\begin{equation}
+P_b=W_b\frac{n}{60}=BMEP\,V_s\frac{n}{60},qquad
+T_b=\frac{BMEP\,V_s}{2\pi}.
+\label{eq:q2_power_correct}
+\end{equation}
+式~\eqref{eq:q2_power_correct}中的$V_s$是\emph{单腔扫气容积}，不能把$3V_s$再代入往复四冲程公式。该式是初稿功率口径必须修正的关键。
+
+\subsection{6000 r/min最大功率的台架标定}
+
+Turner等公开了AIE 225CS单转子发动机$5000$--$7500\,\mathrm{r/min}$共16个台架转速点的功率、扭矩曲线\cite{turner2018wankel}。由其图17数字化读得$6000\,\mathrm{r/min}$时扭矩约$29.0\,\mathrm{lb\,ft}=39.32\,\mathrm{N\,m}$。225CS单腔扫气容积为$225\,\mathrm{cm^3}$，故
+\begin{equation}
+BMEP_{6000}=\frac{2\pi T}{V_{s,225}}
+=10.98\,\mathrm{bar}.
+\label{eq:q2_bmep_cal}
+\end{equation}
+BMEP比绝对功率更适合在相似单转子汽油机之间迁移。代入本题$V_s=409.197\,\mathrm{cm^3}$，得到
+\begin{equation}
+T_{b,6000}=71.51\,\mathrm{N\,m},\qquad
+P_{b,6000}=44.93\,\mathrm{kW}.
+\label{eq:q2_power_result}
+\end{equation}
+这里的``最大''指$6000\,\mathrm{r/min}$、全负荷、附件基准几何下的可用制动输出，不是对点火角、空燃比等无限制优化后的理论上界。考虑曲线数字化、台架模型平均误差$2.5\%$以及两机端口、冷却和密封差异，本文对迁移BMEP施加$\pm15\%$保守不确定度，得到
+\begin{equation}
+P_{b,6000}\in[38.19,51.67],\mathrm{kW}.
+\label{eq:q2_power_interval}
+\end{equation}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{figure/q2_bench_calibration.png}
+\caption{公开台架曲线的BMEP标定与本题6000 r/min功率迁移}
+\label{fig:q2_bench}
+\end{figure}
+
+为检查能量闭合，取$25^\circ\mathrm C$空气密度$1.184\,\mathrm{kg/m^3}$、全负荷容积效率中心值$\eta_v=1.00$、空燃比$14.5$，则燃油流量为$12.03\,\mathrm{kg/h}$，有效热效率和制动比油耗分别为
+\begin{equation}
+\eta_b=30.91\%,\qquad BSFC=267.7\,\mathrm{g/(kW\,h)}.
+\label{eq:q2_energy_closure}
+\end{equation}
+若$\eta_v\in[0.90,1.10]$并与BMEP不确定度组合，$\eta_b$约落在$23.9\%$--$39.5\%$。该区间比单一效率值诚实地反映了附件缺少进气流量的事实。公开研究还给出进、排气流量系数$0.92/0.95$、等效顶点密封泄漏面积$0.03\,\mathrm{mm^2}$及约$96.7\%$--$97\%$机械效率，可作为后续缸压模型的标定先验。
+
+\subsection{重叠角的换气与效率响应}
+
+重叠期质量流量必须由端口面积而不是重叠角本身决定。对任一端口$j\in\{in,ex\}$，令上、下游状态为$(p_u,T_u)$和$p_d$，可压缩孔口流量写为
+\begin{equation}
+\dot m_j=C_{d,j}A_j(\theta)p_u
+\sqrt{\frac{\gamma}{RT_u}}\,\Phi(p_d/p_u),
+\label{eq:q2_orifice}
+\end{equation}
+其中$C_{d,in}=0.92,C_{d,ex}=0.95$，$\Phi$按是否达到临界压比分段。将进、排气口同时开启区间记为$\Omega_{ov}$，定义无量纲重叠换气量
+\begin{equation}
+\xi(\alpha_{ov})=\frac{1}{m_{ref}}
+\int_{\Omega_{ov}(\alpha_{ov})}\dot m_{in}(\theta)
+\frac{\mathrm d\theta}{\omega}.
+\label{eq:q2_xi}
+\end{equation}
+这样，端口面积、压差、转速与重叠角的共同作用都被压缩到$\xi$中。附件没有$A_j(\theta)$，所以不能从角度唯一算出$\xi$；若近似保持端口形状和压差不变，小扰动下有$\Delta\xi/\xi\approx\Delta\alpha_{ov}/\alpha_{ov}$。
+
+采用与公开225CS研究一致的完全混合扫气假设，可严格积分得到
+\begin{equation}
+\frac{m_r}{m_{r,0}}=e^{-\xi},\qquad
+m_{ret}=m_{ref}(1-e^{-\xi}),\qquad
+m_{sc}=m_{ref}[\xi-(1-e^{-\xi})].
+\label{eq:q2_scavenge}
+\end{equation}
+式中$m_r$为残余废气、$m_{ret}$为留在腔内的新鲜充量、$m_{sc}$为短路流失的新鲜充量。取代表性基准$\xi_0=0.20$作局部灵敏度分析，结果见表~\ref{tab:q2_overlap}。
+
+\begin{table}[H]
+\centering
+\caption{重叠积分量$\pm10\%$的换气与效率响应}
+\label{tab:q2_overlap}
+\begin{tabular}{ccccc}
+\toprule
+$\xi$ & 残余气清除率 & 总短路损失 & PFI效率相对变化 & 排气后DI效率相对变化\\
+\midrule
+$0.18$ & $16.47\%$ & $1.53\%$ & $+0.16\%$--$+0.28\%$ & $-0.19\%$--$-0.08\%$\\
+$0.20$ & $18.13\%$ & $1.87\%$ & 基准 & 基准\\
+$0.22$ & $19.75\%$ & $2.25\%$ & $-0.31\%$--$-0.20\%$ & $+0.08\%$--$+0.19\%$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+表中效率范围采用$\eta_c\propto1-k_rr_0e^{-\xi}$、$r_0=0.15$、$k_r\in[0.3,0.7]$进行局部不确定性传播。对于歧管喷射（PFI），短路的是含燃油混合气，重叠增大造成的燃料损失通常超过残余气降低收益；对于排气关闭后直喷（DI），重叠期只有空气短路，燃料短路被抑制，增大重叠可小幅改善燃烧。结论因此不是``重叠角越大越好''，而是与喷油位置和时刻耦合。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{figure/q2_overlap_mixing.png}
+\caption{完全混合扫气模型中的残余气清除与短路损失}
+\label{fig:q2_overlap}
+\end{figure}
+
+\subsection{结论}
+
+修正模型在$6000\,\mathrm{r/min}$、全负荷下给出的中心制动功率为$44.93\,\mathrm{kW}$、转矩为$71.51\,\mathrm{N\,m}$，保守功率区间为$38.19$--$51.67\,\mathrm{kW}$；中心有效热效率为$30.91\%$，对应$BSFC=267.7\,\mathrm{g/(kW\,h)}$。这些结果分别通过台架BMEP迁移、正确的转子做功频率和燃油能量率完成三重闭合。重叠角的影响应通过式~\eqref{eq:q2_xi}的端口积分量$\xi$表述；当前附件只能可靠给出表~\ref{tab:q2_overlap}的参数化灵敏度，不能声称存在一个已被唯一识别的最优角。若补充$A_{in}(\theta),A_{ex}(\theta)$、进排气压力及基准重叠角，即可在不改变模型结构的前提下求出实际角度响应曲线。

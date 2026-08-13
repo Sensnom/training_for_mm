@@ -1,0 +1,58 @@
+metric,value,unit_or_scope
+evidence_status,generated,requires independent verification before formal-paper use
+reference_curve_status,manual digitisation candidate,16 AIE 225CS source-engine points; not target-engine measurements
+fit_MAPE_pct,3.7566068326202093,in-sample diagnostic using the same 16 manual-digitisation candidates; not validation error
+fit_RMSE_Nm,1.5691291034374597,in-sample diagnostic using the same 16 manual-digitisation candidates; not validation error
+selected_start_index,2,minimum exact one-degree ODE cost among converged and moved deterministic starts
+selected_least_squares_success,True,"selected deterministic two-parameter surrogate fit, re-evaluated in exact ODE"
+selected_least_squares_status,1,SciPy least_squares status code
+selected_least_squares_nfev,10,bounded quadratic surrogate of a 7x7 exact one-degree ODE screen
+selected_least_squares_optimality,1.1413606252018089e-12,selected deterministic two-parameter surrogate fit
+selected_friction_scale_at_upper_bound,True,friction_scale reaches its imposed upper bound 1.80; the source candidate curve does not independently identify this loss scale
+Ain_max_mm2,361.91521693994156,fixed submitted engineering prior; not independently identifiable from 16 torque candidates
+Aex_max_mm2,606.159284370356,fixed submitted engineering prior; not independently identifiable from 16 torque candidates
+heat_scale,0.9694097189196712,fixed submitted engineering prior; not independently identifiable from 16 torque candidates
+combustion_duration_deg,111.2396719111877,fixed submitted engineering prior; not independently identifiable from 16 torque candidates
+combustion_efficiency,0.7392333965932314,multi-start fitted coefficient
+friction_scale,1.7999999999999998,multi-start fitted coefficient
+intake_pressure_linear,0.07790785923613822,fixed submitted engineering prior; not independently identifiable from 16 torque candidates
+intake_pressure_quadratic,-0.01829931843876515,fixed submitted engineering prior; not independently identifiable from 16 torque candidates
+fuel_mass_definition,"mfuel_per_cycle is the fuel implied by the fresh charge at the start of the converged 1080-degree cycle, held fixed during that cycle","used consistently for baseline, scan and numerical refinement"
+eta_b_formula,P/(mfuel_per_cycle*LHV*n/60),"P in W, mfuel_per_cycle in kg/cycle, n in r/min"
+BSFC_formula,mfuel_per_cycle*n*60000/P,g/kWh; same mfuel_per_cycle definition as eta_b
+fuel_mass_consistency_definition,"mfuel_per_cycle is the fuel implied by the fresh charge at the start of the converged 1080-degree cycle, held fixed during that cycle","programmatic check of baseline, 0.5 degree refinement and 31 overlap conditions"
+fuel_mass_consistency_all_cases_use_same_definition,True,"programmatic check of baseline, 0.5 degree refinement and 31 overlap conditions"
+fuel_mass_consistency_checked_cases,33,"programmatic check of baseline, 0.5 degree refinement and 31 overlap conditions"
+fuel_mass_consistency_maximum_abs_eta_b_formula_error,0.0,"programmatic check of baseline, 0.5 degree refinement and 31 overlap conditions"
+fuel_mass_consistency_maximum_abs_BSFC_g_kWh_formula_error,0.0,"programmatic check of baseline, 0.5 degree refinement and 31 overlap conditions"
+fuel_mass_consistency_baseline_mfuel_per_cycle_kg,2.9326056611725016e-05,"programmatic check of baseline, 0.5 degree refinement and 31 overlap conditions"
+fuel_mass_consistency_refined_mfuel_per_cycle_kg,2.9339208884085855e-05,"programmatic check of baseline, 0.5 degree refinement and 31 overlap conditions"
+fuel_mass_consistency_overlap_mfuel_per_cycle_kg_range,"[2.7604373558762376e-05, 3.176481620429095e-05]","programmatic check of baseline, 0.5 degree refinement and 31 overlap conditions"
+target_converged,True,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_cycles_completed,4,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_state_relative_residual,9.525932406946824e-07,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_work_J,453.9536102286643,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_qwall_J,46.814963745734474,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_torque_Nm,68.15036503646216,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_power_kW,42.820137227602444,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_IMEP_bar,11.093766732915213,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_BMEP_bar,10.464430795806562,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_FMEP_bar,0.629335937108652,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_eta_m,0.9432712123609548,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_eta_b,0.33566428101209983,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_BSFC_g_kWh,246.55176428102558,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_mfuel_per_cycle_kg,2.9326056611725016e-05,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_mfuel_per_cycle_mg,29.326056611725015,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_fresh_charge_start_mg,425.22782087001275,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_fresh_charge_end_mg,425.22799209390627,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_pmax_MPa,4.286973480808949,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+target_Tmax_K,2739.895669191576,"6000 r/min, 128 degree overlap; conditioned cross-engine model prediction"
+refinement_half_degree_relative_difference_work_J,0.00033207986140060004,one-degree formal result versus 0.5-degree RK4 refinement
+refinement_half_degree_relative_difference_torque_Nm,0.0003520442742949408,one-degree formal result versus 0.5-degree RK4 refinement
+refinement_half_degree_relative_difference_power_kW,0.00035204427429496275,one-degree formal result versus 0.5-degree RK4 refinement
+refinement_half_degree_relative_difference_IMEP_bar,0.0003320798614005825,one-degree formal result versus 0.5-degree RK4 refinement
+refinement_half_degree_relative_difference_BMEP_bar,0.00035204427429477833,one-degree formal result versus 0.5-degree RK4 refinement
+refinement_half_degree_relative_difference_eta_b,9.628201630497202e-05,one-degree formal result versus 0.5-degree RK4 refinement
+refinement_half_degree_relative_difference_BSFC_g_kWh,9.627274697096502e-05,one-degree formal result versus 0.5-degree RK4 refinement
+swept_volume_single_chamber_cm3,409.197003288147,Question 1 verified single-chamber convention
+overlap_scan_deg,20--170 by 5,20 degree is scan lower boundary; no true optimum claim

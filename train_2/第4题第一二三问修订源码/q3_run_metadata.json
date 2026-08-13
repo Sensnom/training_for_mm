@@ -1,0 +1,152 @@
+{
+  "status": "generated_conditional_model",
+  "seed": 20260814,
+  "training_samples": 400,
+  "search_samples": 50000,
+  "bounds": {
+    "d_mm": [
+      132.3,
+      149.8
+    ],
+    "overlap_deg": [
+      20.0,
+      170.0
+    ],
+    "ign_btdc_deg": [
+      10.0,
+      30.0
+    ],
+    "eoi_deg": [
+      570.0,
+      620.0
+    ],
+    "lambda": [
+      0.95,
+      1.15
+    ],
+    "combustion_efficiency_scale": [
+      0.96,
+      1.04
+    ],
+    "friction_scale_multiplier": [
+      0.9,
+      1.1
+    ]
+  },
+  "emulator": "ExtraTreesRegressor",
+  "held_out_metrics": {
+    "power_kW": {
+      "R2": 0.8832848391025347,
+      "MAE": 1.0273836380353492
+    },
+    "eta_b": {
+      "R2": 0.8524976324656509,
+      "MAE": 0.006478111968572587
+    },
+    "pmax_MPa": {
+      "R2": 0.7823995885405627,
+      "MAE": 0.23398000296785235
+    },
+    "Tmax_K": {
+      "R2": 0.9226529424555855,
+      "MAE": 35.226118485215736
+    }
+  },
+  "feasible_count": 50000,
+  "pareto_count": 10594,
+  "recommended_inputs": {
+    "d_mm": 149.60185288385213,
+    "overlap_deg": 23.261230401237114,
+    "ign_btdc_deg": 29.745065698825623,
+    "eoi_deg": 591.6815249072285,
+    "lambda": 0.9689199474730972
+  },
+  "recommended_emulator": {
+    "power_kW": 48.08689996387579,
+    "eta_b": 0.3513184134487537,
+    "pmax_MPa": 5.450101294264074,
+    "Tmax_K": 2836.7426504247264,
+    "emission_proxy": 0.37069405494426816,
+    "reliability_proxy": 0.5911411517143531,
+    "robust_score": 0.7269186032129159
+  },
+  "recommended_ode_recheck": {
+    "Vmin_cm3": 32.50908176976956,
+    "CR": 13.587159680057848,
+    "power_kW": 52.76336356042672,
+    "eta_b": 0.37248320469505575,
+    "BSFC_g_kWh": 222.1808115010392,
+    "pmax_MPa": 6.977357678501958,
+    "Tmax_K": 2922.0830440664754,
+    "state_relative_residual": 5.793224575374552e-06,
+    "converged": true
+  },
+  "ode_rescore": {
+    "candidate_count": 40,
+    "scenario_count": 5,
+    "formal_selection": "maximum worst-scenario score from 3-degree ODE rescore; selected point rechecked at 1 degree",
+    "selected_record": {
+      "candidate_index": 44329,
+      "robust_score_ode_3deg": 0.8649121661494205,
+      "worst_scenario": 1,
+      "d_mm": 149.60185288385213,
+      "overlap_deg": 23.261230401237114,
+      "ign_btdc_deg": 29.745065698825623,
+      "eoi_deg": 591.6815249072285,
+      "lambda": 0.9689199474730972,
+      "nominal_Vmin_cm3": 32.50908176976956,
+      "nominal_CR": 13.587159680057848,
+      "nominal_power_kW": 52.75820051114319,
+      "nominal_eta_b": 0.37256301784473966,
+      "nominal_BSFC_g_kWh": 222.13321431743302,
+      "nominal_pmax_MPa": 6.974563480143804,
+      "nominal_Tmax_K": 2920.9175538246186,
+      "nominal_state_relative_residual": 5.415032137491139e-06,
+      "nominal_converged": "True",
+      "nominal_emission_proxy": 0.40640684136382016,
+      "nominal_reliability_proxy": 0.7687123856595098
+    }
+  },
+  "interpretation": "conditional design recommendation; not target-engine bench optimum",
+  "scenario_definition": "actual ODE inputs: combustion efficiency +/-4%, FMEP multiplier +/-10%, overlap implementation +/-5 deg",
+  "versions": {
+    "python": "3.12.13",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "q2_script_sha256": "7a720d6eba10934250f3585f1373a9f818e6f756517f852c69ec077776e8be6b",
+  "outputs": [
+    {
+      "path": "第4题第一二三问修订源码/q3_ode_design.csv",
+      "sha256": "3e8e8f6a3b1580610b360aecd88f3382a8365508f6586de5c44614ee37a833ed"
+    },
+    {
+      "path": "第4题第一二三问修订源码/q3_pareto.csv",
+      "sha256": "9043870880f3ece83f473a2cbc99b2f789dc25d9dc78b82755d7d1034a8d3268"
+    },
+    {
+      "path": "第4题第一二三问修订源码/q3_sensitivity.csv",
+      "sha256": "c8db00bbc4474aacf1e875d3f339837c6a6a04d3c1727c7133aeebcc5090f13f"
+    },
+    {
+      "path": "第4题第一二三问修订源码/q3_ode_rescore.csv",
+      "sha256": "86a9fd5d232a5dd7baa93a3a5ea3e5f15484bab99175c04c5c1c773f93d30a1e"
+    },
+    {
+      "path": "第4题第一二三问修订源码/figure/q3-conditional-pareto.png",
+      "sha256": "a08302c2f2f3823f360bd36a3286a8fe91566aa1d90b011cfe2e4edcb9d5cc92"
+    },
+    {
+      "path": "第4题第一二三问修订源码/figure/q3-validation-sensitivity.png",
+      "sha256": "7b7fcc93450d94253d1ba393804ebd2fd12ff99d27b2a45f32e76dffd26e894c"
+    },
+    {
+      "path": "figures/q3-conditional-pareto.png",
+      "sha256": "3eefbb40187ee8ae937eddbb3651b9272844bfc501c854cdd84b958ffad89290"
+    },
+    {
+      "path": "figures/q3-validation-sensitivity.png",
+      "sha256": "7b7fcc93450d94253d1ba393804ebd2fd12ff99d27b2a45f32e76dffd26e894c"
+    }
+  ]
+}

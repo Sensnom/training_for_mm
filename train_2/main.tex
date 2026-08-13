@@ -1,0 +1,803 @@
+\documentclass[withoutpreface,bwprint]{cumcmthesis}
+
+% <skill-region:title:start>
+\title{基于几何--热力耦合的转子发动机性能建模与条件优化}
+% <skill-region:title:end>
+
+\tihao{4}
+\baominghao{【待填写报名号】}
+\schoolname{【待填写学校名称】}
+\membera{【待填写队员一】}
+\memberb{【待填写队员二】}
+\memberc{【待填写队员三】}
+\supervisor{【待填写指导教师】}
+\yearinput{2026}
+\monthinput{【待填写】}
+\dayinput{【待填写】}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+% <skill-region:abstract:start>
+针对转子发动机工作腔容积、换气与燃烧相互耦合的问题，本文依次建立几何容积模型、开放系统热力--转矩模型和条件鲁棒多目标设计模型，并区分几何确定性结果与跨机型条件预测。
+
+针对问题一，将转子侧边理想化为与内圆相切的对称劣圆弧，利用齿轮运动约束和Green公式推导三腔容积函数。内圆直径为$147\,\mathrm{mm}$时，压缩比为$11.064$，按题设口径计算排量为$1349.57\,\mathrm{cm^3}$；压缩比随内圆直径增大而升高。在该理想几何下，$150\,\mathrm{mm}$为实体接触边界，$159.8726\,\mathrm{mm}$仅为零余隙容积的代数根。
+
+针对问题二，将单腔容积嵌入零维开放系统质量--能量方程，综合孔口流、Wiebe放热、壁面换热、泄漏与摩擦，并用四阶Runge--Kutta法积分至循环收敛。以公开相似机型曲线和工程参数为先验，在$6000\,\mathrm{r/min}$、$128^\circ$参考重叠角下，条件制动功率为$42.82\,\mathrm{kW}$，制动热效率为$0.3357$；$75^\circ$为$20^\circ$--$170^\circ$指定网格内的条件效率最大点。$0.5^\circ$细化后功率相对差为$0.0352\%$。上述数值不是目标机实测最大功率或实际最优重叠角。
+
+针对问题三，以内圆直径、重叠角、点火提前角、喷油结束角和过量空气系数为变量，建立$400$点ODE设计集，以极端随机树筛选$50000$个候选，再对前$40$个候选完成五情景ODE复排。条件试验起点的五项变量依次为$149.602\,\mathrm{mm}$、$23.261^\circ$、$29.745^\circ$、$591.682^\circ$和$0.9689$，其回代功率为$52.76\,\mathrm{kW}$、制动热效率为$0.3725$。由于推荐点靠近部分边界，且重叠角对抽样与权重敏感，该方案用于指导后续台架试验，不构成全局最优性结论。
+% <skill-region:abstract:end>
+
+% <skill-region:keywords:start>
+\keywords{转子发动机；Green公式；开放系统热力模型；循环收敛；条件鲁棒优化}
+% <skill-region:keywords:end>
+\end{abstract}
+
+\clearpage
+
+\section{问题重述}
+% <skill-region:problem-restatement:start>
+转子发动机通过转子在特定壳体型线内的偏心运动形成三个周期变化的工作腔。工作腔容积、压缩比、进排气时序及燃烧过程相互耦合，共同决定发动机的功率、效率和可靠性。题目给出了转子与齿圈的主要尺寸、传动关系以及四冲程事件顺序，要求完成以下三项任务：
+
+\begin{enumerate}[label=\textbf{问题\arabic*:},leftmargin=4.8em,labelsep=0.6em]
+ \item 建立三个工作腔容积随曲轴转角变化的数学模型，计算发动机排量和压缩比，并分析转子内圆直径在$147\,\mathrm{mm}$基准值$\pm10\%$范围变化时对压缩比的影响。
+ \item 在容积模型基础上建立发动机动力学模型，计算$6000\,\mathrm{r/min}$时的最大输出功率，并定量分析进、排气重叠角变化对发动机效率的影响。
+ \item 根据发动机台架标定结果并结合前两问模型，提出改进方法，使发动机的功率、效率、排放和可靠性等综合性能达到最佳。
+\end{enumerate}
+% <skill-region:problem-restatement:end>
+
+\section{问题分析}
+% <skill-region:overall-analysis:start>
+三问按“几何容积—热力与转矩—综合优化”逐层递进。问题一首先由齿轮传动关系确定转子姿态，以壳体型线、圆弧转子边界和Green公式建立工作腔容积函数；其输出的单腔扫气容积、余隙容积和压缩比构成后两问的几何边界。
+
+问题二把问题一的容积及其对转角的导数嵌入开放系统质量—能量方程，综合进排气、燃烧放热、壁面换热、泄漏和摩擦损失，积分至热力循环收敛；再通过三腔错相叠加获得轴端转矩和功率，并扫描重叠角的条件响应。由于现有材料缺少目标机完整台架数据，公开相似机型信息只用于约束参数量级，结果按条件预测解释。
+
+问题三将内圆直径、重叠角、点火提前角、喷油结束角和过量空气系数统一为设计变量。先由拉丁超立方ODE设计集构造响应代理以压缩候选空间，再将高评分候选放回完整热力模型，在燃烧、摩擦和端口偏差情景下复排，从功率、效率、排放倾向与可靠性风险之间选择条件试验起点。由此，前一问的输出既是后一问的输入，也是后续可行性检验的约束依据。
+% <skill-region:overall-analysis:end>
+
+% 以下三问分析采用集中式“问题分析”章节，但分别归 problem-modeling-writer 对应问题区域。
+\subsection{问题一分析}
+% <skill-region:problem-1-analysis:start>
+问题一的关键在于把附件给出的运动约束转化为三腔的边界面积变化。已知外齿圈内径为$60\,\mathrm{mm}$、内齿圈外径为$90\,\mathrm{mm}$，故偏心距为$e=45-30=15\,\mathrm{mm}$；转子外圆半径为$R=105\,\mathrm{mm}$，厚度为$B=50\,\mathrm{mm}$。齿数比为$3:2$，因此曲轴角速度是转子自转角速度的3倍。本文以曲轴角$\theta$为自变量，并以$\theta=69^\circ$标定A腔的压缩上止点。
+
+附件说明内圆直径决定转子边的弧度，却未唯一给出实际转子侧边的CAD轮廓。为使几何量可计算，本文仅在问题一中作如下局部理想化：三条侧边连接相邻顶点、关于该边中线对称，并在边中点与直径为$d$的内切圆相切，取劣圆弧。该理想化用于计算容积、压缩比及$d$的灵敏度，不对实际转子轮廓作唯一断言。
+
+在该构造下，先用壳体型线和Green公式得到总自由容积，再对单腔移动边界积分，建立容积随曲轴角变化的解析式。由三腔相位差求得任意时刻的三腔容积，并按附件定义计算排量和压缩比；最后在$d\in[132.3,161.7]\,\mathrm{mm}$内区分代数延拓与理想几何的非干涉范围。问题二若采用制动平均有效压力的功率关系式，应使用本问给出的单腔扫气容积$V_s$。
+% <skill-region:problem-1-analysis:end>
+
+\subsection{问题二分析}
+% <skill-region:problem-2-analysis:start>
+问题二要求在问题一容积函数的基础上计算$6000\,\mathrm{r/min}$下的输出功率，并定量分析进、排气重叠角对效率的影响。其难点在于，现有附件没有给出目标发动机的缸压、燃油流量、端口面积曲线和摩擦试验数据，仅凭几何容积或相似机型的制动平均有效压力，无法唯一确定目标机的热力过程与最大功率。
+
+为保持质量、能量和转矩口径一致，本文建立相似机型约束的开放系统热力--转矩耦合模型。模型以问题一得到的单腔容积为几何边界，将进排气孔口流、Wiebe放热、简化壁面换热、等效泄漏和摩擦平均有效压力共同写入零维质量--能量方程，再用四阶Runge--Kutta法逐角度积分至循环状态收敛。AIE 225CS公开扭矩曲线中手工数字化得到的16个扭矩点仅用于约束模型量级和转速趋势，不视为题设发动机的实测数据。最后，对三腔压力轨迹作$360^\circ$和$720^\circ$错相，计算瞬时总转矩，并在统一燃料质量口径下扫描重叠角，比较功率、制动热效率和制动比油耗的条件响应。
+
+由于部分工程先验固定、摩擦尺度参数又达到受限拟合上界，本问所得数值均解释为给定先验和参数范围下的跨机型条件预测，而不是目标机台架验证结果。特别地，扫描端点上的最大功率不能据此解释为已经确定的实际最优重叠角。
+% <skill-region:problem-2-analysis:end>
+
+\subsection{问题三分析}
+% <skill-region:problem-3-analysis:start>
+问题三要求综合前两问结果提出性能改进方案。现有附件没有题面所述目标机台架数表，因此无法直接完成参数反演或给出经试验确认的最优设计。本文据此将任务限定为条件设计：以问题一的几何可行域和问题二的开放系统热力模型为基础，把内圆直径、重叠角、点火提前角、喷油结束角和过量空气系数作为设计变量，在功率、热效率、排放倾向与可靠性之间寻找折中方案。
+
+完整热力模型每次评价均需积分至$1080^\circ$循环固定点，直接在大样本上调用计算代价较高。故先用拉丁超立方抽取设计点并执行热力ODE，建立响应代理以筛选候选；再将高评分候选逐一放回ODE，在燃烧效率、摩擦尺度和重叠角偏差构成的五种情景下重新计算，采用最坏情景评分选取条件推荐点。排放和可靠性缺少目标机实测量，只作为机理相关的无量纲代理，不作法规排放或寿命预测。最终结果须同时接受几何非干涉、峰压、循环收敛和搜索稳定性检验。
+% <skill-region:problem-3-analysis:end>
+
+\section{模型假设}
+% <skill-region:model-assumptions:start>
+\begin{enumerate}[label=\textbf{A\arabic*:},leftmargin=4.4em,labelsep=0.6em]
+ \item 在问题一中，将转子三条侧边理想化为连接相邻顶点、关于边中线对称且在边中点与内切圆相切的劣圆弧。该假设用于确定可计算的理想轮廓，不外推至实际制造公差、热变形和密封间隙。
+ \item 转子、壳体和齿轮均视为刚体，忽略轴系弹性变形与齿侧间隙；曲轴与转子角速度比始终为$3:1$。因此几何容积只由曲轴转角决定。
+ \item 各工作腔内部的压力、温度和组分在任一时刻均匀，以零维集总状态描述；忽略腔内空间梯度和局部火焰传播差异。
+ \item 工质视为定比热理想气体，进排气边界状态在单次计算工况内保持不变。端口流动采用准稳态可压缩孔口流近似。
+ \item 燃烧放热可由Wiebe函数描述，壁面换热、等效泄漏和摩擦损失采用集中参数模型；相似机型数据及工程参数仅用于条件约束，不视为题设目标机的实测标定。
+ \item 三个工作腔具有相同几何和热力参数，仅在曲轴角上相差$360^\circ$与$720^\circ$，因而可由单腔收敛循环错相叠加得到总转矩。
+ \item 在问题三中，排放倾向和可靠性风险仅用机理相关的无量纲代理比较候选方案；代理值不等同于法规排放、零部件寿命或目标机强度试验结果。
+ \item 在给定参数、搜索范围和不确定情景内讨论条件性能。未考虑控制器动态、材料改变、加工误差及未建模附件对实际性能的附加影响。
+\end{enumerate}
+% <skill-region:model-assumptions:end>
+
+\section{符号说明}
+% <skill-region:symbols:start>
+\begin{table}[H]
+\centering
+\caption{主要符号说明}
+\begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{2.2cm}X>{\centering\arraybackslash}p{2.8cm}}
+\toprule
+符号 & 含义 & 单位\\
+\midrule
+$R$ & 转子中心至顶点的距离 & $\mathrm{mm}$\\
+$e$ & 曲轴偏心距 & $\mathrm{mm}$\\
+$B$ & 转子厚度 & $\mathrm{mm}$\\
+$d$ & 转子内圆直径 & $\mathrm{mm}$\\
+$\theta$ & 曲轴转角 & $(^\circ)$或$\mathrm{rad}$\\
+$V_i(\theta)$ & 第$i$个工作腔的瞬时容积 & $\mathrm{cm^3}$\\
+$V_{min},V_{max}$ & 单腔最小余隙容积与最大容积 & $\mathrm{cm^3}$\\
+$V_s$ & 单腔扫气容积 & $\mathrm{cm^3}$\\
+$CR$ & 压缩比$V_{max}/V_{min}$ & 无量纲\\
+$m,m_f$ & 腔内总质量与新鲜充量质量 & $\mathrm{kg}$\\
+$m_{\mathrm{fuel}}$ & 单个热力循环的燃料质量 & $\mathrm{kg}$\\
+$p,T$ & 工作腔压力与温度 & $\mathrm{Pa}$，$\mathrm{K}$\\
+$W,Q_w$ & 单循环指示功与壁面换热量 & $\mathrm{J}$\\
+$P_b,T_b$ & 制动功率与轴端转矩 & $\mathrm{kW}$，$\mathrm{N\,m}$\\
+$\eta_b$ & 制动热效率 & 无量纲\\
+$n$ & 曲轴转速 & $\mathrm{r/min}$\\
+$U$ & 工作腔内能 & $\mathrm{J}$\\
+$H_u$ & 燃料低位热值 & $\mathrm{J/kg}$\\
+$\mathrm{IMEP},\mathrm{BMEP},\mathrm{FMEP}$ & 指示、制动与摩擦平均有效压力 & $\mathrm{Pa}$或$\mathrm{bar}$\\
+$\alpha_{ov}$ & 进、排气重叠角 & $(^\circ)$\\
+$\theta_{ign},\theta_{EOI}$ & 点火提前角与喷油结束角 & $(^\circ)$\\
+$\lambda$ & 过量空气系数 & 无量纲\\
+$E,R_f$ & 排放倾向代理与可靠性风险代理 & 无量纲\\
+$S_{rob}$ & 多情景最坏情况综合评分 & 无量纲\\
+\bottomrule
+\end{tabularx}
+\end{table}
+% <skill-region:symbols:end>
+
+\section{问题一模型的建立与求解}
+% <skill-region:problem-1:start>
+\subsection{圆弧转子--Green面积容积模型}
+
+记$R=105\,\mathrm{mm}$为转子顶点半径，$e=15\,\mathrm{mm}$为偏心距，$B=50\,\mathrm{mm}$为转子厚度。曲轴转角为$\theta$，转子转角为$\theta/3$；边界积分和微分中的$\theta$以弧度计，事件角另以度数标注。记压缩上止点为$\theta_T=69^\circ=23\pi/60$。壳体型线是转子顶点的轨迹，可参数化为
+\begin{equation}
+ \begin{cases}
+ x_h(t)=e\cos t+R\cos(t/3),\\
+ y_h(t)=e\sin t+R\sin(t/3),
+ \end{cases}\qquad 0\leq t<6\pi .
+ \label{eq:q1-housing-curve}
+\end{equation}
+由Green公式，壳体截面积为
+\begin{equation}
+ A_h=\frac{1}{2}\oint\left(x_h\,\mathrm{d}y_h-y_h\,\mathrm{d}x_h\right)
+     =\pi\left(R^2+3e^2\right).
+ \label{eq:q1-housing-area}
+\end{equation}
+
+\subsubsection{转子截面积与三腔总体积}
+
+对一条转子边，弦长的一半为$a=\sqrt{3}R/2$，弦中点至内切圆的弓高为$s=(d-R)/2$。由弦、弓高关系可得劣弧半径和圆心角
+\begin{equation}
+ \rho=\frac{a^2+s^2}{2s},\qquad
+ \gamma=2\arcsin\frac{a}{\rho}=4\arctan\frac{s}{a}.
+ \label{eq:q1-arc-geometry}
+\end{equation}
+于是转子截面积由顶点三角形与三段圆弓相加得到
+\begin{equation}
+ A_r(d)=\frac{3\sqrt{3}}{4}R^2+\frac{3\rho^2}{2}\left(\gamma-\sin\gamma\right).
+ \label{eq:q1-rotor-area}
+\end{equation}
+壳体和转子之间的三腔总自由容积因而为
+\begin{equation}
+ V_{\Sigma}(d)=\bigl[A_h-A_r(d)\bigr]B.
+ \label{eq:q1-total-volume}
+\end{equation}
+式中面积单位为$\mathrm{mm^2}$，换算体积时除以$1000$即可得到$\mathrm{cm^3}$。
+
+\subsubsection{单腔边界积分与瞬时容积}
+
+设$\Omega_A(\theta)$为A腔截面，其边界由一段壳体型线和一段随转子平移、转动的劣圆弧组成。将相邻顶点写为
+\begin{equation}
+ \boldsymbol p_k(\theta)=e\begin{pmatrix}\cos\theta\\ \sin\theta\end{pmatrix}
+ +R\begin{pmatrix}\cos(\theta/3+2k\pi/3)\\ \sin(\theta/3+2k\pi/3)\end{pmatrix},
+ \qquad k=0,1,2,
+ \label{eq:q1-vertex-motion}
+\end{equation}
+则该腔的面积可直接写为边界积分
+\begin{equation}
+ A_A(\theta)=\frac12\int_{\partial\Omega_A(\theta)}
+ \left(x\,\mathrm{d}y-y\,\mathrm{d}x\right).
+ \label{eq:q1-chamber-green}
+\end{equation}
+将式\eqref{eq:q1-housing-curve}的相应壳体弧段和由式\eqref{eq:q1-vertex-motion}确定端点的转子弧段代入式\eqref{eq:q1-chamber-green}。对$\theta$求导时，转子自身面积项及与$d$有关的定常弧段项相消，只保留偏心平移与顶点间距的交叉项，故有
+\begin{equation}
+ \frac{\mathrm{d}A_A}{\mathrm{d}\theta}
+ =\sqrt{3}Re\sin\left[\frac{2(\theta-\theta_T)}{3}\right].
+ \label{eq:q1-area-rate}
+\end{equation}
+式\eqref{eq:q1-area-rate}表明单腔面积变化幅值由$R$和$e$决定，而$d$只改变其基准余隙面积。以$\theta=\theta_T$的最小面积为积分下限，可得
+\begin{equation}
+ A_A(\theta)-A_{\min}
+ =\frac{3\sqrt{3}Re}{2}
+ \left\{1-\cos\left[\frac{2(\theta-\theta_T)}{3}\right]\right\}.
+ \label{eq:q1-area-integral}
+\end{equation}
+因而单腔扫气容积和A腔瞬时容积分别为
+\begin{equation}
+ V_s=B(A_{\max}-A_{\min})=3\sqrt{3}ReB,
+ \label{eq:q1-swept-volume}
+\end{equation}
+\begin{equation}
+ V_A(\theta;d)=V_{\min}(d)+\frac{V_s}{2}
+ \left\{1-\cos\left[\frac{2(\theta-69^\circ)}{3}\right]\right\}.
+ \label{eq:q1-volume-angle}
+\end{equation}
+式\eqref{eq:q1-volume-angle}为以度数代入时的写法；这里$V_s$由单腔移动边界积分的面积摆幅导出，并非仅由三腔守恒和极值条件设定。其余两腔与A腔保持$360^\circ$和$720^\circ$的曲轴相移：
+\begin{equation}
+ V_B(\theta;d)=V_A(\theta-360^\circ;d),\qquad
+ V_C(\theta;d)=V_A(\theta-720^\circ;d).
+ \label{eq:q1-chamber-phase}
+\end{equation}
+三腔守恒与式\eqref{eq:q1-volume-angle}相结合，给出
+\begin{equation}
+ V_{\min}(d)=\frac{V_{\Sigma}(d)-1.5V_s}{3},\qquad
+ V_{\max}(d)=V_{\min}(d)+V_s.
+ \label{eq:q1-volume-extrema}
+\end{equation}
+
+余弦项的最小正重复周期为$540^\circ$，故单腔\textbf{几何容积}的最小周期为$540^\circ$曲轴角。附件给出每个工作行程为$270^\circ$曲轴角；同一工作腔依次经历做功、排气、进气和压缩四个热力状态，故其\textbf{热力状态循环}为$1080^\circ$。A腔在$69^\circ$达到压缩上止点并开始燃烧，在$339^\circ$排气开启，在$609^\circ$进气开启，在$879^\circ$进气关闭并进入压缩，至$1149^\circ$回到下一循环的压缩上止点；其中相隔$540^\circ$的相同容积对应不同热力状态。
+
+\subsection{基准几何结果}
+
+将$d=147\,\mathrm{mm}$代入上述模型，得到表\ref{tab:q1-baseline}。表中结果仅适用于上述圆弧理想化几何。
+
+\begin{table}[H]
+\centering
+\caption{基准几何与容积计算结果}
+\label{tab:q1-baseline}
+\begin{tabular}{lll}
+\toprule
+指标 & 数值 & 含义\\
+\midrule
+壳体截面积$A_h$ & $36756.63\,\mathrm{mm^2}$ & 由壳体型线积分得到\\
+转子截面积$A_r$ & $22041.10\,\mathrm{mm^2}$ & 三角形与三段劣圆弓面积之和\\
+三腔自由总体积$V_{\Sigma}$ & $735.78\,\mathrm{cm^3}$ & 任意曲轴角下的三腔容积之和\\
+单腔最小余隙容积$V_{\min}$ & $40.66\,\mathrm{cm^3}$ & A腔在$69^\circ$时的容积\\
+单腔扫气容积$V_s$ & $409.20\,\mathrm{cm^3}$ & 单腔最大、最小容积之差\\
+单腔最大容积$V_{\max}$ & $449.86\,\mathrm{cm^3}$ & A腔在$339^\circ$和$879^\circ$时的容积\\
+压缩比$CR=V_{\max}/V_{\min}$ & $11.064$ & 按附件定义计算\\
+题面排量$3V_{\max}$ & $1349.57\,\mathrm{cm^3}$ & 单腔进气结束点容积乘以3\\
+三个工作面的扫气容积数值和$3V_s$ & $1227.59\,\mathrm{cm^3}$ & 仅为三个单腔扫气容积之和\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+由附件的排量定义，本题排量为$3V_{\max}=1349.57\,\mathrm{cm^3}$，压缩比为$11.064$。$V_s$是单腔扫气容积；在单转子制动平均有效压力的功率关系式中，应采用$P=\mathrm{BMEP}\cdot V_s\cdot n/60$。$3V_s$只能表示三个工作面的扫气容积数值和，若在相同$\mathrm{BMEP}$和$n/60$下直接代入该式会重复计入工作循环，故不作为该计算口径的体积量。
+
+图\ref{fig:q1-volume-cr}给出三腔容积随曲轴角的变化及$d$对压缩比的影响。左图显示三腔曲线相差$360^\circ$，并在$540^\circ$后复现相同几何容积；右图将$d=150\,\mathrm{mm}$标为接触边界，边界右侧的曲线仅表示代数延拓，不能作为物理解。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/q1-volume-cr.png}
+\caption{三腔容积曲线与转子内圆直径对压缩比的影响}
+\label{fig:q1-volume-cr}
+\end{figure}
+
+图中接触线左侧的压缩比曲线对应非干涉的理想几何；其右侧虽可由公式继续计算，却已经失去实体几何意义。
+
+\subsection{内圆直径灵敏度与适用范围}
+
+由式\eqref{eq:q1-rotor-area}，$d$增大时转子面积增大，而壳体型线和$V_s$保持不变，因此$V_{\min}$减小、压缩比升高。为判定理想几何是否发生实体重叠，边中点与壳体的解析间隙为
+\begin{equation}
+ g(d)=R-2e-\frac{d}{2}.
+ \label{eq:q1-gap}
+\end{equation}
+故$d=150\,\mathrm{mm}$为接触边界，$d>150\,\mathrm{mm}$即出现理想几何中的实体重叠。代表性结果见表\ref{tab:q1-sensitivity}。
+
+\begin{table}[H]
+\centering
+\caption{转子内圆直径灵敏度与几何判定}
+\label{tab:q1-sensitivity}
+\begin{tabular}{ccccc}
+\toprule
+$d/\mathrm{mm}$ & $V_{\min}/\mathrm{cm^3}$ & $V_{\max}/\mathrm{cm^3}$ & $CR$ & 几何判定\\
+\midrule
+$132.3$ & $86.19$ & $495.39$ & $5.747$ & 非干涉\\
+$147.0$ & $40.66$ & $449.86$ & $11.064$ & 非干涉\\
+$150.0$ & $31.26$ & $440.46$ & $14.091$（边界值） & 接触边界\\
+$150.01$ & $31.23$ & $440.42$ & --（代数值$14.104$） & 实体重叠，非物理解\\
+$161.7$ & $-5.84$ & $403.35$ & 无物理意义 & 实体重叠的代数延拓\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+在题设$\pm10\%$扫描内，理想几何的物理非干涉区间为$[132.3,150)\,\mathrm{mm}$，$150\,\mathrm{mm}$仅为接触边界，故$+10\%$端点$d=161.7\,\mathrm{mm}$不可行。$d=159.872613647\,\mathrm{mm}$是重叠区域内$V_{\min}=0$的代数根，不能解释为机械干涉边界；同理，$d=161.7\,\mathrm{mm}$不具有物理压缩比。本问不据此推定制造公差、热膨胀、密封或最小壁厚阈值。
+
+% <skill-region:problem-1:verification:start>
+\subsection{模型检验}
+
+为检验圆弧转子--Green面积容积模型的解析推导、相位关系及几何可行边界，分别从独立重算、全转角一致性、事件锚定和接触判据四个层面进行核验。下列差值均为解析式与数值计算之间的有限精度残差，并非实测误差。
+
+\begin{table}[H]
+\centering
+\small
+\caption{问题一模型检验结果}
+\label{tab:q1-verification}
+\begin{tabular}{p{0.22\textwidth}p{0.47\textwidth}p{0.20\textwidth}}
+\toprule
+检验目的与判据 & 方法与结果 & 对正文结论的影响\\
+\midrule
+基准容积解析式的正确性 & 以80位高精度算术独立重算壳体面积、圆弧转子面积及基准容积；再以移动边界的Green离散积分交叉计算单腔容积。两种容积表达的最大差为$5.2\times10^{-7}\,\mathrm{cm^3}$，相对于数百$\mathrm{cm^3}$的腔容积可忽略。 & 支持基准排量与压缩比由几何解析式给出。\\
+全转角周期与守恒关系 & 在$20003$个等间隔曲轴角上检查$V_A(\theta+540^\circ)=V_A(\theta)$及$V_A+V_B+V_C=V_{\Sigma}$；最大残差分别为$8.3\times10^{-13}\,\mathrm{cm^3}$和$1.1\times10^{-12}\,\mathrm{cm^3}$。热力状态坐标在$1080^\circ$后复位，角度残差为$1.2\times10^{-13}\,^\circ$。 & 证实$540^\circ$是几何容积周期，$1080^\circ$是热力状态循环，且三腔相移关系自洽。\\
+行程事件与容积极值的对应性 & 以附件给出的每$270^\circ$行程顺序及极小、极大容积标签为判据，在$69^\circ$、$339^\circ$、$609^\circ$、$879^\circ$和$1149^\circ$逐点核对A腔状态；各事件的极值类型与做功--排气--进气--压缩的既定顺序一致。 & 支持正文对压缩上止点、排气开启、进气开启和进气关闭的相位标定。\\
+内圆直径的接触边界 & 对解析间隙$g(d)=R-2e-d/2$，有$g(147)=1.5\,\mathrm{mm}$、$g(150)=0$、$g(150.01)=-0.005\,\mathrm{mm}$。进一步在$721$个转子姿态和$24001$个壳体离散点上作多边形包含检查，分别确认$d=147\,\mathrm{mm}$包含、$d=150\,\mathrm{mm}$接触、$d=150.01\,\mathrm{mm}$越界。 & 支持$[132.3,150)\,\mathrm{mm}$为理想几何的非干涉区间，$150\,\mathrm{mm}$仅为接触边界。\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+上述检验支持基准排量、压缩比以及$[132.3,150)\,\mathrm{mm}$内圆直径范围的理想几何非干涉结论。该结论仅针对上述对称劣圆弧构造，不包含制造公差、热变形和密封等实际因素，因而不能据此判定实际零件的安全裕度。
+% <skill-region:problem-1:verification:end>
+% <skill-region:problem-1:end>
+
+\section{问题二模型的建立与求解}
+% <skill-region:problem-2:start>
+\subsection{相似机型约束的开放系统热力--转矩耦合模型}
+
+令$\varphi=\theta-69^\circ$为相对于压缩上止点的局部偏心轴角，$\varphi=0$对应单腔最小容积。由问题一可得
+\begin{equation}
+ V(\varphi)=V_{\min}+\frac{V_s}{2}
+ \left[1-\cos\left(\frac{2\varphi}{3}\right)\right],
+ \qquad V_s=409.197\,\mathrm{cm^3},\quad CR=11.064 .
+ \label{eq:q2-local-volume}
+\end{equation}
+式中三角函数按角度制计算；在微分方程中，$\varphi$的自变量单位为度，故转速为$n$时有$\mathrm dt/\mathrm d\varphi=1/(6n)\,\mathrm{s/(^\circ)}$。同一腔的热力状态在$1080^\circ$后复位。
+
+\subsubsection{开放系统质量与能量方程}
+
+取状态向量$\boldsymbol y=(m,m_f,U,W,Q_w)^{\mathsf T}$，其中$m$为缸内总质量，$m_f$为新鲜充量质量，$U$为内能，$W$和$Q_w$分别为循环累计指示功和壁面散热量。采用零维理想气体关系
+\begin{equation}
+ pV=mRT,\qquad U=mc_vT .
+ \label{eq:q2-state}
+\end{equation}
+若进流、出流质量流率分别记为$\dot m_{j,\mathrm{in}}$和$\dot m_{j,\mathrm{out}}$，则开放系统方程写为
+\begin{align}
+ \frac{\mathrm dm}{\mathrm d\varphi}
+ &=\frac{1}{6n}\sum_j
+ \left(\dot m_{j,\mathrm{in}}-\dot m_{j,\mathrm{out}}\right),\nonumber\\
+ \frac{\mathrm dm_f}{\mathrm d\varphi}
+ &=\frac{1}{6n}\left[\dot m_{\mathrm{in}}+
+ \dot m_{\ell,\mathrm{in}}-
+ \frac{m_f}{m}\sum_j\dot m_{j,\mathrm{out}}\right],\nonumber\\
+ \frac{\mathrm dU}{\mathrm d\varphi}
+ &=\frac{\mathrm dQ_b}{\mathrm d\varphi}
+ -p\frac{\mathrm dV}{\mathrm d\varphi}
+ -\frac{\mathrm dQ_w}{\mathrm d\varphi}
+ +\frac{1}{6n}\left(\sum_j\dot m_{j,\mathrm{in}}h_{j,\mathrm{in}}
+ -\sum_j\dot m_{j,\mathrm{out}}c_pT\right),\nonumber\\
+ \frac{\mathrm dW}{\mathrm d\varphi}&=p\frac{\mathrm dV}{\mathrm d\varphi},
+ \qquad
+ \frac{\mathrm dQ_w}{\mathrm d\varphi}=hA_w(T-T_w)\frac{1}{6n}.
+ \label{eq:q2-open-energy}
+\end{align}
+新鲜充量方程假定流出气体与缸内气体完全混合；该近似用于描述短路损失与残余气变化，不代表真实三维流场。
+
+进气口、排气口和等效泄漏通道均采用准稳态可压缩孔口流。对上游状态$(p_u,T_u)$和下游压力$p_d$，单向质量流率为
+\begin{equation}
+ \dot m=C_dA(\varphi)p_u\sqrt{\frac{\gamma}{RT_u}}\,
+ \Phi\!\left(\frac{p_d}{p_u}\right),
+ \label{eq:q2-orifice}
+\end{equation}
+其中$\Phi$按照临界压比分为阻塞流和非阻塞流两段。端口有效面积采用正弦升程近似
+\begin{equation}
+ A_j(\varphi)=
+ \begin{cases}
+ A_{j,\max}\sin\!\left[\dfrac{\pi(\varphi-\varphi_{j,o})}
+ {\varphi_{j,c}-\varphi_{j,o}}\right],
+ &\varphi_{j,o}\leq\varphi\leq\varphi_{j,c},\\
+ 0,&\text{其他},
+ \end{cases}
+ \label{eq:q2-port-area}
+\end{equation}
+并按$(V_s/225\,\mathrm{cm^3})^{2/3}$缩放相似机型端口面积。以$533^\circ$为重叠中心，重叠角$\alpha_{ov}$通过排气关闭角$533^\circ+\alpha_{ov}/2$和进气开启角$533^\circ-\alpha_{ov}/2$进入模型；排气开启角$150^\circ$、进气关闭角$850^\circ$保持不变。这些时序和面积函数属于条件建模先验，并非目标机端口的实测几何。
+进气压力随转速的条件修正写为$p_{\mathrm{in,eff}}=p_{\mathrm{in}}\exp(k_1\nu+k_2\nu^2)$，其中$\nu=(n-6000)/1000$。
+
+\subsubsection{燃烧、换热、泄漏与机械损失}
+
+燃烧过程采用Wiebe函数。令$z=(\varphi-\varphi_0)/\Delta\varphi_b$，在$0<z<1$内有
+\begin{equation}
+ x_b=1-\exp(-5z^3),\qquad
+ \frac{\mathrm dQ_b}{\mathrm d\varphi}
+ =\eta_c m_{\mathrm{fuel}}H_u\frac{15z^2\exp(-5z^3)}{\Delta\varphi_b}.
+ \label{eq:q2-wiebe}
+\end{equation}
+计算取汽油低位热值$H_u=43.5\,\mathrm{MJ/kg}$，参考情景中$\varphi_0=-18^\circ$、过量空气系数为1。每个收敛循环开始时，由新鲜充量和空燃比14.5计算一次循环燃料量，并在该循环全部积分子步中保持不变，从而使放热量、制动热效率和制动比油耗使用同一燃料口径。
+
+壁面换热采用压力、温度和转速的简化幂律关联，而不是完整Woschni模型；泄漏采用$0.03\,\mathrm{mm^2}$代表性等效孔口。该泄漏面积是相似机型敏感性研究中的工程先验，不解释为目标机实测间隙。机械损失通过摩擦平均有效压力表示：
+\begin{equation}
+ \mathrm{FMEP}(n)=s_f\left[0.23+
+ \frac{n-4600}{7500-4600}(0.385-0.23)\right]
+ \left[0.70+0.30\left(\frac{V_s}{225\,\mathrm{cm^3}}\right)^{2/3}
+ \left(\frac{n}{6000}\right)^2\right]\ \mathrm{bar}.
+ \label{eq:q2-fmep}
+\end{equation}
+
+三腔压力和容积导数分别按$360^\circ$、$720^\circ$错相。以$p_r$为共同参考压力，瞬时气体转矩与制动功率为
+\begin{align}
+ T_g(\varphi)&=\sum_{i=A,B,C}[p_i(\varphi)-p_r]
+ \frac{\mathrm dV_i}{\mathrm d\theta_{\mathrm{rad}}},\nonumber\\
+ \mathrm{BMEP}&=\mathrm{IMEP}-\mathrm{FMEP},\qquad
+ T_b=\frac{\mathrm{BMEP}\,V_s}{2\pi},\qquad
+ P_b=\mathrm{BMEP}\,V_s\frac{n}{60}.
+ \label{eq:q2-torque-power}
+\end{align}
+由于$\sum_i\mathrm dV_i/\mathrm d\theta_{\mathrm{rad}}=0$，共同参考压力项在三腔求和时抵消。式\eqref{eq:q2-torque-power}使用单腔扫气容积$V_s$，与问题一的单转子做功频率口径一致。
+
+\subsection{受限参数拟合与循环求解}
+
+Peden等给出了AIE 225CS单转子发动机的公开性能研究\cite{peden2018wankel}。本文选取其中$5000$--$7500\,\mathrm{r/min}$范围内16个手工数字化扭矩候选点，对模型量级和转速趋势施加约束。这些点既不是原始台架数表，也不是题设目标机的观测值，因而不能构成目标机验证集。
+
+考虑16个候选点不足以同时辨识全部参数，拟合时固定表\ref{tab:q2-fixed-priors}中的六项工程先验，只将燃烧效率$\eta_c$和摩擦尺度$s_f$作为自由参数。数值求解先在两参数$7\times7$网格的49个节点上执行$1^\circ$步长的精确ODE计算，再为各转速建立二次响应代理；随后从三个初值进行有界最小二乘，并将每个候选解重新代入精确ODE比较。
+
+\begin{table}[H]
+\centering
+\caption{开放系统模型的固定工程先验}
+\label{tab:q2-fixed-priors}
+\begin{tabular}{lll}
+\toprule
+参数 & 固定值 & 模型作用\\
+\midrule
+$A_{\mathrm{in},\max}$ & $361.915\,\mathrm{mm^2}$ & 进气孔口峰值面积\\
+$A_{\mathrm{ex},\max}$ & $606.159\,\mathrm{mm^2}$ & 排气孔口峰值面积\\
+换热尺度$k_h$ & $0.96941$ & 简化壁面换热关联\\
+燃烧持续角$\Delta\varphi_b$ & $111.240^\circ$ & Wiebe放热历程\\
+进气压力线性系数$k_1$ & $0.077908$ & 转速修正\\
+进气压力二次系数$k_2$ & $-0.018299$ & 转速修正\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+受限拟合得到$\eta_c=0.73923$、$s_f=1.80$；三组初值均落在$s_f$的施加上界，说明优化过程在给定边界内具有确定的数值解，但现有扭矩点不能独立识别摩擦尺度的物理值。样本内残差诊断为$\mathrm{MAPE}=3.76\%$、$\mathrm{RMSE}=1.57\,\mathrm{N\,m}$；二者由参与拟合的同一批扭矩点计算，只用于描述样本内拟合程度，不是独立验证误差、测量误差或跨机型误差。
+
+对每个工况，模型在$[-30^\circ,1050^\circ]$内以$1^\circ$步长执行四阶Runge--Kutta积分，并连续迭代完整循环，直至循环端点的质量、新鲜充量和内能相对残差满足给定阈值。指示功和壁面散热量同时作为RK4状态积分，避免用更新后的压力与前一角度的容积增量错位相乘。
+
+\subsection{参考情景的条件功率与转矩}
+
+在$n=6000\,\mathrm{r/min}$、参考重叠角$\alpha_{ov}=128^\circ$下，以六项工程先验固定、两参数受限拟合并经$1^\circ$精确ODE回代，得到表\ref{tab:q2-reference-result}所示条件输出。
+
+\begin{table}[H]
+\centering
+\caption{$6000\,\mathrm{r/min}$、$128^\circ$参考情景的条件模型输出}
+\label{tab:q2-reference-result}
+\begin{tabular}{lll}
+\toprule
+指标 & 条件输出 & 解释范围\\
+\midrule
+制动功率$P_b$ & $42.82\,\mathrm{kW}$ & 跨机型条件预测\\
+平均制动转矩$T_b$ & $68.15\,\mathrm{N\,m}$ & 由单腔$V_s$口径计算\\
+循环燃料量$m_{\mathrm{fuel}}$ & $29.326\,\mathrm{mg/cycle}$ & 收敛循环起点充量确定\\
+制动热效率$\eta_b$ & $0.3357$ & 统一燃料口径下的模型响应\\
+制动比油耗$\mathrm{BSFC}$ & $246.55\,\mathrm{g/(kW\,h)}$ & 与$\eta_b$对应\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+制动热效率与制动比油耗分别按
+\begin{equation}
+ \eta_b=\frac{P_b}{m_{\mathrm{fuel}}H_u n/60},\qquad
+ \mathrm{BSFC}=\frac{m_{\mathrm{fuel}}n\times60000}{P_b}
+ \quad\left[\mathrm{g/(kW\,h)}\right]
+ \label{eq:q2-efficiency}
+\end{equation}
+计算。表中$42.82\,\mathrm{kW}$不是目标机实测最大功率，也不是无约束理论上界；它是相似机型候选点、固定工程先验及受限拟合共同限定的参考情景输出。
+
+图\ref{fig:q2-cycle-trace}给出该参考情景的模型预测压力和温度循环轨迹。曲线用于说明开放系统放热、换气和压缩过程的相位关系，不能解释为目标机缸压或缸温实测曲线。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.90\textwidth]{figures/q2-pressure-temperature-trace.png}
+\caption{参考情景下的模型预测压力--温度循环轨迹}
+\label{fig:q2-cycle-trace}
+\end{figure}
+
+将单腔压力轨迹按三腔相位关系叠加，可得图\ref{fig:q2-three-torque}。三腔总气体转矩经平均机械损失修正后形成条件轴转矩；图中瞬时波动只反映当前零维模型和相位假设下的计算结果。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.90\textwidth]{figures/q2-three-chamber-torque.png}
+\caption{三腔错相叠加得到的模型预测瞬时转矩}
+\label{fig:q2-three-torque}
+\end{figure}
+
+\subsection{重叠角的条件效率响应}
+
+在其他参数不变时，对$\alpha_{ov}\in[20^\circ,170^\circ]$按$5^\circ$步长扫描。图\ref{fig:q2-overlap-response}左侧给出相似机型数字化扭矩点的样本内拟合诊断，中、右两部分给出重叠角的条件响应。在当前端口面积函数和受限参数下，功率随重叠角增加总体下降；$20^\circ$处的条件功率为$46.36\,\mathrm{kW}$，但该点恰位于扫描下边界，因此只能说明当前网格未包围功率的内部极值，不能称为实际最优重叠角。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/q2-overlap-response.png}
+\caption{相似机型样本内拟合与重叠角条件响应}
+\label{fig:q2-overlap-response}
+\end{figure}
+
+效率响应并不与功率单调变化完全一致。较小重叠角减弱新鲜充量短路，有利于保持功率；适度重叠又能改善残余气排出和循环新鲜充量，从而形成效率权衡。在当前$20^\circ$--$170^\circ$、$5^\circ$网格内，制动热效率于$75^\circ$达到网格最大值$0.3363$，相应BSFC为网格最小值$246.11\,\mathrm{g/(kW\,h)}$。这一位置依赖固定端口形状、跨机型候选点、换热与泄漏先验以及摩擦尺度边界，只能称为指定网格内的条件效率最大点，不能外推为目标机的实际最优角。
+
+在$6000\,\mathrm{r/min}$、$128^\circ$参考情景下，开放系统热力--转矩耦合模型给出$42.82\,\mathrm{kW}$和$68.15\,\mathrm{N\,m}$的条件输出，并揭示了重叠角对充量保持、残余气清除和效率之间的权衡。由于缺少目标机台架数据且摩擦尺度命中拟合上界，目标机的实测最大功率和实际最优重叠角仍不能由现有证据唯一确定。
+
+% <skill-region:problem-2:verification:start>
+\subsection{模型检验}
+
+为区分“数值实现正确”与“目标机物理预测有效”，本节仅检验开放系统ODE、循环收敛、功率口径和参数化扫描的数值自洽性。由于当前缺少题设目标机的台架数据，下述检验不将条件模型输出解释为实测验证结果。
+
+\begin{table}[H]
+\centering
+\small
+\caption{问题二数值实现与条件模型检验}
+\label{tab:q2-verification}
+\begin{tabular}{p{0.20\textwidth}p{0.50\textwidth}p{0.20\textwidth}}
+\toprule
+检验目的与判据 & 方法、指标与结果 & 对正文结论的影响\\
+\midrule
+重复计算与结果一致性：重复运行应正常结束，数值表与图形的SHA-256校验值应逐项一致。 & 输入已验收的参数组合、$6000\,\mathrm{r/min}$参考工况及$20^\circ$--$170^\circ$扫描网格，连续两次执行完整求解流程。四类数值结果和六幅结果图的校验值逐项一致；$1081$点循环轨迹、三腔转矩轨迹及$31$点重叠角扫描均可重现。 & 支持给定参数下结果的重复计算，不检验跨机型预测的物理有效性。\\
+循环收敛与RK4同步积分：质量、内能方程应量纲一致，循环端点应达到固定点，功与壁面散热不得与压力状态错位。 & 以$6000\,\mathrm{r/min}$、$128^\circ$参考工况为输入，独立检查$\mathrm dm/\mathrm d\varphi$、$\mathrm dU/\mathrm d\varphi$及各流动焓项的单位和正负号，并将功和壁热作为RK4状态同步积分。经$4$个$1080^\circ$循环收敛，状态相对残差为$9.53\times10^{-7}$；RK4积分功$453.953610\,\mathrm{J}$与端点梯形重积分$453.945632\,\mathrm{J}$的相对差为$1.76\times10^{-5}$。 & 支持质量--能量方程的数值实现及参考工况循环固定点。\\
+角度步长收敛：将正式$1^\circ$网格细化至$0.5^\circ$，主要输出相对差应小于$0.1\%$。 & 对同一参考工况保持参数和边界条件不变，仅细化角度步长。$0.5^\circ$细化后功率为$42.835217\,\mathrm{kW}$，与$1^\circ$结果$42.820137\,\mathrm{kW}$相差$0.0352\%$；循环功、转矩、IMEP和BMEP的相对差均不超过$0.0352\%$，$\eta_b$与BSFC的相对差均约为$0.00963\%$。 & 表明$1^\circ$步长对本问所报精度已具有数值稳定性。\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{问题二功率口径、效率口径与受限求解检验}
+\label{tab:q2-consistency-verification}
+\begin{tabular}{p{0.20\textwidth}p{0.50\textwidth}p{0.20\textwidth}}
+\toprule
+检验目的与判据 & 方法、指标与结果 & 对正文结论的影响\\
+\midrule
+三腔相位与功率口径：错相积分功应等于三倍单腔循环功，平均轴转矩应与单腔$V_s$的BMEP公式一致。 & 输入参考工况单腔压力和容积轨迹，将三腔压力按$360^\circ$和$720^\circ$错相，共同参考压力项因$\sum_i\mathrm dV_i/\mathrm d\theta=0$严格抵消。三腔梯形积分功为$1361.836896\,\mathrm{J}$，与三倍RK4单腔功$1361.860831\,\mathrm{J}$的相对差为$1.76\times10^{-5}$；轨迹平均轴转矩$68.149095\,\mathrm{N\,m}$与BMEP公式值$68.150365\,\mathrm{N\,m}$相差$1.27\times10^{-3}\,\mathrm{N\,m}$。 & 支持三腔错相转矩和单腔$V_s$功率口径，排除三倍重复计数。\\
+燃料口径与效率公式：基准、细化及扫描工况应采用同一循环燃料定义，$\eta_b$和BSFC应可由原始量独立回算。 & 输入基准、$0.5^\circ$细化及$31$个扫描点共$33$个热力工况，均由收敛循环起点新鲜充量确定燃料量，并在循环内保持不变。独立回算的燃料量最大绝对差为$6.8\times10^{-21}\,\mathrm{kg}$，$\eta_b$和BSFC公式误差为$0$，表中舍入误差不超过$5.6\times10^{-17}$。 & 支持在统一口径下比较条件效率响应，不等于目标机实际效率验证。\\
+受限拟合与扫描完整性：多起点求解应成功结束，代理候选解须经精确ODE回代，所有扫描点须达到循环收敛。 & 输入$16$个数字化扭矩点与$31$点角度网格；先在$7\times7$网格的$49$个节点执行精确ODE筛查，再以三个起点作两参数有界最小二乘。三个代理优化均成功结束，候选解经$16$个转速的精确ODE回代后均在$4$个循环收敛。同一$16$点拟合样本上的MAPE为$3.7566\%$、RMSE为$1.5691\,\mathrm{N\,m}$；$31$个重叠角点全部收敛，最大状态残差不超过$8.31\times10^{-6}$。 & 支持受限求解流程与指定网格响应的数值完整性；MAPE和RMSE仅为样本内诊断。\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+上述检验表明，在已给定的端口、换热、泄漏和燃烧先验下，程序的循环积分、功率口径、效率算式及重叠角扫描在数值上自洽。但是，三个起点均给出$s_f=1.8$的施加上界，其余六项工程系数又未由目标机数据辨识，因而该参数不具有物理唯一性。相应地，$42.82\,\mathrm{kW}$的参考工况功率、$20^\circ$扫描边界的$46.36\,\mathrm{kW}$、效率曲线及模型峰值状态只能视为当前先验与受限参数下的条件输出；它们不构成目标机最大功率、实际最优重叠角或峰值缸压、缸温的台架验证。
+% <skill-region:problem-2:verification:end>
+% <skill-region:problem-2:end>
+
+\section{问题三模型的建立与求解}
+% <skill-region:problem-3:start>
+\subsection{条件鲁棒多目标设计模型}
+
+令设计向量为
+\begin{equation}
+ \boldsymbol{x}=(d,\alpha_{ov},\theta_{ign},\theta_{EOI},\lambda),
+ \label{eq:q3-design-vector}
+\end{equation}
+其中$d$为转子内圆直径，$\alpha_{ov}$为进排气重叠角，$\theta_{ign}$为点火提前角，$\theta_{EOI}$为喷油结束角，$\lambda$为过量空气系数。依据问题一的扫描范围、$150\,\mathrm{mm}$理想几何接触边界及问题二的参数范围，取
+\begin{equation}
+ \begin{aligned}
+ 132.3&\le d\le149.8\ \mathrm{mm},&20^\circ&\le\alpha_{ov}\le170^\circ,\\
+ 10^\circ&\le\theta_{ign}\le30^\circ,&570^\circ&\le\theta_{EOI}\le620^\circ,\\
+ 0.95&\le\lambda\le1.15.&&
+ \end{aligned}
+ \label{eq:q3-bounds}
+\end{equation}
+这里保留$0.2\,\mathrm{mm}$的数值间隔，仅用于避免在接触点求值，不代表制造安全裕量。对每个$d$，仍由式\eqref{eq:q1-rotor-area}、式\eqref{eq:q1-total-volume}和式\eqref{eq:q1-volume-extrema}重算$V_{min}$与压缩比；$d\ge150\,\mathrm{mm}$的实体重叠解不进入候选集。
+
+五个变量均直接进入问题二热力模型：$d$改变压缩比，$\alpha_{ov}$改变端口开启区间，$\theta_{ign}$改变Wiebe放热相位，$\theta_{EOI}$与$\lambda$共同决定收敛循环起点的新鲜充量和燃料量。由循环积分得到制动功率$P$、制动热效率$\eta_b$、峰值压力$p_{max}$和峰值温度$T_{max}$；制动比油耗不再作为独立目标，而由
+\begin{equation}
+ \mathrm{BSFC}=\frac{3.6\times10^9}{\eta_b H_u}
+ \label{eq:q3-bsfc}
+\end{equation}
+计算，其中$H_u=43.5\,\mathrm{MJ/kg}$。
+
+由于附件未给出排放和密封寿命数据，本文只构造用于方案相对比较的代理指标。记归一化重叠量$z_{ov}=(\alpha_{ov}-20)/150$，则排放倾向代理取
+\begin{equation}
+ E=0.30z_{ov}+0.35\frac{(1-\lambda)_+}{0.05}
+ +0.20\left(\frac{T_{max}-2200}{800}\right)^2
+ +0.15\frac{(595-\theta_{EOI})_+}{25},
+ \label{eq:q3-emission-proxy}
+\end{equation}
+其中$(u)_+=\max(u,0)$。可靠性风险代理取
+\begin{equation}
+ R_f=0.60\left(\frac{p_{max}}{8}\right)^2
+ +0.25\left(\frac{CR}{14}\right)^2
+ +0.15\left(\frac{\alpha_{ov}-95}{100}\right)^2.
+ \label{eq:q3-risk-proxy}
+\end{equation}
+式\eqref{eq:q3-emission-proxy}和式\eqref{eq:q3-risk-proxy}均为无量纲条件代理，$8\,\mathrm{MPa}$只是本模型的候选筛选阈值，不能解释为目标机的实测强度极限。
+
+模型以最大化$P$和$\eta_b$、最小化$E$和$R_f$为四个目标，并施加
+\begin{equation}
+ V_{min}>0,\quad d<150\,\mathrm{mm},\quad 5\le CR\le18,
+ \quad p_{max}\le8\,\mathrm{MPa},\quad0.22\le\eta_b\le0.40.
+ \label{eq:q3-constraints}
+\end{equation}
+
+\subsection{ODE设计集、代理筛选与情景复排}
+
+以固定随机种子生成$400$个七维拉丁超立方点\cite{mckay1979lhs}。除式\eqref{eq:q3-design-vector}的五个设计变量外，再令燃烧效率倍率在$[0.96,1.04]$、摩擦尺度倍率在$[0.90,1.10]$内变化；每个点均用$3^\circ$步长积分开放系统ODE至循环收敛。以其中$80\%$训练极端随机树回归器\cite{geurts2006extraTrees}，其余$20\%$作为独立留出集，代理仅用于从$50000$个候选中筛选，不直接决定正式推荐。
+
+为使不确定情景直接进入热力过程，设置基准情景$(1.00,1.00,0^\circ)$及四种组合扰动$(0.96,1.10,+5^\circ)$、$(1.04,0.90,-5^\circ)$、$(0.98,1.05,-5^\circ)$和$(1.02,0.95,+5^\circ)$，三元组依次表示燃烧效率倍率、摩擦倍率和重叠角偏差。对各情景的四项指标作截断线性效用变换，以权重$(0.40,0.25,0.20,0.15)$合成评分，并定义
+\begin{equation}
+ S_{rob}(\boldsymbol{x})=\min_{s\in\mathcal S}S(\boldsymbol{x};s).
+ \label{eq:q3-robust-score}
+\end{equation}
+代理筛出的前$40$个候选全部在五种情景下重新执行ODE，共完成$200$次情景回代；以式\eqref{eq:q3-robust-score}最大的候选作为推荐，再用$1^\circ$步长精细计算。该两级算法使代理只承担候选压缩作用，最终排序和数值均来自热力ODE。
+
+\subsection{条件设计结果}
+
+ODE复排得到的条件推荐为
+\begin{equation}
+ (d,\alpha_{ov},\theta_{ign},\theta_{EOI},\lambda)
+ =(149.602\,\mathrm{mm},23.261^\circ,29.745^\circ,591.682^\circ,0.9689).
+ \label{eq:q3-recommendation}
+\end{equation}
+其$1^\circ$精细回代结果见表\ref{tab:q3-recommendation}。
+
+\begin{table}[H]
+\centering
+\caption{问题三条件推荐点的ODE回代结果}
+\label{tab:q3-recommendation}
+\begin{tabular}{lcc}
+\toprule
+指标 & 条件预测值 & 解释边界\\
+\midrule
+压缩比$CR$ & $13.5872$ & 问题一理想几何\\
+制动功率$P$ & $52.7634\,\mathrm{kW}$ & $6000\,\mathrm{r/min}$条件预测\\
+制动热效率$\eta_b$ & $0.3725$ & 统一循环燃料口径\\
+BSFC & $222.18\,\mathrm{g/(kW\,h)}$ & 由式\eqref{eq:q3-bsfc}换算\\
+峰值压力$p_{max}$ & $6.9774\,\mathrm{MPa}$ & 热力模型预测\\
+峰值温度$T_{max}$ & $2922.1\,\mathrm{K}$ & 热力模型预测\\
+排放倾向代理$E$ & $0.4064$ & 无量纲相对指标\\
+可靠性风险代理$R_f$ & $0.7687$ & 无量纲相对指标\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/q3-conditional-pareto.png}
+\caption{条件设计候选的功率--BSFC关系与代理Pareto集合}
+\label{fig:q3-conditional-pareto}
+\end{figure}
+
+推荐点在燃烧效率降低$4\%$、摩擦倍率增至$1.10$且重叠角增加$5^\circ$的最不利情景下取得最低评分；五种情景均达到循环收敛。与问题二$128^\circ$参考情景相比，该方案的增益来自压缩比、点火相位、混合气浓度与重叠角的联合改变，而非单一变量外推。
+
+式\eqref{eq:q3-recommendation}中的$d$和$\theta_{ign}$接近搜索上边界，$\alpha_{ov}$接近下边界；不同种子和权重下，重叠角推荐还存在明显变化。因此本文只将其作为当前先验和候选池中的试验起点。实际改进时，应优先在$d=148.5$--$149.8\,\mathrm{mm}$、$\alpha_{ov}=20^\circ$--$70^\circ$、$\theta_{ign}=27^\circ$--$30^\circ$邻域布置台架试验，采集缸压、燃油流量、HC/CO/$\mathrm{NO_x}$及密封温度，再重新辨识问题二参数和式\eqref{eq:q3-emission-proxy}--\eqref{eq:q3-risk-proxy}。在取得这些数据以前，$52.7634\,\mathrm{kW}$及相应效率均不是目标机实测或保证可实现的性能。
+
+% <skill-region:problem-3:verification:start>
+\subsection{问题三模型检验}
+
+对ODE设计集和几何约束进行检查。$400$个拉丁超立方设计点均达到循环固定点，最大状态相对残差为$1.998\times10^{-5}$；$50000$个正式搜索候选全部满足$d<150\,\mathrm{mm}$，未再出现实体重叠解。推荐点的$V_{min}=32.5091\,\mathrm{cm^3}>0$、$CR=13.5872$、$p_{max}=6.9774\,\mathrm{MPa}<8\,\mathrm{MPa}$，满足式\eqref{eq:q3-constraints}。
+
+留出集用于检验代理筛选误差。固定划分$20\%$留出集后，功率、制动热效率、峰压和峰温的$R^2$分别为$0.8833$、$0.8525$、$0.7824$和$0.9227$，平均绝对误差分别为$1.0274\,\mathrm{kW}$、$0.00648$、$0.2340\,\mathrm{MPa}$和$35.23\,\mathrm{K}$。峰压代理精度不足以独立确认最优点，因此本文未使用代理输出作为正式推荐数值，而是对前$40$个候选的五种情景执行$200$次ODE复排。该检验支持代理用于候选压缩，但不支持由代理Pareto集合宣称全局最优。
+
+对入选点进一步比较$3^\circ$、$1^\circ$和$0.5^\circ$积分。三种步长所得功率依次为$52.7582$、$52.7634$和$52.7731\,\mathrm{kW}$，$1^\circ$相对$0.5^\circ$的差为$0.0184\%$；峰压依次为$6.9746$、$6.9774$和$6.9775\,\mathrm{MPa}$，$1^\circ$与$0.5^\circ$相差$1.63\times10^{-5}$。五个不确定情景的$1^\circ$回代均收敛，其评分最低者为燃烧效率倍率$0.96$、摩擦倍率$1.10$且重叠角增加$5^\circ$的情景。五种情景均通过改变ODE输入重新积分，并非对输出量作统一比例缩放。
+
+进一步改变随机种子、候选数及权重。$20000$、$50000$和$80000$个候选以及两组替代权重下，$d$集中于$148.48$--$149.45\,\mathrm{mm}$，点火提前角集中于$26.82^\circ$--$29.96^\circ$，但重叠角在$25.35^\circ$--$70.86^\circ$间变化。图\ref{fig:q3-validation-sensitivity}同时给出留出集指标和归一化推荐分布。较大$d$和较早点火的方向在当前模型内相对一致，而重叠角及精确推荐点对抽样和偏好权重敏感。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/q3-validation-sensitivity.png}
+\caption{问题三代理留出集指标与推荐结果敏感性}
+\label{fig:q3-validation-sensitivity}
+\end{figure}
+
+问题三的几何筛选、循环收敛、情景传播和推荐点步长收敛结果均可重复计算；但代理精度、边界贴近和跨机型参数不可辨识性共同限制了结论强度。式\eqref{eq:q3-recommendation}只能解释为指定候选池、五种情景及权重下经ODE复排得到的条件试验起点，不构成目标机台架验证、全局最优性证明或排放与寿命预测。
+% <skill-region:problem-3:verification:end>
+% <skill-region:problem-3:end>
+
+\section{模型评价与改进}
+% <skill-region:synthesis-evaluation:start>
+\subsection{模型优点}
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2.8em]
+ \item \textbf{三问之间保持统一的几何与功率口径。} 问题一给出的单腔扫气容积直接进入问题二BMEP与循环功关系，问题二的收敛热力模型又作为问题三候选回代器，避免了三个工作面扫气容积重复计数。三腔错相积分功与单腔功率公式的相对差为$1.76\times10^{-5}$，说明该接口在数值上自洽。
+ \item \textbf{几何边界与代数延拓得到明确区分。} 模型同时给出$150\,\mathrm{mm}$理想几何接触边界和$159.8726\,\mathrm{mm}$零余隙代数根，并将后者排除在物理可行域之外。问题三所有候选均满足$d<150\,\mathrm{mm}$，未沿用实体重叠解。
+ \item \textbf{热力过程保留质量、能量和转矩的机理联系。} 开放系统模型把端口流动、Wiebe放热、壁面换热、泄漏和摩擦写入同一循环积分，并以固定点判据控制循环收敛。功率、制动热效率和BSFC使用同一循环燃料质量定义，能够比较不同重叠角与设计变量下的条件响应。
+ \item \textbf{优化阶段没有直接采用代理预测作为最终结果。} 问题三先用响应代理压缩候选空间，再对$40$个候选的五种输入扰动情景执行$200$次ODE复排，推荐点最后以$1^\circ$和$0.5^\circ$步长交叉检查。这一结构降低了代理误差直接决定推荐值的风险。
+\end{enumerate}
+
+\subsection{模型局限}
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2.8em]
+ \item 问题一的转子侧边来自圆弧理想化，而非实际转子CAD轮廓；$150\,\mathrm{mm}$也只是该理想几何的接触边界。制造公差、热膨胀、密封条尺寸及壳体变形可能进一步缩小实际可用范围。
+ \item 现有材料缺少目标发动机的扭矩、缸压、燃油流量、端口面积和排放数据。问题二以相似机型曲线和工程先验约束模型，其中摩擦尺度达到施加上界，参数不具有唯一物理辨识性。因此功率、效率、峰压和峰温均是条件预测。
+ \item 零维模型忽略腔内温度梯度、火焰传播、壁面局部换热和密封泄漏的空间差异，在高负荷、爆震边界及复杂换气回流条件下可能产生系统偏差。
+ \item 问题三的排放倾向和可靠性风险是无量纲代理。代理峰压的留出集$R^2$为$0.7824$，推荐点又靠近直径、点火角和重叠角边界；不同抽样和权重下重叠角变化明显，现有证据不足以证明全局最优。
+\end{enumerate}
+
+\subsection{改进方向与适用范围}
+
+后续可用实际转子CAD轮廓替代圆弧边界，并把密封条尺寸、冷热态间隙和加工公差纳入几何可行性计算。动力学部分应补充目标机的缸压—转角、扭矩—转速、燃油流量、端口面积—转角及进排气边界数据，在更宽且有物理依据的参数范围内重新辨识燃烧、换热、泄漏与摩擦参数；必要时引入多区燃烧或三维流动结果修正零维模型。
+
+综合优化阶段可在当前推荐邻域采用自适应采样，优先增加代理误差较大的峰压和边界区域ODE点，并用台架测得的HC、CO、$\mathrm{NO_x}$、密封温度与磨损量替换两个代理指标。完成独立工况验证后，再讨论实际最优重叠角和可实现性能。
+
+当前模型适合用于几何方案筛选、条件机理分析和台架试验点设计。若迁移到其他转子尺寸、端口结构、燃料或转速范围，几何关系可以沿用相同建模框架，但热力参数、端口边界及代理指标必须重新标定。
+% <skill-region:synthesis-evaluation:end>
+
+\bibliographystyle{gbt7714-numerical}
+\bibliography{references}
+
+\appendix
+
+\section{核心程序}
+% <skill-region:appendix-code:start>
+\label{app:core-code}
+以下仅摘录决定三问计算流程的核心函数，绘图、文件读写和运行信息记录均省略。
+
+\subsection{圆弧转子面积与容积计算}
+\begin{lstlisting}[language=Python]
+def metrics(d_inner):
+    a_rotor, rho, gamma = rotor_area(d_inner)
+    a_housing = pi * (R**2 + 3.0 * e**2)
+    v_free = (a_housing - a_rotor) * B / 1000.0
+    v_s = 3.0 * sqrt(3.0) * R * e * B / 1000.0
+    v_min = (v_free - 1.5 * v_s) / 3.0
+    v_max = v_min + v_s
+    return {"V_free": v_free, "Vmin": v_min,
+            "Vs": v_s, "Vmax": v_max, "CR": v_max/v_min}
+
+def volume(theta_deg, d_inner=147.0, phase_deg=69.0):
+    m = metrics(d_inner)
+    arg = np.deg2rad(2.0*(np.asarray(theta_deg)-phase_deg)/3.0)
+    return m["Vmin"] + 0.5*m["Vs"]*(1.0-np.cos(arg))
+\end{lstlisting}
+
+\subsection{单腔容积及端口面积}
+\begin{lstlisting}[language=Python]
+def volume(theta_deg, vs_m3, compression_ratio):
+    vmin = vs_m3/(compression_ratio-1.0)
+    phase = math.radians(2.0*theta_deg/3.0)
+    volume_m3 = vmin + 0.5*vs_m3*(1.0-math.cos(phase))
+    dvol_ddeg = 0.5*vs_m3*math.sin(phase)*math.pi/270.0
+    return volume_m3, dvol_ddeg
+
+def port_area(theta_deg, opening_deg, closing_deg, area_m2):
+    if theta_deg < opening_deg or theta_deg > closing_deg:
+        return 0.0
+    phase = math.pi*(theta_deg-opening_deg)/(closing_deg-opening_deg)
+    return area_m2*math.sin(phase)
+\end{lstlisting}
+
+\subsection{条件设计的ODE回代与非支配筛选}
+\begin{lstlisting}[language=Python]
+def ode_case(x, step=3.0):
+    d, overlap, ign, eoi, lam, eta_scale, friction_mult = map(float, x)
+    vmin, cr = geometry(d)
+    pars = Q2.expand_free_coefficients(
+        [BASE_ETA_COMB*eta_scale, BASE_FRICTION*friction_mult])
+    out = Q2.simulate(6000.0, Q2.VS_TARGET_M3, cr, pars,
+        overlap_deg=overlap, lambda_air=lam,
+        ignition_btdc_deg=ign, eoi_deg=eoi,
+        step_deg=step, max_cycles=30, collect_extrema=True)
+    return vmin, cr, out
+
+def nondominated(objectives):
+    front = []
+    for i in np.argsort(objectives[:, 0]):
+        f = objectives[np.asarray(front)] if front else None
+        if front and np.any(np.all(f <= objectives[i], axis=1)
+                            & np.any(f < objectives[i], axis=1)):
+            continue
+        if front:
+            keep = ~(np.all(objectives[i] <= f, axis=1)
+                     & np.any(objectives[i] < f, axis=1))
+            front = list(np.asarray(front)[keep])
+        front.append(int(i))
+    return np.asarray(front, dtype=int)
+\end{lstlisting}
+% <skill-region:appendix-code:end>
+
+\section{支撑材料清单}
+% <skill-region:appendix-support-list:start>
+\label{app:support-files}
+\begin{longtable}{p{0.27\textwidth}p{0.10\textwidth}p{0.28\textwidth}p{0.25\textwidth}}
+\toprule
+文件名 & 所属问题 & 主要功能 & 对应结果\\
+\midrule
+\endfirsthead
+\toprule
+文件名 & 所属问题 & 主要功能 & 对应结果\\
+\midrule
+\endhead
+\texttt{q1\_geometry.py} & 问题一 & 圆弧几何、容积、直径扫描与守恒检查 & 排量、压缩比及$150\,\mathrm{mm}$接触边界\\
+\texttt{q1\_results.csv} & 问题一 & 汇总基准、事件角和直径扫描数值 & 问题一表格与检验数值\\
+\texttt{q1\_run\_metadata.json} & 问题一 & 记录参数、依赖和输出摘要 & 问题一复现信息\\
+\texttt{q2\_closed\_loop.py} & 问题二 & 开放系统ODE、循环收敛、标定和重叠角扫描 & 功率、效率、峰值状态与三腔转矩\\
+\texttt{q2\_closed\_loop\_results.csv} & 问题二 & 汇总标定诊断与参考工况 & $6000\,\mathrm{r/min}$条件结果\\
+\texttt{q2\_overlap\_response.csv} & 问题二 & 重叠角条件扫描 & 功率、效率与BSFC响应\\
+\texttt{q2\_cycle\_trace.csv} & 问题二 & 收敛循环状态轨迹 & 压力、温度与能量过程\\
+\texttt{q2\_three\_chamber\_torque.csv} & 问题二 & 三腔错相转矩叠加 & 总转矩及功率口径检验\\
+\texttt{q2\_run\_metadata.json} & 问题二 & 记录标定、细化与输出哈希 & 问题二复现信息\\
+\texttt{q3\_conditional\_design.py} & 问题三 & ODE设计集、代理筛选与多情景复排 & 条件设计推荐\\
+\texttt{q3\_ode\_design.csv} & 问题三 & $400$点拉丁超立方ODE结果 & 代理训练与留出集检验\\
+\texttt{q3\_ode\_rescore.csv} & 问题三 & $40$候选五情景ODE复排 & 最坏情景评分与推荐选择\\
+\texttt{q3\_sensitivity.csv} & 问题三 & 样本量、随机种子和权重敏感性 & 推荐稳定性范围\\
+\texttt{q3\_run\_metadata.json} & 问题三 & 记录模型、版本、推荐点和输出哈希 & 问题三复现信息\\
+\bottomrule
+\end{longtable}
+% <skill-region:appendix-support-list:end>
+
+\end{document}

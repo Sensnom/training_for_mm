@@ -1,0 +1,139 @@
+% ============================================================
+% 问题一的建模与求解（几何复核修订版）
+% ============================================================
+\section{问题一的建模与求解}
+
+\subsection{原模型复核与修正原则}
+
+初稿把$V_{\min}=33.73\,\mathrm{cm^3}$作为保留量，再用汽油转子发动机常见压缩比区间反推$V_{\max}$，因此$CR=9.55$和排量并不是由题给尺寸计算所得。台架数据可用于辨识泄漏、摩擦和燃烧参数，却不能替代几何容积。本节完全从附件的五个尺寸出发：转子外圆直径$210\,\mathrm{mm}$、内圆直径$d=147\,\mathrm{mm}$、厚度$B=50\,\mathrm{mm}$、固定圆直径$60\,\mathrm{mm}$和滚动圆直径$90\,\mathrm{mm}$。
+
+记转子顶点半径为$R=105\,\mathrm{mm}$，偏心距为
+\begin{equation}
+ e=45-30=15\,\mathrm{mm}.
+\end{equation}
+曲轴角记为$\theta$，附件规定曲轴$0^\circ$位于压缩上止点之前$69^\circ$，故A腔压缩上止点为$\theta_T=69^\circ$，进气终了为$\theta_I=879^\circ$。
+
+\subsection{壳体、转子与瞬时容积}
+
+转子顶点的外摆线（缸体理论型线）为
+\begin{equation}
+ \begin{cases}
+ x_h(t)=e\cos t+R\cos(t/3),\\
+ y_h(t)=e\sin t+R\sin(t/3),
+ \end{cases}\qquad 0\le t<6\pi .
+ \label{eq:housing_curve}
+\end{equation}
+由Green公式，壳体横截面积为
+\begin{equation}
+ A_h=\frac12\oint(x_h\,\mathrm dy_h-y_h\,\mathrm dx_h)
+     =\pi(R^2+3e^2).
+ \label{eq:housing_area}
+\end{equation}
+
+附件所称内圆直径决定转子三边弧度。设一条边对应的圆弧半径为$\rho$、圆心角为$\gamma$，其弦长为$\sqrt3R$，弦中点到转子中心距离为$R/2$。圆弧中点半径为$d/2$，令弓高$s=(d-R)/2$，则
+\begin{equation}
+ \rho=\frac{3R^2/4+s^2}{2s},\qquad
+ \gamma=2\arcsin\frac{\sqrt3R}{2\rho}.
+ \label{eq:arc_geometry}
+\end{equation}
+转子截面积等于顶点三角形面积与三段圆弓面积之和：
+\begin{equation}
+ A_r(d)=\frac{3\sqrt3}{4}R^2+\frac{3\rho^2}{2}(\gamma-\sin\gamma).
+ \label{eq:rotor_area}
+\end{equation}
+
+三腔自由总体积是常数
+\begin{equation}
+ V_\Sigma(d)=[A_h-A_r(d)]B.
+ \label{eq:total_free_volume}
+\end{equation}
+经典转子机构的单腔扫气容积为\cite{yamamoto1981rotary,turner2018wankel}
+\begin{equation}
+ V_s=3\sqrt3\,ReB.
+ \label{eq:swept_volume}
+\end{equation}
+以$\theta_T=69^\circ$锚定A腔的最小容积，可写成正弦等价形式
+\begin{equation}
+ V_A(\theta;d)=V_{\min}(d)+\frac{V_s}{2}
+ \left[1-\cos\frac{2(\theta-69^\circ)}{3}\right],
+ \label{eq:volume_angle}
+\end{equation}
+其周期为$1080^\circ$。B、C腔依次相差一个点火间隔$360^\circ$曲轴角：
+\begin{equation}
+ V_B(\theta;d)=V_A(\theta-360^\circ;d),\qquad
+ V_C(\theta;d)=V_A(\theta-720^\circ;d).
+ \label{eq:phase_volume}
+\end{equation}
+利用$V_A+V_B+V_C=V_\Sigma$，得到
+\begin{equation}
+ V_{\min}(d)=\frac{V_\Sigma(d)-\tfrac32V_s}{3},\qquad
+ V_{\max}(d)=V_{\min}(d)+V_s.
+ \label{eq:vmin_vmax}
+\end{equation}
+式\eqref{eq:volume_angle}--\eqref{eq:vmin_vmax}同时满足几何面积、三腔守恒和附件事件角，不含经验压缩比回填参数。
+
+\subsection{基准排量与压缩比}
+
+代入$R=105\,\mathrm{mm}$、$e=15\,\mathrm{mm}$、$B=50\,\mathrm{mm}$、$d=147\,\mathrm{mm}$，计算结果见表\ref{tab:q1_corrected}。
+
+\begin{table}[H]
+\centering
+\caption{问题一基准几何计算结果}
+\label{tab:q1_corrected}
+\begin{tabular}{lrl}
+\toprule
+指标 & 数值 & 说明\\
+\midrule
+壳体截面积$A_h$ & $36756.63\,\mathrm{mm^2}$ & 式\eqref{eq:housing_area}\\
+转子截面积$A_r$ & $22041.10\,\mathrm{mm^2}$ & 式\eqref{eq:rotor_area}\\
+三腔自由总体积$V_\Sigma$ & $735.78\,\mathrm{cm^3}$ & 任意转角守恒\\
+单腔余隙容积$V_{\min}$ & $40.66\,\mathrm{cm^3}$ & $\theta=69^\circ$\\
+单腔扫气容积$V_s$ & $409.20\,\mathrm{cm^3}$ & 式\eqref{eq:swept_volume}\\
+单腔进气终了容积$V_{\max}$ & $449.86\,\mathrm{cm^3}$ & $\theta=879^\circ$\\
+压缩比$CR=V_{\max}/V_{\min}$ & $11.064$ & 附件定义\\
+题目口径排量$3V_{\max}$ & $1349.57\,\mathrm{cm^3}$ & 附件明确口径\\
+常用扫气排量$3V_s$ & $1227.59\,\mathrm{cm^3}$ & 供动力学换算\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+附件把排量定义为``某缸进气结束点容积乘3''，故本题答案为$1349.57\,\mathrm{cm^3}$。为避免后续使用BMEP时混淆，同时报告工程常用的三腔扫气排量$1227.59\,\mathrm{cm^3}$。初稿采用$3(V_{\max}-V_{\min})=865.30\,\mathrm{cm^3}$，既数值错误，也未说明其与题目口径不同。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{figure/q1_corrected_volume_cr.png}
+\caption{三腔容积曲线与内圆直径对压缩比的影响}
+\label{fig:q1_corrected}
+\end{figure}
+
+\subsection{内圆直径的灵敏度与可行域}
+
+由式\eqref{eq:rotor_area}可知，$d$增大时转子三边外鼓，$A_r$增大；壳体型线和$V_s$不变，故$V_{\min}$下降、压缩比单调上升。关键结果见表\ref{tab:q1_sensitivity}。
+
+\begin{table}[H]
+\centering
+\caption{内圆直径$\pm10\%$灵敏度分析}
+\label{tab:q1_sensitivity}
+\begin{tabular}{rrrrr}
+\toprule
+$d/\mathrm{mm}$ & $V_{\min}/\mathrm{cm^3}$ & $V_{\max}/\mathrm{cm^3}$ & $CR$ & 几何判定\\
+\midrule
+$132.3$（$-10\%$） & $86.19$ & $495.39$ & $5.747$ & 可行\\
+$147.0$（基准） & $40.66$ & $449.86$ & $11.064$ & 可行\\
+$159.873$（极限） & $0$ & $409.20$ & $\to\infty$ & 余隙退化\\
+$161.7$（$+10\%$） & $-5.84$ & $403.35$ & 无物理意义 & 几何干涉\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+因此，题设的数学扫描区间虽为$[132.3,161.7]\,\mathrm{mm}$，物理可行域只能取
+\begin{equation}
+ 132.3\le d<159.873\ \mathrm{mm}.
+\end{equation}
+接近上界时$V_{\min}\to0^+$、$CR\to\infty$，任何密封间隙、火花塞孔、热膨胀和加工误差都会主导结果，不能据此宣称可以获得极高压缩比。工程设计还应设置正余隙和最小壁厚约束，因而实际允许的$d$上限应低于$159.873\,\mathrm{mm}$。这也是初稿给出$4.934$--$94.157$却未识别几何失效的根本问题。
+
+\subsection{台架数据的定位与交叉校核}
+
+题目附件未附台架表，本文检索到Turner等对AIE 225CS单转子发动机的公开研究\cite{turner2018wankel}。该研究包含$5000$--$7500\,\mathrm{r/min}$的16个实测转速点，功率约$22$--$44\,\mathrm{bhp}$、扭矩约$22$--$31\,\mathrm{lb\,ft}$；旋转域模型对实测扭矩的平均偏差为$2.5\%$。文中还给出进、排气流量系数$0.92/0.95$，以及使模型更贴近实测值的等效顶点密封泄漏面积$0.03\,\mathrm{mm^2}$。这些数据可用于问题二、三中换气、泄漏和摩擦参数标定。
+
+但225CS每工作腔排量为$225\,\mathrm{cm^3}$，与本题几何得到的$409.20\,\mathrm{cm^3}$并不相同。因此本文只采用其流量系数、泄漏面积和相对误差作为相似机型先验，不把其绝对功率当作题设发动机实测值。第一问的容积、排量和压缩比始终由几何模型独立计算；这一区分使数据来源、适用范围和模型证据链保持可审查。
