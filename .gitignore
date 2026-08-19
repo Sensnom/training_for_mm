@@ -24,3 +24,4 @@ figure/*
 *.metadata
 *.docx
 *.doc
+.modeling/

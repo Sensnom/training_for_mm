@@ -1,0 +1,34 @@
+Q4 strict-periodic unit test report
+================================================
+T1: B center (4900,0,0)
+  expected: True
+  actual:   True
+  verdict:  PASS
+T2: B center (0,0,0)
+  expected: False
+  actual:   False
+  verdict:  PASS
+T3: B center (4950,0,0)
+  expected: True
+  actual:   True
+  verdict:  PASS
+T4: single-B self-short MC
+  expected: 0.04
+  actual:   0.03977
+  abs_error:0.00023000000000000104
+  verdict:  PASS
+T5: N_B=57 at least one self-short
+  expected: 0.9023976480157871
+  actual:   0.90118
+  abs_error:0.001217648015787165
+  verdict:  PASS
+T6: synthetic 25-B in-domain chain
+  expected: True
+  actual:   True
+  verdict:  PASS
+T7: two non-overrun B across opposite Y faces: no global minimum-image contact
+  expected: False
+  actual:   False
+  verdict:  PASS
+
+ALL PASS

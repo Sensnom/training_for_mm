@@ -1,0 +1,68 @@
+{
+  "组1": {
+    "rows": 12,
+    "raw_length_min_nm": 1019.1172545934198,
+    "raw_length_median_nm": 2566.1397390650686,
+    "raw_length_max_nm": 5000.000000000005,
+    "raw_length_eq_5000_count": 2,
+    "exact_x_opposite_pair_count": 3,
+    "complete_5000_collinear_pair_count": 2,
+    "representative": {
+      "row1": 4,
+      "row2": 12,
+      "endpoint1": "p1",
+      "endpoint2": "p2",
+      "matched_y_nm": 260.638630130799,
+      "matched_z_nm": -45.5355334223004,
+      "len1_nm": 2315.534369816957,
+      "len2_nm": 2684.4656301830446,
+      "total_length_nm": 5000.000000000002,
+      "abs_direction_dot": 0.9999999999999999,
+      "complete_5000": true
+    }
+  },
+  "组2": {
+    "rows": 49,
+    "raw_length_min_nm": 577.4739501397556,
+    "raw_length_median_nm": 2677.2638185886635,
+    "raw_length_max_nm": 5000.000000000008,
+    "raw_length_eq_5000_count": 11,
+    "exact_x_opposite_pair_count": 10,
+    "complete_5000_collinear_pair_count": 5,
+    "representative": {
+      "row1": 6,
+      "row2": 47,
+      "endpoint1": "p1",
+      "endpoint2": "p2",
+      "matched_y_nm": -31.8043625940113,
+      "matched_z_nm": -200.10393428969,
+      "len1_nm": 3080.1227520443604,
+      "len2_nm": 1919.8772479556317,
+      "total_length_nm": 4999.999999999992,
+      "abs_direction_dot": 1.0,
+      "complete_5000": true
+    }
+  },
+  "组3": {
+    "rows": 535,
+    "raw_length_min_nm": 525.6973820490682,
+    "raw_length_median_nm": 3696.909631751418,
+    "raw_length_max_nm": 5000.000000000008,
+    "raw_length_eq_5000_count": 155,
+    "exact_x_opposite_pair_count": 82,
+    "complete_5000_collinear_pair_count": 63,
+    "representative": {
+      "row1": 4,
+      "row2": 507,
+      "endpoint1": "p1",
+      "endpoint2": "p2",
+      "matched_y_nm": -4866.08250706701,
+      "matched_z_nm": -1349.01698940725,
+      "len1_nm": 3536.541437143679,
+      "len2_nm": 1463.4585628563148,
+      "total_length_nm": 4999.999999999994,
+      "abs_direction_dot": 1.0,
+      "complete_5000": true
+    }
+  }
+}

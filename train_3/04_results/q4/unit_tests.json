@@ -1,0 +1,65 @@
+[
+  {
+    "test": "B center (4900,0,0)",
+    "expected": true,
+    "actual": true,
+    "pass": true,
+    "images": [
+      [
+        4900.0,
+        0.0,
+        0.0
+      ],
+      [
+        -5100.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  {
+    "test": "B center (0,0,0)",
+    "expected": false,
+    "actual": false,
+    "pass": true,
+    "images": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  {
+    "test": "B center (4950,0,0)",
+    "expected": true,
+    "actual": true,
+    "pass": true,
+    "images": [
+      [
+        4950.0,
+        0.0,
+        0.0
+      ],
+      [
+        -5050.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  {
+    "test": "single-B self-short MC",
+    "expected": 0.04,
+    "actual": 0.03977,
+    "abs_error": 0.00023000000000000104,
+    "pass": true
+  },
+  {
+    "test": "N_B=57 at least one self-short",
+    "expected": 0.9023976480157871,
+    "actual": 0.90118,
+    "abs_error": 0.001217648015787165,
+    "pass": true
+  }
+]

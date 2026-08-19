@@ -1,0 +1,77 @@
+{
+  "p_direct_A": 0.2547123889803847,
+  "p_direct_B": 0.04,
+  "p_one_side_touch_non_cross_each_type": 0.00018,
+  "V_A_um3": 0.014137166941154067,
+  "V_B_um3": 0.03351032163829113,
+  "cost_A_each_yuan": 0.01484402528821177,
+  "cost_B_each_yuan": 0.0016755160819145567,
+  "incumbent": {
+    "N_A": 0,
+    "N_B": 57,
+    "cost_yuan": 0.09550441666912973,
+    "p_direct_lower": 0.9023976480157871,
+    "p_conduction_upper": 0.9024084885431141,
+    "B_volume_fraction_percent": 0.19100883333825944
+  },
+  "max_N_A_in_any_strictly_cheaper_solution": 6,
+  "frontier": [
+    {
+      "N_A": 0,
+      "N_B_max_cheaper": 56,
+      "cost_yuan": 0.09382890058721517,
+      "p_direct_lower": 0.8983308833497782,
+      "p_conduction_upper": 0.8983417813875729,
+      "below_0p90": true
+    },
+    {
+      "N_A": 1,
+      "N_B_max_cheaper": 48,
+      "cost_yuan": 0.09526879722011049,
+      "p_direct_lower": 0.8949628116759689,
+      "p_conduction_upper": 0.8949715215715267,
+      "below_0p90": true
+    },
+    {
+      "N_A": 2,
+      "N_B_max_cheaper": 39,
+      "cost_yuan": 0.09503317777109126,
+      "p_direct_lower": 0.8869616284164697,
+      "p_conduction_upper": 0.886968280152956,
+      "below_0p90": true
+    },
+    {
+      "N_A": 3,
+      "N_B_max_cheaper": 30,
+      "cost_yuan": 0.09479755832207201,
+      "p_direct_lower": 0.878350956893113,
+      "p_conduction_upper": 0.8783556835508265,
+      "below_0p90": true
+    },
+    {
+      "N_A": 4,
+      "N_B_max_cheaper": 21,
+      "cost_yuan": 0.09456193887305278,
+      "p_direct_lower": 0.8690843694799175,
+      "p_conduction_upper": 0.8690873765664897,
+      "below_0p90": true
+    },
+    {
+      "N_A": 5,
+      "N_B_max_cheaper": 12,
+      "cost_yuan": 0.09432631942403354,
+      "p_direct_lower": 0.859111901937349,
+      "p_conduction_upper": 0.8591134808993501,
+      "below_0p90": true
+    },
+    {
+      "N_A": 6,
+      "N_B_max_cheaper": 3,
+      "cost_yuan": 0.09409069997501429,
+      "p_direct_lower": 0.8483797840116098,
+      "p_conduction_upper": 0.848380327646796,
+      "below_0p90": true
+    }
+  ],
+  "verdict": "(0,57) is the exact global minimum-cost solution under Assumption A and the written boundary semantics, because it is feasible by the direct-X lower bound and every strictly cheaper integer solution is dominated by one of the seven frontier points whose necessary-event upper bound is <0.90."
+}

@@ -1,0 +1,12 @@
+# Checkpoint 06 compile verification
+built_at_utc=2026-08-18T15:35:24Z
+engine=latexmk -xelatex
+pages=19
+fatal_errors=0
+undefined_refs=0
+overfull_boxes=0
+underfull_boxes=0
+missing_characters=0
+rendered_pages=19
+visual_check=PASS (all-page contact sheet; Q1 pages 1-4 individually inspected)
+03_code_sha256_changes_vs_checkpoint05=0

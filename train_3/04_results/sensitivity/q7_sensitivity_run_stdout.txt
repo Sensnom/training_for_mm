@@ -1,0 +1,78 @@
+{
+  "formal_p_A_isotropic": 0.2547123889803847,
+  "formal_p_B": 0.04,
+  "formal_q3_NA": 8,
+  "formal_q4": {
+    "N_A": 0,
+    "N_B": 57,
+    "cost_yuan": 0.09550441666912973
+  },
+  "delta_range_nm": [
+    0.0,
+    0.9,
+    1.8,
+    3.6,
+    5.4,
+    9.0
+  ],
+  "delta_strongest_cheaper_always": true,
+  "delta_max_U_0_56": 0.8985925672799908,
+  "direction_note": "严格平端圆柱完全沿X时p_D=0.5；建模手草稿中的0.506已校正。",
+  "direction_rows": [
+    {
+      "direction_case": "X轴向对齐",
+      "p_A_direct": 0.5,
+      "n_A_for_90_direct": 4,
+      "cost_for_90_yuan": 0.05937610115284708,
+      "lower_at_8": 0.99609375
+    },
+    {
+      "direction_case": "各向同性（主口径）",
+      "p_A_direct": 0.2547123889803847,
+      "n_A_for_90_direct": 8,
+      "cost_for_90_yuan": 0.11875220230569417,
+      "lower_at_8": 0.9048100243327746
+    },
+    {
+      "direction_case": "轴向完全垂直X",
+      "p_A_direct": 0.006,
+      "n_A_for_90_direct": 383,
+      "cost_for_90_yuan": 5.685261685385108,
+      "lower_at_8": 0.047004005714151864
+    }
+  ],
+  "pareto": {
+    "domain_points": 1701,
+    "frontier_points": 241
+  },
+  "boundary_semantics_rows": [
+    {
+      "boundary_semantics": "题面回迁+同一ID",
+      "pA_self": 0.2547123889803847,
+      "pB_self": 0.04,
+      "p57B_self": 0.9023976480157871,
+      "network_note": "只按显式回迁像建立接触"
+    },
+    {
+      "boundary_semantics": "硬截断/删除越界",
+      "pA_self": 0.0,
+      "pB_self": 0.0,
+      "p57B_self": 0.0,
+      "network_note": "只能靠截断后的网络导通"
+    },
+    {
+      "boundary_semantics": "回迁但拆分ID",
+      "pA_self": 0.0,
+      "pB_self": 0.0,
+      "p57B_self": 0.0,
+      "network_note": "原像/回迁像不再内禀连通"
+    },
+    {
+      "boundary_semantics": "全局最小镜像",
+      "pA_self": 0.2547123889803847,
+      "pB_self": 0.04,
+      "p57B_self": 0.9023976480157871,
+      "network_note": "自短路相同，但粒子间接触被扩大"
+    }
+  ]
+}

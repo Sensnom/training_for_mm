@@ -1,0 +1,184 @@
+{
+  "constants": {
+    "p_D_A": 0.2547123889803847,
+    "p_D_B": 0.04,
+    "p_E_one_side_non_crossing": 0.00018,
+    "V_A_um3": 0.014137166941154067,
+    "V_B_um3": 0.03351032163829113,
+    "c_A_yuan": 0.01484402528821177,
+    "c_B_yuan": 0.0016755160819145567,
+    "cost_ratio_A_over_B": 8.859374999999996
+  },
+  "pure_A_analytic": {
+    "N_A": 8,
+    "N_B": 0,
+    "cost_yuan": 0.11875220230569417,
+    "p_self": 0.9048100243327746
+  },
+  "pure_B_analytic": {
+    "N_A": 0,
+    "N_B": 57,
+    "cost_yuan": 0.09550441666912973,
+    "p_self": 0.9023976480157871
+  },
+  "incumbent_global_candidate": {
+    "N_A": 0,
+    "N_B": 57,
+    "cost_yuan": 0.09550441666912973,
+    "p_self": 0.9023976480157871
+  },
+  "max_N_A_in_strictly_cheaper_solution": 6,
+  "frontier": [
+    {
+      "N_A": 0,
+      "N_B_frontier": 56,
+      "cost_yuan": 0.09382890058721517,
+      "p_self_lower": 0.8983308833497782,
+      "p_total_necessary_upper": 0.8983417813875729,
+      "upper_below_0p90": true
+    },
+    {
+      "N_A": 1,
+      "N_B_frontier": 48,
+      "cost_yuan": 0.09526879722011049,
+      "p_self_lower": 0.8949628116759689,
+      "p_total_necessary_upper": 0.8949715215715267,
+      "upper_below_0p90": true
+    },
+    {
+      "N_A": 2,
+      "N_B_frontier": 39,
+      "cost_yuan": 0.09503317777109126,
+      "p_self_lower": 0.8869616284164697,
+      "p_total_necessary_upper": 0.886968280152956,
+      "upper_below_0p90": true
+    },
+    {
+      "N_A": 3,
+      "N_B_frontier": 30,
+      "cost_yuan": 0.09479755832207201,
+      "p_self_lower": 0.878350956893113,
+      "p_total_necessary_upper": 0.8783556835508265,
+      "upper_below_0p90": true
+    },
+    {
+      "N_A": 4,
+      "N_B_frontier": 21,
+      "cost_yuan": 0.09456193887305278,
+      "p_self_lower": 0.8690843694799175,
+      "p_total_necessary_upper": 0.8690873765664897,
+      "upper_below_0p90": true
+    },
+    {
+      "N_A": 5,
+      "N_B_frontier": 12,
+      "cost_yuan": 0.09432631942403354,
+      "p_self_lower": 0.859111901937349,
+      "p_total_necessary_upper": 0.8591134808993501,
+      "upper_below_0p90": true
+    },
+    {
+      "N_A": 6,
+      "N_B_frontier": 3,
+      "cost_yuan": 0.09409069997501429,
+      "p_self_lower": 0.8483797840116098,
+      "p_total_necessary_upper": 0.848380327646796,
+      "upper_below_0p90": true
+    }
+  ],
+  "number_of_strictly_cheaper_integer_points": 216,
+  "strongest_cheaper_point_by_upper_bound": {
+    "N_A": 0,
+    "N_B": 56,
+    "cost_yuan": 0.09382890058721517,
+    "p_self_lower": 0.8983308833497782,
+    "p_total_necessary_upper": 0.8983417813875729
+  },
+  "all_cheaper_upper_bounds_below_0p90": true,
+  "mc_validation": [
+    {
+      "N_A": 0,
+      "N_B": 57,
+      "M": 500000,
+      "seed": 271828182,
+      "trial_offset": 0,
+      "conduct_count": 451451,
+      "self_A_count": 0,
+      "self_B_count": 451451,
+      "self_any_count": 451451,
+      "network_only_count": 0,
+      "p_hat": 0.902902,
+      "wilson_low": 0.9020781789234672,
+      "wilson_high": 0.9037196299708076,
+      "p_self_hat": 0.902902,
+      "p_network_only_hat": 0.0,
+      "cost_yuan": 0.09550441666912973,
+      "certified_feasible": true,
+      "certified_infeasible": false,
+      "status": "FEASIBLE",
+      "label": "independent_opt_seed_e",
+      "analytic_p_self": 0.9023976480157871,
+      "analytic_total_upper": 0.9024084885431141,
+      "elapsed_s": 0.7665789127349854
+    },
+    {
+      "N_A": 0,
+      "N_B": 57,
+      "M": 500000,
+      "seed": 161803398,
+      "trial_offset": 0,
+      "conduct_count": 451191,
+      "self_A_count": 0,
+      "self_B_count": 451191,
+      "self_any_count": 451191,
+      "network_only_count": 0,
+      "p_hat": 0.902382,
+      "wilson_low": 0.901556225236063,
+      "wilson_high": 0.9032015916486783,
+      "p_self_hat": 0.902382,
+      "p_network_only_hat": 0.0,
+      "cost_yuan": 0.09550441666912973,
+      "certified_feasible": true,
+      "certified_infeasible": false,
+      "status": "FEASIBLE",
+      "label": "independent_opt_seed_phi",
+      "analytic_p_self": 0.9023976480157871,
+      "analytic_total_upper": 0.9024084885431141,
+      "elapsed_s": 0.808711051940918
+    },
+    {
+      "N_A": 0,
+      "N_B": 56,
+      "M": 500000,
+      "seed": 271828182,
+      "trial_offset": 0,
+      "conduct_count": 449436,
+      "self_A_count": 0,
+      "self_B_count": 449436,
+      "self_any_count": 449436,
+      "network_only_count": 0,
+      "p_hat": 0.898872,
+      "wilson_low": 0.8980332227984589,
+      "wilson_high": 0.899704648021932,
+      "p_self_hat": 0.898872,
+      "p_network_only_hat": 0.0,
+      "cost_yuan": 0.09382890058721517,
+      "certified_feasible": false,
+      "certified_infeasible": true,
+      "status": "INFEASIBLE",
+      "label": "independent_competitor_56B",
+      "analytic_p_self": 0.8983308833497782,
+      "analytic_total_upper": 0.8983417813875729,
+      "elapsed_s": 0.7383830547332764
+    }
+  ],
+  "verdict": "GLOBAL_OPTIMUM_PROVED: (N_A,N_B)=(0,57)",
+  "logic": [
+    "57 B is feasible because its analytic direct-X lower bound exceeds 0.90.",
+    "Any strictly cheaper integer solution has N_A<=6.",
+    "For each fixed N_A, conduction probability is nondecreasing in N_B, so only the maximum cheaper N_B frontier point can dominate that row.",
+    "The analytic necessary-event upper bound is below 0.90 at all seven frontier points.",
+    "Therefore every one of the 216 strictly cheaper integer points is infeasible.",
+    "Monte Carlo is used only as independent numerical validation, not as the global-optimality proof."
+  ]
+}

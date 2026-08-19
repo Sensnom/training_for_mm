@@ -1,0 +1,21 @@
+{
+  "L_nm": 10000.0,
+  "delta_nm": 1.8,
+  "rA_nm": 30.0,
+  "lenA_nm": 5000.0,
+  "rB_nm": 200.0,
+  "thresholds_nm": {
+    "AA": 61.8,
+    "AB": 231.8,
+    "BB": 401.8,
+    "A-electrode": 31.8,
+    "B-electrode": 201.8
+  },
+  "V_A_um3": 0.014137166941154067,
+  "V_B_um3": 0.03351032163829113,
+  "cost_A_each": 0.01484402528821177,
+  "cost_B_each": 0.0016755160819145567,
+  "seed": 20260818,
+  "CRN": "stateless per-trial/per-type/per-index random stream; every candidate uses prefixes of the same A/B objects",
+  "geometry_note": "A uses capsule-axis approximation with retained periodic images by bbox overlap; B follows requested center-image interval-overlap algorithm exactly."
+}
